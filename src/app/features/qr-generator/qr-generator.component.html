@@ -1,5 +1,31 @@
 <div #qr>
-  <nz-qrcode [nzValue]="qrValue()" [nzSize]="200"></nz-qrcode>
+  <nz-qrcode
+    [nzColor]="qrColor()"
+    [nzValue]="qrValue()"
+    [nzLevel]="qrLevel()"
+    [nzSize]="200"
+  ></nz-qrcode>
   <a #download></a>
 </div>
+
+<nz-segmented
+  nzBlock
+  [nzOptions]="errorCodeLevels"
+  (nzValueChange)="qrLevel.set(errorCodeLevels[$event])"
+></nz-segmented>
+
+<textarea
+  #qrTextarea
+  nz-input
+  nzAutosize
+  [value]="qrValue()"
+  (input)="qrValue.set(qrTextarea.value)"
+></textarea>
+
+<nz-color-picker
+  nzShowText
+  [nzValue]="qrColor()"
+  (nzOnChange)="qrColor.set($event.color.toRgbString())"
+></nz-color-picker>
+
 <button nz-button (click)="downloadQR()">Download</button>
