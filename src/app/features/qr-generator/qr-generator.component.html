@@ -1,0 +1,5 @@
+<div #qr>
+  <nz-qrcode [nzValue]="qrValue()" [nzSize]="200"></nz-qrcode>
+  <a #download></a>
+</div>
+<button nz-button (click)="downloadQR()">Download</button>
