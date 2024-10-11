@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   Component,
   effect,
   ElementRef,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
@@ -26,9 +28,12 @@ type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
 })
-export class QrGeneratorComponent {
-  private qr = viewChild.required<ElementRef>('qr');
-  private download = viewChild.required<ElementRef>('download');
+export class QrGeneratorComponent implements AfterViewInit {
+  private qr = viewChild.required<ElementRef<HTMLDivElement>>('qr');
+  private download =
+    viewChild.required<ElementRef<HTMLAnchorElement>>('download');
+  private qrTextarea =
+    viewChild.required<ElementRef<HTMLTextAreaElement>>('qrTextarea');
 
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
 
@@ -36,11 +41,24 @@ export class QrGeneratorComponent {
   qrColor = signal('rgb(0, 0, 0)');
   qrLevel = signal<ErrorCodeLevel>('L');
 
+  ngAfterViewInit(): void {
+    this.qrTextarea().nativeElement.select();
+  }
+
   downloadQR() {
     const canvas = this.qr().nativeElement.querySelector('canvas');
-    if (!canvas) console.error('Error while getting qr image');
+    if (!canvas) throw console.error('Error while getting qr image');
     this.download().nativeElement.href = canvas.toDataURL('image/png');
     this.download().nativeElement.download = `${this.qrValue()}.png`;
     this.download().nativeElement.dispatchEvent(new MouseEvent('click'));
+  }
+
+  copyToClipboard() {
+    const canvas = this.qr().nativeElement.querySelector('canvas');
+    if (!canvas) throw console.error('Error while getting qr image');
+    canvas.toBlob((blob: Blob | null) => {
+      if (!blob) throw console.error('Error while converting qr image to blob');
+      navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    });
   }
 }
