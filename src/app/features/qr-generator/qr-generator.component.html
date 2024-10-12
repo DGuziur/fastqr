@@ -1,48 +1,54 @@
-<div #qr>
-  <nz-qrcode
-    [nzColor]="qrColor()"
-    [nzValue]="qrValue()"
-    [nzLevel]="qrLevel()"
-    [nzIcon]="qrIcon()"
-    [nzSize]="200"
-  ></nz-qrcode>
-  <a #download></a>
+<div class="main">
+  <div #qr>
+    <nz-qrcode
+      [nzColor]="qrColor()"
+      [nzValue]="qrValue()"
+      [nzLevel]="qrLevel()"
+      [nzIcon]="qrIcon()"
+      [nzSize]="200"
+    ></nz-qrcode>
+    <a #download></a>
+  </div>
+
+  <nz-segmented
+    nzBlock
+    [nzOptions]="errorCodeLevels"
+    (nzValueChange)="handleErrorCodeLevelChange($event)"
+  ></nz-segmented>
+
+  <textarea
+    #qrTextarea
+    nz-input
+    nzAutosize
+    [value]="qrValue()"
+    (input)="handleTextareaChange(qrTextarea.value)"
+  ></textarea>
+
+  <nz-color-picker
+    nzShowText
+    [nzValue]="qrColor()"
+    (nzOnChange)="handleColorChange($event)"
+  ></nz-color-picker>
+
+  <button nz-button (click)="downloadQR()">Download</button>
+  <button
+    nz-button
+    [nz-tooltip]="isCurrentlyCopied() ? 'Copied!' : 'Copy to clipboard'"
+    nzTooltipPlacement="bottom"
+    (click)="copyToClipboard()"
+  >
+    Copy
+  </button>
+
+  <div class="file-upload-container">
+    <label for="fileInput" class="file-upload" [class.uploaded]="qrIconName()">
+      {{ qrIconName() || "Upload icon" }}
+    </label>
+    <input id="fileInput" type="file" (change)="addImage($event)" />
+    @if (qrIconName() || qrIcon()) {
+    <button class="file-upload-deletebtn" nz-button (click)="resetIcon()">
+      <span nz-icon nzType="delete"></span>
+    </button>
+    }
+  </div>
 </div>
-
-<nz-segmented
-  nzBlock
-  [nzOptions]="errorCodeLevels"
-  (nzValueChange)="handleErrorCodeLevelChange($event)"
-></nz-segmented>
-
-<textarea
-  #qrTextarea
-  nz-input
-  nzAutosize
-  [value]="qrValue()"
-  (input)="handleTextareaChange(qrTextarea.value)"
-></textarea>
-
-<nz-color-picker
-  nzShowText
-  [nzValue]="qrColor()"
-  (nzOnChange)="handleColorChange($event)"
-></nz-color-picker>
-
-<button nz-button (click)="downloadQR()">Download</button>
-<button
-  nz-button
-  [nz-tooltip]="isCurrentlyCopied() ? 'Copied!' : 'Copy to clipboard'"
-  nzTooltipPlacement="bottom"
-  (click)="copyToClipboard()"
->
-  Copy
-</button>
-
-<label for="fileInput" class="file-upload"
-  >{{ qrIconName() || "Upload icon" }}
-  @if (qrIconName() || qrIcon()) {
-  <button (click)="resetIcon()">X</button>
-  }
-</label>
-<input id="fileInput" type="file" (change)="addImage($event)" />

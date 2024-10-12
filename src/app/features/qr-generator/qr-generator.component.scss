@@ -3,8 +3,46 @@ input[type="file"] {
 }
 
 .file-upload {
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
   border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 2px;
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
+
+  &:hover {
+    color: #1890ff;
+    border: 1px solid #1890ff;
+  }
+
+  &.uploaded {
+    background-color: #449d68;
+    color: #fff;
+  }
+}
+
+.file-upload-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-upload-deletebtn {
+  background-color: #9d4451;
+  color: #fff;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-upload-text {
+  max-width: 80%;
 }
