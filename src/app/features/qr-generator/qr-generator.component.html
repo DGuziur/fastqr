@@ -3,6 +3,7 @@
     [nzColor]="qrColor()"
     [nzValue]="qrValue()"
     [nzLevel]="qrLevel()"
+    [nzIcon]="qrIcon()"
     [nzSize]="200"
   ></nz-qrcode>
   <a #download></a>
@@ -11,7 +12,7 @@
 <nz-segmented
   nzBlock
   [nzOptions]="errorCodeLevels"
-  (nzValueChange)="qrLevel.set(errorCodeLevels[$event])"
+  (nzValueChange)="handleErrorCodeLevelChange($event)"
 ></nz-segmented>
 
 <textarea
@@ -19,14 +20,29 @@
   nz-input
   nzAutosize
   [value]="qrValue()"
-  (input)="qrValue.set(qrTextarea.value)"
+  (input)="handleTextareaChange(qrTextarea.value)"
 ></textarea>
 
 <nz-color-picker
   nzShowText
   [nzValue]="qrColor()"
-  (nzOnChange)="qrColor.set($event.color.toRgbString())"
+  (nzOnChange)="handleColorChange($event)"
 ></nz-color-picker>
 
 <button nz-button (click)="downloadQR()">Download</button>
-<button nz-button (click)="copyToClipboard()">Copy</button>
+<button
+  nz-button
+  [nz-tooltip]="isCurrentlyCopied() ? 'Copied!' : 'Copy to clipboard'"
+  nzTooltipPlacement="bottom"
+  (click)="copyToClipboard()"
+>
+  Copy
+</button>
+
+<label for="fileInput" class="file-upload"
+  >{{ qrIconName() || "Upload icon" }}
+  @if (qrIconName() || qrIcon()) {
+  <button (click)="resetIcon()">X</button>
+  }
+</label>
+<input id="fileInput" type="file" (change)="addImage($event)" />

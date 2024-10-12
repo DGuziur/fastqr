@@ -1,19 +1,20 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
-  effect,
   ElementRef,
-  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzColorPickerComponent } from 'ng-zorro-antd/color-picker';
+import { NzColor, NzColorPickerComponent } from 'ng-zorro-antd/color-picker';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
+type ColorEvent = { color: NzColor; format: string };
 
 @Component({
   selector: 'qr-generator',
@@ -24,9 +25,11 @@ type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
     NzQRCodeModule,
     NzColorPickerComponent,
     NzInputModule,
+    NzToolTipModule,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QrGeneratorComponent implements AfterViewInit {
   private qr = viewChild.required<ElementRef<HTMLDivElement>>('qr');
@@ -40,6 +43,10 @@ export class QrGeneratorComponent implements AfterViewInit {
   qrValue = signal(window.location.href);
   qrColor = signal('rgb(0, 0, 0)');
   qrLevel = signal<ErrorCodeLevel>('L');
+  qrIcon = signal('');
+  qrIconName = signal('');
+
+  isCurrentlyCopied = signal(false);
 
   ngAfterViewInit(): void {
     this.qrTextarea().nativeElement.select();
@@ -59,6 +66,51 @@ export class QrGeneratorComponent implements AfterViewInit {
     canvas.toBlob((blob: Blob | null) => {
       if (!blob) throw console.error('Error while converting qr image to blob');
       navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      this.isCurrentlyCopied.set(true);
     });
+  }
+
+  addImage(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (!target.files || target.files.length === 0) {
+      throw console.error('No file selected');
+    }
+    const file = target.files[0];
+    this.qrIconName.set(file.name);
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      this.qrIcon.set(base64String);
+      this.isCurrentlyCopied.set(false);
+    };
+
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  resetIcon() {
+    this.qrIcon.set('');
+    this.qrIconName.set('');
+    this.isCurrentlyCopied.set(false);
+  }
+
+  protected handleColorChange(e: ColorEvent) {
+    this.qrColor.set(e.color.toRgbString());
+    this.isCurrentlyCopied.set(false);
+  }
+
+  protected handleTextareaChange(text: string) {
+    this.qrValue.set(text);
+    this.isCurrentlyCopied.set(false);
+  }
+
+  protected handleErrorCodeLevelChange(index: number) {
+    this.qrLevel.set(this.errorCodeLevels[index]);
+    this.isCurrentlyCopied.set(false);
   }
 }
