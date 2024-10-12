@@ -1,4 +1,4 @@
-<div class="main">
+<div class="flex-container">
   <div #qr>
     <nz-qrcode
       [nzColor]="qrColor()"
@@ -15,21 +15,35 @@
     [nzValue]="qrColor()"
     (nzOnChange)="handleColorChange($event)"
   ></nz-color-picker>
+</div>
 
-  <nz-segmented
-    nzBlock
-    [nzOptions]="errorCodeLevels"
-    (nzValueChange)="handleErrorCodeLevelChange($event)"
-  ></nz-segmented>
+<nz-segmented
+  nzBlock
+  [nzOptions]="errorCodeLevels"
+  (nzValueChange)="handleErrorCodeLevelChange($event)"
+></nz-segmented>
 
-  <textarea
-    #qrTextarea
-    nz-input
-    nzAutosize
-    [value]="qrValue()"
-    (input)="handleTextareaChange(qrTextarea.value)"
-  ></textarea>
+<textarea
+  #qrTextarea
+  nz-input
+  nzAutosize
+  [value]="qrValue()"
+  (input)="handleTextareaChange(qrTextarea.value)"
+></textarea>
 
+<div class="file-upload-container">
+  <label for="fileInput" class="file-upload" [class.uploaded]="qrIconName()">
+    {{ qrIconName() || "Upload icon" }}
+  </label>
+  <input id="fileInput" type="file" (change)="addImage($event)" />
+  @if (qrIconName() || qrIcon()) {
+  <button class="file-upload-deletebtn" nz-button (click)="resetIcon()">
+    <span nz-icon nzType="delete"></span>
+  </button>
+  }
+</div>
+
+<div class="button-container">
   <button nz-button (click)="downloadQR()">Download</button>
   <button
     nz-button
@@ -39,16 +53,4 @@
   >
     Copy
   </button>
-
-  <div class="file-upload-container">
-    <label for="fileInput" class="file-upload" [class.uploaded]="qrIconName()">
-      {{ qrIconName() || "Upload icon" }}
-    </label>
-    <input id="fileInput" type="file" (change)="addImage($event)" />
-    @if (qrIconName() || qrIcon()) {
-    <button class="file-upload-deletebtn" nz-button (click)="resetIcon()">
-      <span nz-icon nzType="delete"></span>
-    </button>
-    }
-  </div>
 </div>
