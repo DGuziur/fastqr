@@ -47,6 +47,11 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
+                "glob": "*.json",
+                "input": "src/assets",
+                "output": "/"
+              },
+              {
                 "glob": "**/*",
                 "input": "public"
               },
