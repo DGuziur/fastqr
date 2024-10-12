@@ -77,7 +77,14 @@ export class QrGeneratorComponent implements AfterViewInit {
     if (!target.files || target.files.length === 0) {
       throw console.error('No file selected');
     }
+
     const file = target.files[0];
+    const validExtensions = ['image/jpeg', 'image/png'];
+
+    if (!validExtensions.includes(file.type)) {
+      throw console.error('Invalid file type. Only JPG and PNG are accepted.');
+    }
+
     this.qrIconName.set(file.name);
 
     const reader = new FileReader();

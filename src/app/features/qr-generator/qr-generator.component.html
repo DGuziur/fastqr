@@ -10,6 +10,12 @@
     <a #download></a>
   </div>
 
+  <nz-color-picker
+    nzShowText
+    [nzValue]="qrColor()"
+    (nzOnChange)="handleColorChange($event)"
+  ></nz-color-picker>
+
   <nz-segmented
     nzBlock
     [nzOptions]="errorCodeLevels"
@@ -23,12 +29,6 @@
     [value]="qrValue()"
     (input)="handleTextareaChange(qrTextarea.value)"
   ></textarea>
-
-  <nz-color-picker
-    nzShowText
-    [nzValue]="qrColor()"
-    (nzOnChange)="handleColorChange($event)"
-  ></nz-color-picker>
 
   <button nz-button (click)="downloadQR()">Download</button>
   <button
