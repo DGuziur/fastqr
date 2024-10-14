@@ -44,13 +44,6 @@
 </div>
 
 <div class="button-container">
-  <button nz-button (click)="downloadQR()">Download</button>
-  <button
-    nz-button
-    [nz-tooltip]="isCurrentlyCopied() ? 'Copied!' : 'Copy to clipboard'"
-    nzTooltipPlacement="bottom"
-    (click)="copyToClipboard()"
-  >
-    Copy
-  </button>
+  <button class="file-upload" (click)="downloadQR()">Download</button>
+  <button class="file-upload" (click)="copyToClipboard()">Copy</button>
 </div>
