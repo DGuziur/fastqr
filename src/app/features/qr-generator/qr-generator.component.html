@@ -32,7 +32,7 @@
 ></textarea>
 
 <div class="file-upload-container">
-  <label for="fileInput" class="file-upload" [class.uploaded]="qrIconName()">
+  <label for="fileInput" class="action-btn" [class.uploaded]="qrIconName()">
     {{ qrIconName() || "Upload icon" }}
   </label>
   <input id="fileInput" type="file" (change)="addImage($event)" />
@@ -44,6 +44,6 @@
 </div>
 
 <div class="button-container">
-  <button class="file-upload" (click)="downloadQR()">Download</button>
-  <button class="file-upload" (click)="copyToClipboard()">Copy</button>
+  <button class="action-btn" (click)="downloadQR()">Download</button>
+  <button class="action-btn" (click)="copyToClipboard()">Copy</button>
 </div>
