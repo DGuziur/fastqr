@@ -17,11 +17,10 @@
   ></nz-color-picker>
 </div>
 
-<nz-segmented
-  nzBlock
-  [nzOptions]="errorCodeLevels"
-  (nzValueChange)="handleErrorCodeLevelChange($event)"
-></nz-segmented>
+<segmented
+  [options]="errorCodeLevels"
+  (optionChanged)="handleErrorCodeLevelChange($event)"
+></segmented>
 
 <textarea
   #qrTextarea

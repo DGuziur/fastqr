@@ -9,12 +9,12 @@ import {
 import { NzQRCodeModule } from 'ng-zorro-antd/qr-code';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzColor, NzColorPickerComponent } from 'ng-zorro-antd/color-picker';
-import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { SegmentedComponent } from '../../components/segmented/segmented.component';
 
-type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
+export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 type ColorEvent = { color: NzColor; format: string };
 
 @Component({
@@ -22,12 +22,12 @@ type ColorEvent = { color: NzColor; format: string };
   standalone: true,
   imports: [
     NzButtonModule,
-    NzSegmentedModule,
     NzQRCodeModule,
     NzColorPickerComponent,
     NzIconModule,
     NzInputModule,
     NzToolTipModule,
+    SegmentedComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
@@ -118,8 +118,8 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.isCurrentlyCopied.set(false);
   }
 
-  protected handleErrorCodeLevelChange(index: number) {
-    this.qrLevel.set(this.errorCodeLevels[index]);
+  protected handleErrorCodeLevelChange(newLevel: ErrorCodeLevel) {
+    this.qrLevel.set(newLevel);
     this.isCurrentlyCopied.set(false);
   }
 }

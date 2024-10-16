@@ -1,1 +1,12 @@
-<p>segmented works!</p>
+<div class="segmented-container">
+  @for (option of options(); track option) {
+  <label [for]="option">{{ option }}</label>
+  <input
+    [id]="option"
+    type="radio"
+    name="errorLevel"
+    [value]="option"
+    (change)="handleOptionChange($event)"
+  />
+  }
+</div>
