@@ -1,12 +1,10 @@
-<div class="segmented-container">
+<mat-button-toggle-group
+  [formControl]="errorLevel"
+  name="errorLevel"
+  aria-label="Error level"
+  (change)="handleOptionChange()"
+>
   @for (option of options(); track option) {
-  <label [for]="option">{{ option }}</label>
-  <input
-    [id]="option"
-    type="radio"
-    name="errorLevel"
-    [value]="option"
-    (change)="handleOptionChange($event)"
-  />
+  <mat-button-toggle [value]="option">{{ option }}</mat-button-toggle>
   }
-</div>
+</mat-button-toggle-group>
