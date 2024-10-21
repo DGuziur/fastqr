@@ -13,6 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { SegmentedComponent } from '../../components/segmented/segmented.component';
+import { QrcodeComponent } from '../../components/qrcode/qrcode.component';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 type ColorEvent = { color: NzColor; format: string };
@@ -28,6 +29,7 @@ type ColorEvent = { color: NzColor; format: string };
     NzInputModule,
     NzToolTipModule,
     SegmentedComponent,
+    QrcodeComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
@@ -43,7 +45,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
 
   qrValue = signal(window.location.href);
-  qrColor = signal('rgb(0, 0, 0)');
+  qrColor = signal('#000');
   qrLevel = signal<ErrorCodeLevel>('L');
   qrIcon = signal('');
   qrIconName = signal('');
@@ -111,6 +113,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected handleColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
+    console.log(target.value);
     this.qrColor.set(target.value);
     this.isCurrentlyCopied.set(false);
   }

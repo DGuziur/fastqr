@@ -1,5 +1,5 @@
 <div class="flex-container">
-  <div #qr>
+  <!-- <div #qr>
     <nz-qrcode
       [nzColor]="qrColor()"
       [nzValue]="qrValue()"
@@ -8,7 +8,15 @@
       [nzSize]="200"
     ></nz-qrcode>
     <a #download></a>
-  </div>
+  </div> -->
+  <qr-component
+    [color]="qrColor()"
+    [value]="qrValue()"
+    [level]="qrLevel()"
+    [icon]="qrIcon()"
+    [size]="200"
+  >
+  </qr-component>
 
   <input
     type="color"
