@@ -25,8 +25,7 @@
 
 <textarea
   #qrTextarea
-  nz-input
-  nzAutosize
+  class="qr-textarea"
   [value]="qrValue()"
   (input)="handleTextareaChange(qrTextarea.value)"
 ></textarea>
