@@ -15,10 +15,14 @@ export class SegmentedComponent {
   options = input.required<ErrorCodeLevel[]>();
   optionChanged = output<ErrorCodeLevel>();
 
-  errorLevel = new FormControl<ErrorCodeLevel>('L', Validators.required);
+  errorLevel = new FormControl<ErrorCodeLevel>('L', {
+    nonNullable: true,
+    validators: [Validators.required],
+  });
 
   handleOptionChange() {
     if (!this.errorLevel.value) {
+      this.errorLevel.reset();
       throw new Error('No option selected');
     }
     this.optionChanged.emit(this.errorLevel.value);

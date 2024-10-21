@@ -108,8 +108,10 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.isCurrentlyCopied.set(false);
   }
 
-  protected handleColorChange(e: ColorEvent) {
-    this.qrColor.set(e.color.toRgbString());
+  protected handleColorChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (!target.value) throw console.error('No color selected');
+    this.qrColor.set(target.value);
     this.isCurrentlyCopied.set(false);
   }
 

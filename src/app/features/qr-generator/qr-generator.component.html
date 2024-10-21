@@ -10,11 +10,12 @@
     <a #download></a>
   </div>
 
-  <nz-color-picker
-    nzShowText
-    [nzValue]="qrColor()"
-    (nzOnChange)="handleColorChange($event)"
-  ></nz-color-picker>
+  <input
+    type="color"
+    name="color"
+    id="color"
+    (change)="handleColorChange($event)"
+  />
 </div>
 
 <segmented
