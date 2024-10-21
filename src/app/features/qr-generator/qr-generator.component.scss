@@ -56,5 +56,12 @@ button:not(.file-upload-deletebtn) {
 }
 
 .qr-textarea {
-  width: 90%;
+  width: 100%;
+}
+
+.segmented {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

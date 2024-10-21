@@ -14,11 +14,12 @@
     type="color"
     name="color"
     id="color"
-    (change)="handleColorChange($event)"
+    (input)="handleColorChange($event)"
   />
 </div>
 
 <segmented
+  class="segmented"
   [options]="errorCodeLevels"
   (optionChanged)="handleErrorCodeLevelChange($event)"
 ></segmented>
@@ -27,6 +28,7 @@
   #qrTextarea
   class="qr-textarea"
   [value]="qrValue()"
+  (click)="qrTextarea.select()"
   (input)="handleTextareaChange(qrTextarea.value)"
 ></textarea>
 
