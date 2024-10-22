@@ -7,6 +7,7 @@
     type="color"
     name="color"
     id="color"
+    [value]="qrValue()"
     (input)="handleColorChange($event)"
   />
 
@@ -15,6 +16,7 @@
     type="color"
     name="background"
     id="background"
+    [value]="qrBackground()"
     (input)="handleBackgroundChange($event)"
   />
 </div>
@@ -33,19 +35,26 @@
   (input)="handleTextareaChange(qrTextarea.value)"
 ></textarea>
 
-<div class="file-upload-container">
-  <label for="fileInput" class="action-btn" [class.uploaded]="qrIconName()">
-    {{ qrIconName() || "Upload icon" }}
-  </label>
-  <input id="fileInput" type="file" (change)="addImage($event)" />
+<div class="upload">
+  <button (click)="fileInput.click()" mat-flat-button>
+    {{ qrIconName() || "Img" }}
+    <mat-icon>upload</mat-icon>
+  </button>
+  <input #fileInput id="fileInput" type="file" (change)="addImage($event)" />
   @if (qrIconName() || qrIcon()) {
-  <button class="file-upload-deletebtn" nz-button (click)="resetIcon()">
-    <span nz-icon nzType="delete"></span>
+  <button class="file-upload-deletebtn" mat-fab (click)="resetIcon()">
+    <mat-icon>delete</mat-icon>
   </button>
   }
 </div>
 
 <div class="button-container">
-  <button mat-fab extended (click)="downloadQR()">Download</button>
-  <button mat-mini-fab extended (click)="copyToClipboard()">Copy</button>
+  <button mat-mini-fab extended (click)="downloadQR()">
+    Download
+    <mat-icon>download</mat-icon>
+  </button>
+  <button mat-mini-fab extended (click)="copyToClipboard()">
+    Copy
+    <mat-icon>content_copy</mat-icon>
+  </button>
 </div>

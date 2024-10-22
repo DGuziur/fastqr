@@ -33,8 +33,8 @@ export class QrGeneratorComponent implements AfterViewInit {
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
 
   qrValue = signal(window.location.host);
-  qrBackground = signal('#fff');
-  qrColor = signal('#000');
+  qrBackground = signal('#ffffff');
+  qrColor = signal('#000000');
   qrLevel = signal<ErrorCodeLevel>('L');
   qrIcon = signal('');
   qrIconName = signal('');
