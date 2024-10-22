@@ -1,28 +1,21 @@
 <div class="flex-container">
-  <!-- <div #qr>
-    <nz-qrcode
-      [nzColor]="qrColor()"
-      [nzValue]="qrValue()"
-      [nzLevel]="qrLevel()"
-      [nzIcon]="qrIcon()"
-      [nzSize]="200"
-    ></nz-qrcode>
-    <a #download></a>
-  </div> -->
-  <qr-component
-    [color]="qrColor()"
-    [value]="qrValue()"
-    [level]="qrLevel()"
-    [icon]="qrIcon()"
-    [size]="200"
-  >
-  </qr-component>
+  <canvas #canvas></canvas>
+  <a #download></a>
 
+  <label for="color">Color</label>
   <input
     type="color"
     name="color"
     id="color"
     (input)="handleColorChange($event)"
+  />
+
+  <label for="background">Background</label>
+  <input
+    type="color"
+    name="background"
+    id="background"
+    (input)="handleBackgroundChange($event)"
   />
 </div>
 
@@ -53,6 +46,6 @@
 </div>
 
 <div class="button-container">
-  <button class="action-btn" (click)="downloadQR()">Download</button>
-  <button class="action-btn" (click)="copyToClipboard()">Copy</button>
+  <button mat-fab extended (click)="downloadQR()">Download</button>
+  <button mat-mini-fab extended (click)="copyToClipboard()">Copy</button>
 </div>
