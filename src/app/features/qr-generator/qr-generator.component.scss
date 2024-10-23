@@ -34,8 +34,7 @@ input[type="file"] {
 }
 
 .file-upload-deletebtn {
-  background-color: #9d4451;
-  color: #fff;
+  min-width: min-content;
 }
 
 .flex-container {
@@ -46,9 +45,8 @@ input[type="file"] {
 
 .button-container {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   padding: 5px;
+  gap: 10px;
 }
 
 button:not(.file-upload-deletebtn) {
@@ -57,6 +55,7 @@ button:not(.file-upload-deletebtn) {
 
 .qr-textarea {
   width: 100%;
+  resize: vertical;
 }
 
 .segmented {

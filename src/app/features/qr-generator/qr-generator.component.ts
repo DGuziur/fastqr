@@ -38,14 +38,17 @@ export class QrGeneratorComponent implements AfterViewInit {
   qrLevel = signal<ErrorCodeLevel>('L');
   qrIcon = signal('');
   qrIconName = signal('');
+  qrIconSize = signal<number>(60);
 
   isCurrentlyCopied = signal(false);
 
   ngAfterViewInit(): void {
     this.qrTextarea().nativeElement.select();
+
+    this.paint$;
   }
 
-  paint = effect(() => {
+  private readonly paint$ = effect(() => {
     this.paintQR();
   });
 
@@ -55,6 +58,10 @@ export class QrGeneratorComponent implements AfterViewInit {
       color: { light: this.qrBackground(), dark: this.qrColor() },
       errorCorrectionLevel: this.qrLevel(),
     });
+
+    if (this.qrIcon()) {
+      this.placeImg();
+    }
   }
 
   downloadQR() {
@@ -103,6 +110,29 @@ export class QrGeneratorComponent implements AfterViewInit {
     };
 
     reader.readAsDataURL(file);
+    this.placeImg();
+  }
+
+  placeImg() {
+    const canvas = this.canvas().nativeElement;
+    if (!canvas) throw console.error('Error while getting qr image');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw console.error('Error while getting canvas context');
+
+    const img = new Image();
+    img.src = this.qrIcon();
+    img.onload = () => {
+      ctx.drawImage(
+        img,
+        (canvas.width - this.qrIconSize()) / 2,
+        (canvas.height - this.qrIconSize()) / 2,
+        this.qrIconSize(),
+        this.qrIconSize()
+      );
+    };
+    img.onerror = (error) => {
+      throw console.error('Error loading image:', error);
+    };
   }
 
   resetIcon() {
