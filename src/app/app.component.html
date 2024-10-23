@@ -1,9 +1,20 @@
 <main class="main-container">
   <mat-tab-group class="tab-group">
-    <mat-tab label="QR">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>qr_code</mat-icon>
+      </ng-template>
       <qr-generator></qr-generator>
     </mat-tab>
-    <mat-tab label="History"> HISTORY </mat-tab>
-    <mat-tab label="Donate"> BUY ME A COFFEE </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>history</mat-icon>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>coffee</mat-icon>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </main>

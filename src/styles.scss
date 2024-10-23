@@ -2,6 +2,22 @@
 
 html,
 body {
-  height: 100%;
+  width: min-content;
+  height: min-content;
   margin: 0;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #e7e7e7;
+    border: 1px solid #b0b0b0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #c75959;
+  }
 }

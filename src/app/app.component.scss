@@ -1,7 +1,6 @@
 .main-container {
-  aspect-ratio: 7/9;
   width: 300px;
-  // background-color: rgb(210, 229, 229);
+  min-height: 535px;
   background: #d0cdcd;
   border: 2px solid #948585;
   border-radius: 5px;
@@ -11,11 +10,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.lol {
-  width: 220px;
-  max-width: 220px;
-  min-width: 220px;
-  overflow: hidden;
 }
