@@ -38,7 +38,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   qrLevel = signal<ErrorCodeLevel>('L');
   qrIcon = signal('');
   qrIconName = signal('');
-  qrIconSize = signal<number>(60);
+  qrIconSize = signal<number>(30);
 
   isCurrentlyCopied = signal(false);
 
