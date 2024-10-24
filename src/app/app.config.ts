@@ -16,6 +16,5 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
-    provideAnimationsAsync(),
   ],
 };

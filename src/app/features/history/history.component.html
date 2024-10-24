@@ -1,0 +1,28 @@
+<div class="history-container">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="createdAt">
+      <td mat-cell *matCellDef="let item">
+        {{ item.createdAt | date : "dd.MM.yyyy HH:mm" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="href">
+      <td mat-cell *matCellDef="let item">
+        <a href="{{ item.qrValue }}" target="_blank">
+          {{ item.qrValue }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="qrimage">
+      <td mat-cell *matCellDef="let item">
+        <div
+          style="background-color: blueviolet; height: 50px; width: 50px"
+        ></div>
+      </td>
+    </ng-container>
+
+    <tr mat-row *matRowDef="let row; columns: ['createdAt', 'href']"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: ['href']"></tr> -->
+  </table>
+</div>
