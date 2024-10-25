@@ -1,0 +1,36 @@
+.qr-list-container {
+  background-color: blueviolet;
+  height: 50px;
+  width: 50px;
+  margin: 0 auto;
+}
+
+.history-container {
+  margin: 0 auto;
+  min-width: 300px;
+}
+
+.created-at {
+  text-align: center;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+}
+
+.qr-value {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}

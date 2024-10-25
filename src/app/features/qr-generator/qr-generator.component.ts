@@ -39,7 +39,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   qrIcon = signal('');
   qrIconName = signal('');
   qrIconSize = signal<number>(30);
-  qrTransparent = signal(false);
+  qrTransparent = signal<boolean>(false);
 
   isCurrentlyCopied = signal(false);
 
@@ -94,7 +94,12 @@ export class QrGeneratorComponent implements AfterViewInit {
     }
 
     const file = target.files[0];
-    const validExtensions = ['image/jpeg', 'image/png'];
+    const validExtensions = [
+      'image/jpeg',
+      'image/png',
+      'image/svg+xml',
+      'application/pdf',
+    ];
 
     if (!validExtensions.includes(file.type)) {
       throw console.error('Invalid file type. Only JPG and PNG are accepted.');
