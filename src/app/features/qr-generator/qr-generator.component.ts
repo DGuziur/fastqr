@@ -39,6 +39,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   qrIcon = signal('');
   qrIconName = signal('');
   qrIconSize = signal<number>(30);
+  qrTransparent = signal(false);
 
   isCurrentlyCopied = signal(false);
 
@@ -53,9 +54,13 @@ export class QrGeneratorComponent implements AfterViewInit {
   });
 
   paintQR(): void {
+    const transparentString = this.qrTransparent() ? '00' : 'ff';
     QrCode.toCanvas(this.canvas().nativeElement, this.qrValue(), {
       width: 200,
-      color: { light: this.qrBackground(), dark: this.qrColor() },
+      color: {
+        light: `${this.qrBackground()}${transparentString}`,
+        dark: this.qrColor(),
+      },
       errorCorrectionLevel: this.qrLevel(),
     });
 
@@ -163,5 +168,9 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected handleErrorCodeLevelChange(newLevel: ErrorCodeLevel) {
     this.qrLevel.set(newLevel);
     this.isCurrentlyCopied.set(false);
+  }
+
+  handleToggleTransparency(): void {
+    this.qrTransparent.update((value: boolean) => !value);
   }
 }

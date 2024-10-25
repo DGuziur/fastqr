@@ -19,6 +19,13 @@
     [value]="qrBackground()"
     (input)="handleBackgroundChange($event)"
   />
+  <button mat-mini-fab (click)="handleToggleTransparency()">
+    @if (qrTransparent()) {
+    <mat-icon>visibility</mat-icon>
+    } @else {
+    <mat-icon>visibility_off</mat-icon>
+    }
+  </button>
 </div>
 
 <segmented
