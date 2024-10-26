@@ -100,6 +100,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrIcon: this.qrIcon(),
       qrIconName: this.qrIconName(),
       qrLevel: this.qrLevel(),
+      canvas: this.canvas().nativeElement.toDataURL('image/png'),
     });
   }
 

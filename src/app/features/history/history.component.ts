@@ -23,6 +23,7 @@ export type HistoryItem = {
   qrIcon: string;
   qrIconName: string;
   qrLevel: string;
+  canvas?: string;
 };
 
 @Component({
