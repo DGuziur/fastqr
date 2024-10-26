@@ -1,11 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  viewChild,
-} from '@angular/core';
+import { Component, effect, inject, viewChild } from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -20,6 +13,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
 import { StorageService } from '../../services/storage.service';
+import { MatButtonModule } from '@angular/material/button';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -34,7 +28,14 @@ export type HistoryItem = {
 @Component({
   selector: 'history',
   standalone: true,
-  imports: [CdkDropList, CdkDrag, DatePipe, MatIconModule, MatTableModule],
+  imports: [
+    CdkDropList,
+    CdkDrag,
+    DatePipe,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+  ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
 })
@@ -59,5 +60,9 @@ export class HistoryComponent {
 
     moveItemInArray(this.dataSource.data, previousIndex, event.currentIndex);
     this.table().renderRows();
+  }
+
+  clearHistory() {
+    this.storageService.clearHistory();
   }
 }
