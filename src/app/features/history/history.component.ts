@@ -1,4 +1,11 @@
-import { Component, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -12,8 +19,9 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
+import { StorageService } from '../../services/storage.service';
 
-type HistoryItem = {
+export type HistoryItem = {
   createdAt: Date | string;
   qrValue: string;
   qrColor: string;
@@ -31,45 +39,25 @@ type HistoryItem = {
   styleUrl: './history.component.scss',
 })
 export class HistoryComponent {
-  mockHistory: HistoryItem[] = [
-    {
-      createdAt: new Date(),
-      qrValue: 'https://www.google.com',
-      qrColor: '#000000',
-      qrBackground: '#ffffff',
-      qrIcon: '',
-      qrIconName: '',
-      qrLevel: 'L',
-    },
-    {
-      createdAt: '2023-01-02',
-      qrValue: 'https://www.google.com',
-      qrColor: '#000000',
-      qrBackground: '#ffffff',
-      qrIcon: '',
-      qrIconName: '',
-      qrLevel: 'L',
-    },
-    {
-      createdAt: '2023-01-03',
-      qrValue: 'https://www.google.com',
-      qrColor: '#000000',
-      qrBackground: '#ffffff',
-      qrIcon: '',
-      qrIconName: '',
-      qrLevel: 'L',
-    },
-  ];
+  private readonly storageService = inject(StorageService);
+  private readonly table = viewChild.required<MatTable<HistoryItem>>('table');
 
-  dataSource = this.mockHistory;
-  table = viewChild.required<MatTable<HistoryItem>>('table');
+  protected dataSource = new MatTableDataSource<HistoryItem>(
+    this.storageService.history()
+  );
+
+  dataSource$ = effect(() => {
+    this.dataSource = new MatTableDataSource<HistoryItem>(
+      this.storageService.history()
+    );
+  });
 
   drop(event: CdkDragDrop<string>) {
-    const previousIndex = this.dataSource.findIndex(
+    const previousIndex = this.dataSource.data.findIndex(
       (d) => d === event.item.data
     );
 
-    moveItemInArray(this.dataSource, previousIndex, event.currentIndex);
+    moveItemInArray(this.dataSource.data, previousIndex, event.currentIndex);
     this.table().renderRows();
   }
 }

@@ -4,6 +4,7 @@ import {
   Component,
   effect,
   ElementRef,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
@@ -12,6 +13,7 @@ import { SegmentedComponent } from '../../components/segmented/segmented.compone
 import { MatIconModule } from '@angular/material/icon';
 
 import QrCode from 'qrcode';
+import { StorageService } from '../../services/storage.service';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -24,6 +26,8 @@ export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QrGeneratorComponent implements AfterViewInit {
+  private readonly storageService = inject(StorageService);
+
   private download =
     viewChild.required<ElementRef<HTMLAnchorElement>>('download');
   private qrTextarea =
@@ -84,6 +88,18 @@ export class QrGeneratorComponent implements AfterViewInit {
       if (!blob) throw console.error('Error while converting qr image to blob');
       navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       this.isCurrentlyCopied.set(true);
+    });
+  }
+
+  saveQR() {
+    this.storageService.saveQr({
+      createdAt: new Date().toISOString(),
+      qrValue: this.qrValue(),
+      qrColor: this.qrValue(),
+      qrBackground: this.qrBackground(),
+      qrIcon: this.qrIcon(),
+      qrIconName: this.qrIconName(),
+      qrLevel: this.qrLevel(),
     });
   }
 
