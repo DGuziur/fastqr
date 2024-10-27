@@ -11,7 +11,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { SegmentedComponent } from '../../components/segmented/segmented.component';
 import { MatIconModule } from '@angular/material/icon';
-
 import QrCode from 'qrcode';
 import { StorageService } from '../../services/storage.service';
 
@@ -36,7 +35,7 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
 
-  qrValue = signal(window.location.host);
+  qrValue = signal('');
   qrBackground = signal('#ffffff');
   qrColor = signal('#000000');
   qrLevel = signal<ErrorCodeLevel>('L');
@@ -47,10 +46,11 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   isCurrentlyCopied = signal(false);
 
-  ngAfterViewInit(): void {
-    this.qrTextarea().nativeElement.select();
-
+  async ngAfterViewInit(): Promise<void> {
+    const url = await this.getCurrentTabUrl();
+    this.qrValue.set(url);
     this.paint$;
+    this.qrTextarea().nativeElement.select();
   }
 
   private readonly paint$ = effect(() => {
@@ -194,5 +194,13 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   handleToggleTransparency(): void {
     this.qrTransparent.update((value: boolean) => !value);
+  }
+
+  private getCurrentTabUrl(): Promise<string> {
+    return new Promise((resolve) => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        resolve(tabs[0]?.url || '');
+      });
+    });
   }
 }
