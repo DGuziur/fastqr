@@ -1,46 +1,68 @@
 import { Injectable, signal } from '@angular/core';
 import { HistoryItem } from '../features/history/history.component';
+const STORAGE_KEY = 'fastqr-history';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
   public history = signal<HistoryItem[]>([]);
+
   constructor() {
     this.refreshHistory();
   }
 
-  getAllSavedQrs(): HistoryItem[] {
-    return localStorage['fastqr-history']
-      ? JSON.parse(localStorage['fastqr-history'])
-      : [];
+  async getAllSavedQrs(): Promise<HistoryItem[]> {
+    return new Promise((resolve) => {
+      chrome.storage.local.get(STORAGE_KEY, (result) => {
+        resolve(result[STORAGE_KEY] || []);
+      });
+    });
   }
 
-  saveQr(qr: HistoryItem) {
-    const history = this.getAllSavedQrs();
+  async saveQr(qr: HistoryItem): Promise<void> {
+    const history = await this.getAllSavedQrs();
     history.push(qr);
-    localStorage['fastqr-history'] = JSON.stringify(history);
-    this.refreshHistory();
+
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ [STORAGE_KEY]: history }, () => {
+        this.refreshHistory();
+        resolve();
+      });
+    });
   }
 
-  removeQr(qr: HistoryItem) {
-    const history = this.getAllSavedQrs();
+  async removeQr(qr: HistoryItem): Promise<void> {
+    const history = await this.getAllSavedQrs();
     const index = history.findIndex((item) => item.createdAt === qr.createdAt);
-    history.splice(index, 1);
-    localStorage['fastqr-history'] = JSON.stringify(history);
-    this.refreshHistory();
+
+    if (index !== -1) {
+      history.splice(index, 1);
+      return new Promise((resolve) => {
+        chrome.storage.local.set({ [STORAGE_KEY]: history }, () => {
+          this.refreshHistory();
+          resolve();
+        });
+      });
+    }
   }
 
-  clearHistory() {
-    localStorage.removeItem('fastqr-history');
-    this.refreshHistory();
+  async clearHistory(): Promise<void> {
+    return new Promise((resolve) => {
+      chrome.storage.local.remove(STORAGE_KEY, () => {
+        this.refreshHistory();
+        resolve();
+      });
+    });
   }
 
-  getQrByDate(createdAt: string): HistoryItem | undefined {
-    return this.getAllSavedQrs().find((item) => item.createdAt === createdAt);
+  async getQrByDate(createdAt: string): Promise<HistoryItem | undefined> {
+    const history = await this.getAllSavedQrs();
+    return history.find((item) => item.createdAt === createdAt);
   }
 
-  private refreshHistory() {
-    this.history.set(this.getAllSavedQrs());
+  private async refreshHistory(): Promise<void> {
+    const history = await this.getAllSavedQrs();
+    this.history.set(history);
   }
 }
