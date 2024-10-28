@@ -30,8 +30,12 @@
     *matRowDef="let row; columns: ['item']"
   ></tr>
 </table>
-
-<button mat-mini-fab extended (click)="clearHistory()">
-  Clear
+<button
+  class="clear-history-btn"
+  mat-mini-fab
+  extended
+  (click)="clearHistory()"
+>
+  Clear all
   <mat-icon>delete</mat-icon>
 </button>

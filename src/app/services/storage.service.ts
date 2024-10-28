@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HistoryItem } from '../features/history/history.component';
+
 const STORAGE_KEY = 'fastqr-history';
 
 @Injectable({

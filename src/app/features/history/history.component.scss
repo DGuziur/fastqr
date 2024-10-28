@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 5px;
+  padding: 5px 0;
 }
 
 .qr-value {
@@ -27,6 +27,11 @@
 
 .created-at {
   text-align: center;
+}
+
+.clear-history-btn {
+  width: 100%;
+  height: 48px;
 }
 
 .cdk-drag-preview {

@@ -5,7 +5,7 @@
 
   "description": "Allows you to quickly generate QR codes from the current page",
 
-  "version": "1.0.0",
+  "version": "2.0.0",
 
   "permissions": ["activeTab", "tabs", "scripting", "storage"],
 
