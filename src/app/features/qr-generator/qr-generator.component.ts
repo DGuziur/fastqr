@@ -13,6 +13,7 @@ import { SegmentedComponent } from '../../components/segmented/segmented.compone
 import { MatIconModule } from '@angular/material/icon';
 import QrCode from 'qrcode';
 import { StorageService } from '../../services/storage.service';
+import { debounceTime, Subject } from 'rxjs';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -47,15 +48,41 @@ export class QrGeneratorComponent implements AfterViewInit {
   isCurrentlyCopied = signal(false);
 
   async ngAfterViewInit(): Promise<void> {
+    const lastSession: any = await this.storageService.restoreLastSession();
+    console.log(lastSession);
     const url = await this.getCurrentTabUrl();
-    this.qrValue.set(url);
+    if (lastSession) {
+      this.qrValue.set(lastSession.qrValue);
+      this.qrColor.set(lastSession.qrColor);
+      this.qrBackground.set(lastSession.qrBackground);
+      this.qrIcon.set(lastSession.qrIcon);
+      this.qrIconName.set(lastSession.qrIconName);
+      this.qrLevel.set(lastSession.qrLevel);
+    } else {
+      this.qrValue.set(url);
+    }
     this.paint$;
     this.qrTextarea().nativeElement.select();
+    this.saveSession$.pipe(debounceTime(1000)).subscribe(() => {
+      console.log('SAVE SESSION!');
+      this.storageService.saveSession({
+        createdAt: new Date().toISOString(),
+        qrValue: this.qrValue(),
+        qrColor: this.qrColor(),
+        qrBackground: this.qrBackground(),
+        qrIcon: this.qrIcon(),
+        qrIconName: this.qrIconName(),
+        qrLevel: this.qrLevel(),
+      });
+    });
   }
 
   private readonly paint$ = effect(() => {
     this.paintQR();
+    this.saveSession$.next();
   });
+
+  private readonly saveSession$ = new Subject<void>();
 
   paintQR(): void {
     const transparentString = this.qrTransparent() ? '00' : 'ff';
