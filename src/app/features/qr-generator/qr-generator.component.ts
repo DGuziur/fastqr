@@ -49,7 +49,6 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     const lastSession: any = await this.storageService.restoreLastSession();
-    console.log(lastSession);
     const url = await this.getCurrentTabUrl();
     if (lastSession) {
       this.qrValue.set(lastSession.qrValue);
@@ -58,13 +57,13 @@ export class QrGeneratorComponent implements AfterViewInit {
       this.qrIcon.set(lastSession.qrIcon);
       this.qrIconName.set(lastSession.qrIconName);
       this.qrLevel.set(lastSession.qrLevel);
+      this.qrTransparent.set(lastSession.qrTransparent);
     } else {
       this.qrValue.set(url);
     }
     this.paint$;
     this.qrTextarea().nativeElement.select();
     this.saveSession$.pipe(debounceTime(1000)).subscribe(() => {
-      console.log('SAVE SESSION!');
       this.storageService.saveSession({
         createdAt: new Date().toISOString(),
         qrValue: this.qrValue(),
@@ -73,6 +72,7 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrIcon: this.qrIcon(),
         qrIconName: this.qrIconName(),
         qrLevel: this.qrLevel(),
+        qrTransparent: this.qrTransparent(),
       });
     });
   }

@@ -1,4 +1,4 @@
-import { Component, effect, inject, viewChild } from '@angular/core';
+import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -24,6 +24,7 @@ export type HistoryItem = {
   qrIconName: string;
   qrLevel: string;
   canvas?: string;
+  qrTransparent?: boolean;
 };
 
 @Component({
@@ -65,5 +66,9 @@ export class HistoryComponent {
 
   clearHistory() {
     this.storageService.clearHistory();
+  }
+
+  removeByDate(date: string) {
+    this.storageService.removeQrByDate(date);
   }
 }

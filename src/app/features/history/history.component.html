@@ -18,6 +18,9 @@
             {{ item.qrValue }}
           </a>
           <img [height]="50" [width]="50" [src]="item.canvas" />
+          <button mat-mini-fab (click)="removeByDate(item.createdAt)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </div>
     </td>

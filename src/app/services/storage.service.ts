@@ -34,9 +34,9 @@ export class StorageService {
     });
   }
 
-  async removeQr(qr: HistoryItem): Promise<void> {
+  async removeQrByDate(date: Date | string): Promise<void> {
     const history = await this.getAllSavedQrs();
-    const index = history.findIndex((item) => item.createdAt === qr.createdAt);
+    const index = history.findIndex((item) => item.createdAt === date);
 
     if (index !== -1) {
       history.splice(index, 1);
