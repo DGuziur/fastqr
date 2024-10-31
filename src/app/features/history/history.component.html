@@ -9,7 +9,7 @@
 >
   <ng-container matColumnDef="item">
     <td mat-cell *matCellDef="let item">
-      <div class="history-item">
+      <div class="history-item" (click)="getItemFromHistory(item.createdAt)">
         <span class="created-at">{{
           item.createdAt | date : "dd.MM.yyyy HH:mm"
         }}</span>

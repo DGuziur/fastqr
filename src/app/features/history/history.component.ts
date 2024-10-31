@@ -71,4 +71,8 @@ export class HistoryComponent {
   removeByDate(date: string) {
     this.storageService.removeQrByDate(date);
   }
+
+  getItemFromHistory(createdAt: string) {
+    return this.storageService.getQrByDate(createdAt);
+  }
 }
