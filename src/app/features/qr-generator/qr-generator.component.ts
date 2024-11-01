@@ -78,6 +78,10 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   paintQR(): void {
     const transparentString = this.qrDataService.qrTransparent() ? '00' : 'ff';
+    console.log(
+      this.qrDataService.qrColor(),
+      `${this.qrDataService.qrBackground()}${transparentString}`
+    );
     QrCode.toCanvas(this.canvas().nativeElement, this.qrDataService.qrValue(), {
       width: 200,
       color: {
@@ -114,12 +118,13 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.storageService.saveQr({
       createdAt: new Date().toISOString(),
       qrValue: this.qrDataService.qrValue(),
-      qrColor: this.qrDataService.qrValue(),
+      qrColor: this.qrDataService.qrColor(),
       qrBackground: this.qrDataService.qrBackground(),
       qrIcon: this.qrDataService.qrIcon(),
       qrIconName: this.qrDataService.qrIconName(),
       qrLevel: this.qrDataService.qrLevel(),
       canvas: this.canvas().nativeElement.toDataURL('image/png'),
+      qrTransparent: this.qrDataService.qrTransparent(),
     });
   }
 

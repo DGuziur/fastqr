@@ -1,5 +1,10 @@
 <main class="main-container">
-  <mat-tab-group [animationDuration]="0" class="tab-group">
+  <mat-tab-group
+    [selectedIndex]="tabIndex()"
+    (selectedIndexChange)="tabIndex.set($event)"
+    [animationDuration]="0"
+    class="tab-group"
+  >
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>qr_code</mat-icon>
@@ -10,7 +15,7 @@
       <ng-template mat-tab-label>
         <mat-icon>history</mat-icon>
       </ng-template>
-      <history></history>
+      <history (editElement)="handleEditFromHistory($event)"></history>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>

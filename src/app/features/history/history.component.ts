@@ -1,4 +1,11 @@
-import { Component, effect, inject, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -44,6 +51,8 @@ export type HistoryItem = {
   styleUrl: './history.component.scss',
 })
 export class HistoryComponent {
+  readonly editElement = output<HistoryItem>();
+
   private readonly storageService = inject(StorageService);
   private readonly table = viewChild.required<MatTable<HistoryItem>>('table');
   private readonly qrDataService = inject(QrDataService);
@@ -78,13 +87,7 @@ export class HistoryComponent {
   async getItemFromHistory(createdAt: string) {
     const item = await this.storageService.getQrByDate(createdAt);
     if (item) {
-      this.qrDataService.qrValue.set(item.qrValue);
-      this.qrDataService.qrColor.set(item.qrColor);
-      this.qrDataService.qrBackground.set(item.qrBackground);
-      this.qrDataService.qrIcon.set(item.qrIcon);
-      this.qrDataService.qrIconName.set(item.qrIconName);
-      this.qrDataService.qrLevel.set(<ErrorCodeLevel>item.qrLevel);
-      this.qrDataService.qrTransparent.set(item.qrTransparent || false);
+      this.editElement.emit(item);
     }
   }
 }
