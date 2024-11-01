@@ -14,6 +14,8 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { StorageService } from '../../services/storage.service';
 import { MatButtonModule } from '@angular/material/button';
+import { QrDataService } from '../../services/qr-data.service';
+import { ErrorCodeLevel } from '../qr-generator/qr-generator.component';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -44,6 +46,7 @@ export type HistoryItem = {
 export class HistoryComponent {
   private readonly storageService = inject(StorageService);
   private readonly table = viewChild.required<MatTable<HistoryItem>>('table');
+  private readonly qrDataService = inject(QrDataService);
 
   protected dataSource = new MatTableDataSource<HistoryItem>(
     this.storageService.history()
@@ -72,7 +75,16 @@ export class HistoryComponent {
     this.storageService.removeQrByDate(date);
   }
 
-  getItemFromHistory(createdAt: string) {
-    return this.storageService.getQrByDate(createdAt);
+  async getItemFromHistory(createdAt: string) {
+    const item = await this.storageService.getQrByDate(createdAt);
+    if (item) {
+      this.qrDataService.qrValue.set(item.qrValue);
+      this.qrDataService.qrColor.set(item.qrColor);
+      this.qrDataService.qrBackground.set(item.qrBackground);
+      this.qrDataService.qrIcon.set(item.qrIcon);
+      this.qrDataService.qrIconName.set(item.qrIconName);
+      this.qrDataService.qrLevel.set(<ErrorCodeLevel>item.qrLevel);
+      this.qrDataService.qrTransparent.set(item.qrTransparent || false);
+    }
   }
 }

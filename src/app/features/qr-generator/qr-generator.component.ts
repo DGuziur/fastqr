@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import QrCode from 'qrcode';
 import { StorageService } from '../../services/storage.service';
 import { debounceTime, Subject } from 'rxjs';
+import { QrDataService } from '../../services/qr-data.service';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -27,6 +28,7 @@ export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 })
 export class QrGeneratorComponent implements AfterViewInit {
   private readonly storageService = inject(StorageService);
+  protected readonly qrDataService = inject(QrDataService);
 
   private download =
     viewChild.required<ElementRef<HTMLAnchorElement>>('download');
@@ -35,44 +37,34 @@ export class QrGeneratorComponent implements AfterViewInit {
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
-
-  qrValue = signal('');
-  qrBackground = signal('#ffffff');
-  qrColor = signal('#000000');
-  qrLevel = signal<ErrorCodeLevel>('L');
-  qrIcon = signal('');
-  qrIconName = signal('');
-  qrIconSize = signal<number>(30);
-  qrTransparent = signal<boolean>(false);
-
   isCurrentlyCopied = signal(false);
 
   async ngAfterViewInit(): Promise<void> {
     const lastSession: any = await this.storageService.restoreLastSession();
     const url = await this.getCurrentTabUrl();
     if (lastSession) {
-      this.qrValue.set(lastSession.qrValue);
-      this.qrColor.set(lastSession.qrColor);
-      this.qrBackground.set(lastSession.qrBackground);
-      this.qrIcon.set(lastSession.qrIcon);
-      this.qrIconName.set(lastSession.qrIconName);
-      this.qrLevel.set(lastSession.qrLevel);
-      this.qrTransparent.set(lastSession.qrTransparent);
+      this.qrDataService.qrValue.set(lastSession.qrValue);
+      this.qrDataService.qrColor.set(lastSession.qrColor);
+      this.qrDataService.qrBackground.set(lastSession.qrBackground);
+      this.qrDataService.qrIcon.set(lastSession.qrIcon);
+      this.qrDataService.qrIconName.set(lastSession.qrIconName);
+      this.qrDataService.qrLevel.set(lastSession.qrLevel);
+      this.qrDataService.qrTransparent.set(lastSession.qrTransparent);
     } else {
-      this.qrValue.set(url);
+      this.qrDataService.qrValue.set(url);
     }
     this.paint$;
     this.qrTextarea().nativeElement.select();
     this.saveSession$.pipe(debounceTime(1000)).subscribe(() => {
       this.storageService.saveSession({
         createdAt: new Date().toISOString(),
-        qrValue: this.qrValue(),
-        qrColor: this.qrColor(),
-        qrBackground: this.qrBackground(),
-        qrIcon: this.qrIcon(),
-        qrIconName: this.qrIconName(),
-        qrLevel: this.qrLevel(),
-        qrTransparent: this.qrTransparent(),
+        qrValue: this.qrDataService.qrValue(),
+        qrColor: this.qrDataService.qrColor(),
+        qrBackground: this.qrDataService.qrBackground(),
+        qrIcon: this.qrDataService.qrIcon(),
+        qrIconName: this.qrDataService.qrIconName(),
+        qrLevel: this.qrDataService.qrLevel(),
+        qrTransparent: this.qrDataService.qrTransparent(),
       });
     });
   }
@@ -85,17 +77,17 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly saveSession$ = new Subject<void>();
 
   paintQR(): void {
-    const transparentString = this.qrTransparent() ? '00' : 'ff';
-    QrCode.toCanvas(this.canvas().nativeElement, this.qrValue(), {
+    const transparentString = this.qrDataService.qrTransparent() ? '00' : 'ff';
+    QrCode.toCanvas(this.canvas().nativeElement, this.qrDataService.qrValue(), {
       width: 200,
       color: {
-        light: `${this.qrBackground()}${transparentString}`,
-        dark: this.qrColor(),
+        light: `${this.qrDataService.qrBackground()}${transparentString}`,
+        dark: this.qrDataService.qrColor(),
       },
-      errorCorrectionLevel: this.qrLevel(),
+      errorCorrectionLevel: this.qrDataService.qrLevel(),
     });
 
-    if (this.qrIcon()) {
+    if (this.qrDataService.qrIcon()) {
       this.placeImg();
     }
   }
@@ -104,7 +96,7 @@ export class QrGeneratorComponent implements AfterViewInit {
     const canvas = this.canvas().nativeElement;
     if (!canvas) throw console.error('Error while getting qr image');
     this.download().nativeElement.href = canvas.toDataURL('image/png');
-    this.download().nativeElement.download = `${this.qrValue()}.png`;
+    this.download().nativeElement.download = `${this.qrDataService.qrValue()}.png`;
     this.download().nativeElement.dispatchEvent(new MouseEvent('click'));
   }
 
@@ -121,12 +113,12 @@ export class QrGeneratorComponent implements AfterViewInit {
   saveQR() {
     this.storageService.saveQr({
       createdAt: new Date().toISOString(),
-      qrValue: this.qrValue(),
-      qrColor: this.qrValue(),
-      qrBackground: this.qrBackground(),
-      qrIcon: this.qrIcon(),
-      qrIconName: this.qrIconName(),
-      qrLevel: this.qrLevel(),
+      qrValue: this.qrDataService.qrValue(),
+      qrColor: this.qrDataService.qrValue(),
+      qrBackground: this.qrDataService.qrBackground(),
+      qrIcon: this.qrDataService.qrIcon(),
+      qrIconName: this.qrDataService.qrIconName(),
+      qrLevel: this.qrDataService.qrLevel(),
       canvas: this.canvas().nativeElement.toDataURL('image/png'),
     });
   }
@@ -149,13 +141,13 @@ export class QrGeneratorComponent implements AfterViewInit {
       throw console.error('Invalid file type. Only JPG and PNG are accepted.');
     }
 
-    this.qrIconName.set(file.name);
+    this.qrDataService.qrIconName.set(file.name);
 
     const reader = new FileReader();
 
     reader.onload = () => {
       const base64String = reader.result as string;
-      this.qrIcon.set(base64String);
+      this.qrDataService.qrIcon.set(base64String);
       this.isCurrentlyCopied.set(false);
     };
 
@@ -174,14 +166,14 @@ export class QrGeneratorComponent implements AfterViewInit {
     if (!ctx) throw console.error('Error while getting canvas context');
 
     const img = new Image();
-    img.src = this.qrIcon();
+    img.src = this.qrDataService.qrIcon();
     img.onload = () => {
       ctx.drawImage(
         img,
-        (canvas.width - this.qrIconSize()) / 2,
-        (canvas.height - this.qrIconSize()) / 2,
-        this.qrIconSize(),
-        this.qrIconSize()
+        (canvas.width - this.qrDataService.qrIconSize()) / 2,
+        (canvas.height - this.qrDataService.qrIconSize()) / 2,
+        this.qrDataService.qrIconSize(),
+        this.qrDataService.qrIconSize()
       );
     };
     img.onerror = (error) => {
@@ -190,37 +182,37 @@ export class QrGeneratorComponent implements AfterViewInit {
   }
 
   resetIcon() {
-    this.qrIcon.set('');
-    this.qrIconName.set('');
+    this.qrDataService.qrIcon.set('');
+    this.qrDataService.qrIconName.set('');
     this.isCurrentlyCopied.set(false);
   }
 
   protected handleColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
-    this.qrColor.set(target.value);
+    this.qrDataService.qrColor.set(target.value);
     this.isCurrentlyCopied.set(false);
   }
 
   protected handleBackgroundChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
-    this.qrBackground.set(target.value);
+    this.qrDataService.qrBackground.set(target.value);
     this.isCurrentlyCopied.set(false);
   }
 
   protected handleTextareaChange(text: string) {
-    this.qrValue.set(text);
+    this.qrDataService.qrValue.set(text);
     this.isCurrentlyCopied.set(false);
   }
 
   protected handleErrorCodeLevelChange(newLevel: ErrorCodeLevel) {
-    this.qrLevel.set(newLevel);
+    this.qrDataService.qrLevel.set(newLevel);
     this.isCurrentlyCopied.set(false);
   }
 
   handleToggleTransparency(): void {
-    this.qrTransparent.update((value: boolean) => !value);
+    this.qrDataService.qrTransparent.update((value: boolean) => !value);
   }
 
   private getCurrentTabUrl(): Promise<string> {

@@ -7,7 +7,7 @@
     type="color"
     name="color"
     id="color"
-    [value]="qrColor()"
+    [value]="qrDataService.qrColor()"
     (input)="handleColorChange($event)"
   />
 
@@ -16,11 +16,11 @@
     type="color"
     name="background"
     id="background"
-    [value]="qrBackground()"
+    [value]="qrDataService.qrBackground()"
     (input)="handleBackgroundChange($event)"
   />
   <button mat-mini-fab (click)="handleToggleTransparency()">
-    @if (qrTransparent()) {
+    @if (qrDataService.qrTransparent()) {
     <mat-icon>visibility</mat-icon>
     } @else {
     <mat-icon>visibility_off</mat-icon>
@@ -37,15 +37,15 @@
 <textarea
   #qrTextarea
   class="qr-textarea"
-  [value]="qrValue()"
+  [value]="qrDataService.qrValue()"
   (click)="qrTextarea.select()"
   (input)="handleTextareaChange(qrTextarea.value)"
 ></textarea>
 
 <div class="upload">
-  @if (qrIconName() || qrIcon()) {
+  @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
   <button class="file-upload-deletebtn" mat-flat-button (click)="resetIcon()">
-    {{ qrIconName() }}<br />
+    {{ qrDataService.qrIconName() }}<br />
     <mat-icon>delete</mat-icon>
   </button>
   } @else {
