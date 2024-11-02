@@ -42,7 +42,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   async ngAfterViewInit(): Promise<void> {
     const lastSession: any = await this.storageService.restoreLastSession();
     const url = await this.getCurrentTabUrl();
-    if (lastSession) {
+    if (lastSession && lastSession.qrValue) {
       this.qrDataService.qrValue.set(lastSession.qrValue);
       this.qrDataService.qrColor.set(lastSession.qrColor);
       this.qrDataService.qrBackground.set(lastSession.qrBackground);
@@ -78,10 +78,6 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   paintQR(): void {
     const transparentString = this.qrDataService.qrTransparent() ? '00' : 'ff';
-    console.log(
-      this.qrDataService.qrColor(),
-      `${this.qrDataService.qrBackground()}${transparentString}`
-    );
     QrCode.toCanvas(this.canvas().nativeElement, this.qrDataService.qrValue(), {
       width: 200,
       color: {
