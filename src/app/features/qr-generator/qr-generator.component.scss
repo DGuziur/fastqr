@@ -60,6 +60,9 @@ button:not(.file-upload-deletebtn) {
   resize: vertical;
   margin: 10px auto;
   display: block;
+  border-radius: 10px;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .segmented {

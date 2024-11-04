@@ -1,4 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "./assets/styles/m3-theme.scss" as m3;
+
+@include mat.core();
+
+.material-theme {
+  @include mat.all-component-themes(m3.$primary-theme);
+  @include mat.fab-color(m3.$secondary-theme);
+  @include mat.button-color(m3.$secondary-theme);
+}
+
+.theme {
+  &_violet {
+    background-color: #706bf2 !important;
+  }
+}
 
 html,
 body {

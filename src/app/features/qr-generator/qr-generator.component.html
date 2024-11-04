@@ -27,47 +27,48 @@
     }
   </button>
 </div>
+<mat-card class="theme_violet">
+  <segmented
+    class="segmented"
+    [options]="errorCodeLevels"
+    (optionChanged)="handleErrorCodeLevelChange($event)"
+  ></segmented>
 
-<segmented
-  class="segmented"
-  [options]="errorCodeLevels"
-  (optionChanged)="handleErrorCodeLevelChange($event)"
-></segmented>
+  <textarea
+    #qrTextarea
+    class="qr-textarea"
+    [value]="qrDataService.qrValue()"
+    (click)="qrTextarea.select()"
+    (input)="handleTextareaChange(qrTextarea.value)"
+  ></textarea>
 
-<textarea
-  #qrTextarea
-  class="qr-textarea"
-  [value]="qrDataService.qrValue()"
-  (click)="qrTextarea.select()"
-  (input)="handleTextareaChange(qrTextarea.value)"
-></textarea>
+  <div class="upload">
+    @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
+    <button class="file-upload-deletebtn" mat-flat-button (click)="resetIcon()">
+      {{ qrDataService.qrIconName() }}<br />
+      <mat-icon>delete</mat-icon>
+    </button>
+    } @else {
+    <button (click)="fileInput.click()" mat-flat-button>
+      {{ "Img" }}
+      <mat-icon>upload</mat-icon>
+    </button>
+    }
+    <input #fileInput id="fileInput" type="file" (change)="addImage($event)" />
+  </div>
 
-<div class="upload">
-  @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
-  <button class="file-upload-deletebtn" mat-flat-button (click)="resetIcon()">
-    {{ qrDataService.qrIconName() }}<br />
-    <mat-icon>delete</mat-icon>
-  </button>
-  } @else {
-  <button (click)="fileInput.click()" mat-flat-button>
-    {{ "Img" }}
-    <mat-icon>upload</mat-icon>
-  </button>
-  }
-  <input #fileInput id="fileInput" type="file" (change)="addImage($event)" />
-</div>
-
-<div class="button-container">
-  <button mat-mini-fab extended (click)="downloadQR()">
-    Download
-    <mat-icon>download</mat-icon>
-  </button>
-  <button mat-mini-fab extended (click)="copyToClipboard()">
-    {{ isCurrentlyCopied() ? "Copied!" : "Copy" }}
-    <mat-icon>content_copy</mat-icon>
-  </button>
-  <button mat-mini-fab extended (click)="saveQR()">
-    Save
-    <mat-icon>save</mat-icon>
-  </button>
-</div>
+  <div class="button-container">
+    <button mat-mini-fab extended (click)="downloadQR()">
+      Download
+      <mat-icon>download</mat-icon>
+    </button>
+    <button mat-mini-fab extended (click)="copyToClipboard()">
+      {{ isCurrentlyCopied() ? "Copied!" : "Copy" }}
+      <mat-icon>content_copy</mat-icon>
+    </button>
+    <button mat-mini-fab extended (click)="saveQR()">
+      Save
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</mat-card>

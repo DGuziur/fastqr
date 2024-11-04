@@ -15,13 +15,14 @@ import QrCode from 'qrcode';
 import { StorageService } from '../../services/storage.service';
 import { debounceTime, Subject } from 'rxjs';
 import { QrDataService } from '../../services/qr-data.service';
+import { MatCardModule } from '@angular/material/card';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
 @Component({
   selector: 'qr-generator',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, SegmentedComponent],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, SegmentedComponent],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
