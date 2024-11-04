@@ -10,14 +10,14 @@
   ></segmented>
 
   <div class="button-container">
-    <button mat-fab extended (click)="downloadQR()">
+    <button class="download-btn" mat-mini-fab extended (click)="downloadQR()">
       Download
       <mat-icon>download</mat-icon>
     </button>
-    <button mat-fab (click)="copyToClipboard()">
+    <button mat-mini-fab (click)="copyToClipboard()">
       <mat-icon>content_copy</mat-icon>
     </button>
-    <button mat-fab (click)="saveQR()">
+    <button mat-mini-fab (click)="saveQR()">
       <mat-icon>save</mat-icon>
     </button>
   </div>
@@ -46,23 +46,6 @@
     <input #fileInput id="fileInput" type="file" (change)="addImage($event)" />
   </div>
 
-  <!-- <label for="color">Color</label>
-  <input
-    type="color"
-    name="color"
-    id="color"
-    [value]="qrDataService.qrColor()"
-    (input)="handleColorChange($event)"
-  />
-
-  <label for="background">Background</label>
-  <input
-    type="color"
-    name="background"
-    id="background"
-    [value]="qrDataService.qrBackground()"
-    (input)="handleBackgroundChange($event)"
-  /> -->
   <!-- <button mat-mini-fab (click)="handleToggleTransparency()">
     @if (qrDataService.qrTransparent()) {
     <mat-icon>visibility</mat-icon>

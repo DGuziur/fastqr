@@ -47,8 +47,11 @@ input[type="file"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 5px;
-  gap: 10px;
+
+  .download-btn {
+    min-width: fit-content;
+    padding: 5px 50px;
+  }
 }
 
 .qr-textarea {
