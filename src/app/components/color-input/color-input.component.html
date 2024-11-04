@@ -5,7 +5,9 @@
     type="color"
     (input)="handleInput($event)"
   />
-  <label class="color-label" [for]="colorInput">{{ label() }}</label>
+  <label class="color-label" [for]="colorInput" (click)="colorInput.click()">{{
+    label()
+  }}</label>
   <input
     #colorStringInput
     placeholder="#HEX"
