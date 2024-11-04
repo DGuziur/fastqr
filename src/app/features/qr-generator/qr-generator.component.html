@@ -31,7 +31,7 @@
     (input)="handleTextareaChange(qrTextarea.value)"
   ></textarea>
 
-  <div class="upload">
+  <!-- <div class="upload">
     @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
     <button class="file-upload-deletebtn" mat-flat-button (click)="resetIcon()">
       {{ qrDataService.qrIconName() }}<br />
@@ -44,7 +44,7 @@
     </button>
     }
     <input #fileInput id="fileInput" type="file" (change)="addImage($event)" />
-  </div>
+  </div> -->
 
   <!-- <button mat-mini-fab (click)="handleToggleTransparency()">
     @if (qrDataService.qrTransparent()) {
@@ -53,5 +53,5 @@
     <mat-icon>visibility_off</mat-icon>
     }
   </button> -->
-  <app-qr-settings></app-qr-settings>
+  <qr-settings></qr-settings>
 </mat-card>

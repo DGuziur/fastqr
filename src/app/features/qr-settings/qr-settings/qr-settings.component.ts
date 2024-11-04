@@ -4,7 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ColorInputComponent } from '../../../components/color-input/color-input.component';
 
 @Component({
-  selector: 'app-qr-settings',
+  selector: 'qr-settings',
   standalone: true,
   imports: [ColorInputComponent, MatTabsModule],
   templateUrl: './qr-settings.component.html',

@@ -1,0 +1,16 @@
+@import "./../../../../assets/styles/variables.scss";
+
+.settings-container {
+  max-width: 100%;
+  padding: 0 2% 3% 2%;
+}
+
+.settings-tab-group {
+  background-color: $secondary-color !important;
+  border-radius: 0 0 20px 20px;
+}
+
+.settings-tab {
+  padding: 10px 0;
+  border-radius: 0 0 20 20px;
+}

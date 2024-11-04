@@ -2,7 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-color-input',
+  selector: 'color-input',
   standalone: true,
   imports: [MatCardModule],
   templateUrl: './color-input.component.html',
