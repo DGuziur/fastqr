@@ -39,3 +39,7 @@ input:focus:not(input[type="color"]) {
   outline: none;
   border: 4px solid $primary-color;
 }
+
+.theme-yellow {
+  background-color: $secondary-color !important;
+}
