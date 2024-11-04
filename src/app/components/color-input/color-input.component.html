@@ -1,0 +1,18 @@
+<div class="container theme_yellow">
+  <input
+    [value]="value()"
+    #colorInput
+    type="color"
+    (input)="handleInput($event)"
+  />
+  <label class="color-label" [for]="colorInput">{{ label() }}</label>
+  <input
+    #colorStringInput
+    placeholder="#HEX"
+    class="color-string"
+    [value]="value()"
+    (focus)="colorStringInput.select()"
+    (input)="handleInput($event)"
+    type="text"
+  />
+</div>

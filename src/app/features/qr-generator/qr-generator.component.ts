@@ -16,13 +16,20 @@ import { StorageService } from '../../services/storage.service';
 import { debounceTime, Subject } from 'rxjs';
 import { QrDataService } from '../../services/qr-data.service';
 import { MatCardModule } from '@angular/material/card';
+import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
 @Component({
   selector: 'qr-generator',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, SegmentedComponent],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    QrSettingsComponent,
+    MatIconModule,
+    SegmentedComponent,
+  ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

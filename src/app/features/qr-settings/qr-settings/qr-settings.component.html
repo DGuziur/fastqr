@@ -1,1 +1,18 @@
-<p>qr-settings works!</p>
+<div class="settings-container">
+  <mat-tab-group>
+    <mat-tab label="Colors">
+      <app-color-input
+        label="Color"
+        [defaultColor]="qrDataService.qrColor()"
+        (colorChanged)="handleColorChange($event)"
+      ></app-color-input>
+      <app-color-input
+        label="Background"
+        [defaultColor]="qrDataService.qrBackground()"
+        (colorChanged)="handleBackgroundChange($event)"
+      ></app-color-input>
+    </mat-tab>
+    <mat-tab label="Style"></mat-tab>
+    <mat-tab label="Logo"></mat-tab>
+  </mat-tab-group>
+</div>
