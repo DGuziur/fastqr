@@ -10,8 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class ColorInputComponent {
   label = input('Label');
-  defaultColor = input('#000000');
-
+  defaultColor = input.required({
+    transform: (value: string) => this.value.set(value),
+  });
   colorChanged = output<string>();
 
   value = signal('#000000');
