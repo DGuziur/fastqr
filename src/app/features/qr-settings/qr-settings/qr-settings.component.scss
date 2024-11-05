@@ -8,6 +8,14 @@
 .settings-tab-group {
   background-color: $secondary-color !important;
   border-radius: 0 0 20px 20px;
+
+  ::ng-deep .mdc-tab {
+    &--active {
+      .mdc-tab__text-label {
+        color: $primary-color;
+      }
+    }
+  }
 }
 
 .settings-tab {

@@ -8,8 +8,13 @@
 }
 
 .tab-group {
-  ::ng-deep .mat-mdc-tab-header {
-    background-color: $secondary-color !important;
+  ::ng-deep .mdc-tab {
+    &--active {
+      .mat-icon {
+        color: $primary-color;
+      }
+    }
+    background-color: $secondary-color;
   }
 }
 
