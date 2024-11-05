@@ -7,6 +7,7 @@
           [defaultColor]="qrDataService.qrColor()"
           (colorChanged)="handleColorChange($event)"
         ></color-input>
+        <mat-divider></mat-divider>
         <color-input
           label="Background"
           [defaultColor]="qrDataService.qrBackground()"
@@ -15,6 +16,6 @@
       </div>
     </mat-tab>
     <mat-tab label="Style"></mat-tab>
-    <mat-tab label="Logo"></mat-tab>
+    <mat-tab label="Logo"> </mat-tab>
   </mat-tab-group>
 </div>

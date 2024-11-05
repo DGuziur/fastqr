@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { QrDataService } from '../../../services/qr-data.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ColorInputComponent } from '../../../components/color-input/color-input.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'qr-settings',
   standalone: true,
-  imports: [ColorInputComponent, MatTabsModule],
+  imports: [ColorInputComponent, MatDividerModule, MatTabsModule],
   templateUrl: './qr-settings.component.html',
   styleUrl: './qr-settings.component.scss',
 })
