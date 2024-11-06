@@ -1,5 +1,5 @@
-$primary-color: #706bf2;
-$secondary-color: #f4d952;
+$primary-color: var(--primary-color, #706bf2);
+$secondary-color: var(--secondary-color, #f4d952);
 
 // Alternative colors:
 // #E6C529 #4D4A91

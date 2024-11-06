@@ -27,6 +27,8 @@ export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);
   imageChanged = output();
 
+  doc = document.documentElement.style;
+
   addImage(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.files || target.files.length === 0) {

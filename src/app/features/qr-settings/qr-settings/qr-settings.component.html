@@ -15,7 +15,19 @@
         ></color-input>
       </div>
     </mat-tab>
-    <mat-tab label="Style"></mat-tab>
+    <mat-tab label="Style">
+      <color-input
+        label="Primary"
+        [defaultColor]="doc.getPropertyValue('--primary-color')"
+        (colorChanged)="doc.setProperty('--primary-color', $event)"
+      ></color-input>
+      <mat-divider></mat-divider>
+      <color-input
+        label="Secondary"
+        [defaultColor]="doc.getPropertyValue('--secondary-color')"
+        (colorChanged)="doc.setProperty('--secondary-color', $event)"
+      ></color-input>
+    </mat-tab>
     <mat-tab label="Logo">
       <div class="flex-aroud">
         <span>Upload</span>
