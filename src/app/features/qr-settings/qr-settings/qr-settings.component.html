@@ -1,5 +1,5 @@
 <div class="settings-container">
-  <mat-tab-group class="settings-tab-group">
+  <mat-tab-group [animationDuration]="0" class="settings-tab-group">
     <mat-tab label="Colors">
       <div class="settings-tab">
         <color-input
@@ -16,6 +16,44 @@
       </div>
     </mat-tab>
     <mat-tab label="Style"></mat-tab>
-    <mat-tab label="Logo"> </mat-tab>
+    <mat-tab label="Logo">
+      <div class="flex-aroud">
+        <span>Upload</span>
+        @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
+        <button class="file-upload-btn" mat-flat-button (click)="resetIcon()">
+          {{ qrDataService.qrIconName() }}<br />
+          <mat-icon>delete</mat-icon>
+        </button>
+        } @else {
+        <button
+          class="file-upload-btn"
+          mat-flat-button
+          (click)="fileInput.click()"
+        >
+          {{ "Img" }}
+          <mat-icon>upload</mat-icon>
+        </button>
+        }
+        <input #fileInput type="file" (change)="addImage($event)" />
+      </div>
+      <mat-divider></mat-divider>
+      <div class="flex-aroud">
+        <span>Size</span>
+        <mat-slider min="5" max="50" step="1">
+          <input
+            matSliderThumb
+            [value]="qrDataService.qrIconSize()"
+            (valueChange)="qrDataService.qrIconSize.set($event)"
+          />
+        </mat-slider>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="flex-aroud">
+        <span>Padding</span>
+        <mat-slider min="10" max="100" step="1">
+          <input matSliderThumb />
+        </mat-slider>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>

@@ -85,6 +85,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly saveSession$ = new Subject<void>();
 
   paintQR(): void {
+    const lol = this.qrDataService.qrIconSize();
     const transparentString = this.qrDataService.qrTransparent() ? '00' : 'ff';
     QrCode.toCanvas(this.canvas().nativeElement, this.qrDataService.qrValue(), {
       width: 200,
