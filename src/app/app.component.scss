@@ -21,3 +21,7 @@
 .tab-label {
   background-color: $secondary-color !important;
 }
+
+::ng-deep .mat-ripple-element {
+  border-radius: 50%;
+}
