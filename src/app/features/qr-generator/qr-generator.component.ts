@@ -94,6 +94,7 @@ export class QrGeneratorComponent implements AfterViewInit {
         dark: this.qrDataService.qrColor(),
       },
       errorCorrectionLevel: this.qrDataService.qrLevel(),
+      margin: this.qrDataService.qrMargin(),
     });
 
     if (this.qrDataService.qrIcon()) {

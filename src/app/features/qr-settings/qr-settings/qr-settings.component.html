@@ -62,8 +62,12 @@
       <mat-divider></mat-divider>
       <div class="flex-aroud">
         <span>Padding</span>
-        <mat-slider min="10" max="100" step="1">
-          <input matSliderThumb />
+        <mat-slider min="0" max="20" step="1">
+          <input
+            matSliderThumb
+            [value]="qrDataService.qrMargin()"
+            (valueChange)="qrDataService.qrMargin.set($event)"
+          />
         </mat-slider>
       </div>
     </mat-tab>

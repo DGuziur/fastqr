@@ -14,6 +14,7 @@ export class QrDataService {
   qrIconName = signal('');
   qrIconSize = signal<number>(30);
   qrTransparent = signal<boolean>(false);
+  qrMargin = signal<number>(4);
 
   editQr(qr: HistoryItem) {
     this.qrValue.set(qr.qrValue);
