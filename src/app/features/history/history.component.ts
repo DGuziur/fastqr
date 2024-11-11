@@ -22,7 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { StorageService } from '../../services/storage.service';
 import { MatButtonModule } from '@angular/material/button';
 import { QrDataService } from '../../services/qr-data.service';
-import { ErrorCodeLevel } from '../qr-generator/qr-generator.component';
+import { MatInputModule } from '@angular/material/input';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -46,6 +46,7 @@ export type HistoryItem = {
     MatButtonModule,
     MatIconModule,
     MatTableModule,
+    MatInputModule,
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
@@ -82,6 +83,11 @@ export class HistoryComponent {
 
   removeByDate(date: string) {
     this.storageService.removeQrByDate(date);
+  }
+
+  search(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = value;
   }
 
   async getItemFromHistory(createdAt: string) {
