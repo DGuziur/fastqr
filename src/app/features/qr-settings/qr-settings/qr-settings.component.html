@@ -27,6 +27,17 @@
         [defaultColor]="doc.getPropertyValue('--secondary-color')"
         (colorChanged)="doc.setProperty('--secondary-color', $event)"
       ></color-input>
+      <mat-divider></mat-divider>
+      <div class="flex-aroud">
+        <span>Padding</span>
+        <mat-slider min="0" max="20" step="1">
+          <input
+            matSliderThumb
+            [value]="qrDataService.qrMargin()"
+            (valueChange)="qrDataService.qrMargin.set($event)"
+          />
+        </mat-slider>
+      </div>
     </mat-tab>
     <mat-tab label="Logo">
       <div class="flex-aroud">
@@ -56,17 +67,6 @@
             matSliderThumb
             [value]="qrDataService.qrIconSize()"
             (valueChange)="qrDataService.qrIconSize.set($event)"
-          />
-        </mat-slider>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="flex-aroud">
-        <span>Padding</span>
-        <mat-slider min="0" max="20" step="1">
-          <input
-            matSliderThumb
-            [value]="qrDataService.qrMargin()"
-            (valueChange)="qrDataService.qrMargin.set($event)"
           />
         </mat-slider>
       </div>
