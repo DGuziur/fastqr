@@ -1,53 +1,59 @@
-<mat-form-field class="full-width">
-  <mat-label>Search in history</mat-label>
-  <input matInput (input)="search($event)" />
-</mat-form-field>
-<table
-  #table
-  class="history-table"
-  mat-table
-  [dataSource]="dataSource"
-  cdkDropList
-  (cdkDropListDropped)="drop($event)"
-  cdkDropListData="dataSource"
->
-  <ng-container matColumnDef="item">
-    <td mat-cell *matCellDef="let item">
-      <div class="history-item">
-        <span class="created-at">{{
-          item.createdAt | date : "dd.MM.yyyy HH:mm"
-        }}</span>
-        <div class="qr-value">
-          <a href="{{ item.qrValue }}" target="_blank">
-            {{ item.qrValue }}
-          </a>
-          <img
-            (click)="getItemFromHistory(item.createdAt)"
-            [height]="50"
-            [width]="50"
-            [src]="item.canvas"
-          />
-          <button mat-mini-fab (click)="removeByDate(item.createdAt)">
-            <mat-icon>delete</mat-icon>
-          </button>
+<div class="history-container">
+  <mat-form-field class="full-width">
+    <mat-label>Search in history</mat-label>
+    <input matInput (input)="search($event)" />
+  </mat-form-field>
+  <table
+    #table
+    class="history-table"
+    mat-table
+    [dataSource]="dataSource"
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+    cdkDropListData="dataSource"
+  >
+    <ng-container matColumnDef="item">
+      <td mat-cell *matCellDef="let item">
+        <div class="history-item">
+          <span class="created-at">{{ item.createdAt }}</span>
+          <div class="qr-value">
+            <a href="{{ item.qrValue }}" target="_blank">
+              {{ item.qrValue }}
+            </a>
+            <img
+              (click)="getItemFromHistory(item.createdAt)"
+              [height]="50"
+              [width]="50"
+              [src]="item.canvas"
+            />
+            <button mat-mini-fab (click)="removeByDate(item.createdAt)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </div>
-      </div>
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <tr
-    mat-row
-    cdkDrag
-    [cdkDragData]="row"
-    *matRowDef="let row; columns: ['item']"
-  ></tr>
-</table>
-<button
-  class="clear-history-btn"
-  mat-mini-fab
-  extended
-  (click)="clearHistory()"
->
-  Clear all
-  <mat-icon>delete</mat-icon>
-</button>
+    <tr
+      mat-row
+      cdkDrag
+      [cdkDragData]="row"
+      *matRowDef="let row; columns: ['item']"
+    ></tr>
+  </table>
+  <mat-paginator
+    #paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+  <button
+    class="clear-history-btn"
+    mat-mini-fab
+    extended
+    (click)="clearHistory()"
+  >
+    Clear all
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
