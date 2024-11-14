@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  output,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, effect, inject, output, viewChild } from '@angular/core';
 import {
   MatTable,
   MatTableDataSource,
@@ -23,6 +16,7 @@ import { StorageService } from '../../services/storage.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -48,6 +42,7 @@ export type HistoryItem = {
     MatTableModule,
     MatInputModule,
     MatPaginatorModule,
+    EmptyListComponent,
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
