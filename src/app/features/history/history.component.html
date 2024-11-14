@@ -15,7 +15,7 @@
     <ng-container matColumnDef="item">
       <td mat-cell *matCellDef="let item">
         <div class="history-item">
-          <span class="created-at">{{ item.createdAt }}</span>
+          <span class="created-at">{{ item.createdAt | date }}</span>
           <div class="qr-value">
             <a href="{{ item.qrValue }}" target="_blank">
               {{ item.qrValue }}
