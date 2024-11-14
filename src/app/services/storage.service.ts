@@ -6,13 +6,13 @@ const SESSION_KEY = 'fastqr-session';
 
 interface Storage {
   history: WritableSignal<HistoryItem[]>;
-  getAllSavedQrs(): Promise<HistoryItem[]>;
-  saveQr(qr: HistoryItem): Promise<void>;
-  removeQrByDate(date: Date | string): Promise<void>;
   clearHistory(): Promise<void>;
+  getAllSavedQrs(): Promise<HistoryItem[]>;
   getQrByDate(createdAt: string): Promise<HistoryItem | undefined>;
-  saveSession(item: HistoryItem): Promise<void>;
+  removeQrByDate(date: Date | string): Promise<void>;
   restoreLastSession(): Promise<HistoryItem | null>;
+  saveQr(qr: HistoryItem): Promise<void>;
+  saveSession(item: HistoryItem): Promise<void>;
 }
 
 @Injectable({

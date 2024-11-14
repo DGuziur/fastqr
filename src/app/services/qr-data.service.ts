@@ -1,11 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import { HistoryItem } from '../features/history/history.component';
+
+interface QrData {
+  qrValue: WritableSignal<string>;
+  qrBackground: WritableSignal<string>;
+  qrColor: WritableSignal<string>;
+  qrLevel: WritableSignal<ErrorCodeLevel>;
+  qrIcon: WritableSignal<string>;
+  qrIconName: WritableSignal<string>;
+  qrIconSize: WritableSignal<number>;
+  qrTransparent: WritableSignal<boolean>;
+  qrMargin: WritableSignal<number>;
+  editQr(qr: HistoryItem): void;
+}
 
 @Injectable({
   providedIn: 'root',
 })
-export class QrDataService {
+export class QrDataService implements QrData {
   qrValue = signal('');
   qrBackground = signal('#ffffff');
   qrColor = signal('#000000');
