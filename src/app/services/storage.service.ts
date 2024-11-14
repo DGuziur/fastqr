@@ -1,13 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { HistoryItem } from '../features/history/history.component';
 
 const STORAGE_KEY = 'fastqr-history';
 const SESSION_KEY = 'fastqr-session';
 
+interface Storage {
+  history: WritableSignal<HistoryItem[]>;
+  getAllSavedQrs(): Promise<HistoryItem[]>;
+  saveQr(qr: HistoryItem): Promise<void>;
+  removeQrByDate(date: Date | string): Promise<void>;
+  clearHistory(): Promise<void>;
+  getQrByDate(createdAt: string): Promise<HistoryItem | undefined>;
+  saveSession(item: HistoryItem): Promise<void>;
+  restoreLastSession(): Promise<HistoryItem | null>;
+}
+
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService {
+export class StorageService implements Storage {
   public history = signal<HistoryItem[]>([]);
 
   constructor() {
@@ -72,7 +83,7 @@ export class StorageService {
     });
   }
 
-  async restoreLastSession() {
+  async restoreLastSession(): Promise<HistoryItem | null> {
     return new Promise((resolve) => {
       chrome.storage.session.get(SESSION_KEY, (result) => {
         resolve(result[SESSION_KEY] || null);
