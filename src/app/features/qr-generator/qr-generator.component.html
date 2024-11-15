@@ -14,10 +14,14 @@
       Download
       <mat-icon>download</mat-icon>
     </button>
-    <button mat-mini-fab (click)="copyToClipboard()">
+    <button
+      mat-mini-fab
+      matTooltip="Copy to clipboard"
+      (click)="copyToClipboard()"
+    >
       <mat-icon>content_copy</mat-icon>
     </button>
-    <button mat-mini-fab (click)="saveQR()">
+    <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
       <mat-icon>save</mat-icon>
     </button>
   </div>

@@ -17,6 +17,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { QrDataService } from '../../services/qr-data.service';
 import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -28,6 +29,7 @@ export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
     MatCardModule,
     QrSettingsComponent,
     MatIconModule,
+    MatTooltipModule,
     SegmentedComponent,
   ],
   templateUrl: './qr-generator.component.html',

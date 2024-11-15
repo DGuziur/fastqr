@@ -50,6 +50,13 @@
   display: none;
 }
 
+::ng-deep .cdk-describedby-message-container {
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
 ::ng-deep .cdk-overlay-backdrop {
   pointer-events: auto;
   height: 100%;
