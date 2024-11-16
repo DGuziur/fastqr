@@ -27,11 +27,14 @@
   align-items: center;
   gap: 5px;
 
-  a {
+  .qr-link {
+    display: inline-block;
     text-decoration: none;
     color: black;
     font-size: 14px;
-    font-weight: bold;
+    width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 
