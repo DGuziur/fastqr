@@ -71,3 +71,11 @@
   width: 100%;
   justify-content: flex-start;
 }
+
+::ng-deep .mat-mdc-tooltip {
+  position: absolute !important;
+}
+
+.tooltip-moved-left {
+  transform: translateX(-100px);
+}

@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -41,6 +42,7 @@ export type HistoryItem = {
     MatIconModule,
     MatTableModule,
     MatInputModule,
+    MatTooltipModule,
     MatPaginatorModule,
     EmptyListComponent,
   ],

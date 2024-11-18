@@ -18,32 +18,31 @@
         <div class="history-item">
           <span class="created-at">{{ item.createdAt | date }}</span>
           <div class="qr-value">
-            <img
-              (click)="getItemFromHistory(item.createdAt)"
-              [height]="50"
-              [width]="50"
-              [src]="item.canvas"
-            />
+            <img [height]="70" [width]="70" [src]="item.canvas" />
             <a class="qr-link" href="{{ item.qrValue }}" target="_blank">
               {{ item.qrValue }}
             </a>
-            <div class="actions">
-              <button mat-icon-button (click)="removeByDate(item.createdAt)">
-                <mat-icon>download</mat-icon>
-              </button>
-              <button mat-icon-button (click)="removeByDate(item.createdAt)">
-                <mat-icon>content_copy</mat-icon>
-              </button>
-              <button mat-icon-button (click)="removeByDate(item.createdAt)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="removeByDate(item.createdAt)">
-                <mat-icon>link</mat-icon>
-              </button>
-              <button mat-icon-button (click)="removeByDate(item.createdAt)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+          </div>
+          <div class="actions">
+            <button
+              mat-icon-button
+              matTooltip="Edit"
+              (click)="getItemFromHistory(item.createdAt)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+              <mat-icon>download</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+              <mat-icon>content_copy</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+              <mat-icon>link</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </td>
