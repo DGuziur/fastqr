@@ -27,20 +27,36 @@
             <button
               mat-icon-button
               matTooltip="Edit"
-              (click)="getItemFromHistory(item.createdAt)"
+              (click)="editItemFromHistory(item.createdAt)"
             >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+            <button
+              mat-icon-button
+              matTooltip="Download"
+              (click)="removeByDate(item.createdAt)"
+            >
               <mat-icon>download</mat-icon>
             </button>
-            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+            <button
+              mat-icon-button
+              matTooltip="Copy"
+              (click)="removeByDate(item.createdAt)"
+            >
               <mat-icon>content_copy</mat-icon>
             </button>
-            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+            <button
+              mat-icon-button
+              matTooltip="Go to link"
+              (click)="removeByDate(item.createdAt)"
+            >
               <mat-icon>link</mat-icon>
             </button>
-            <button mat-icon-button (click)="removeByDate(item.createdAt)">
+            <button
+              mat-icon-button
+              matTooltip="Delete"
+              (click)="removeByDate(item.createdAt)"
+            >
               <mat-icon>delete</mat-icon>
             </button>
           </div>

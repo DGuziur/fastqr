@@ -89,7 +89,7 @@ export class HistoryComponent {
     this.dataSource.filter = value;
   }
 
-  async getItemFromHistory(createdAt: string) {
+  async editItemFromHistory(createdAt: string) {
     const item = await this.storageService.getQrByDate(createdAt);
     if (item) {
       this.editElement.emit(item);
