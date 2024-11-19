@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'qr-settings',
@@ -19,6 +20,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatListModule,
     MatSliderModule,
     MatTabsModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './qr-settings.component.html',
   styleUrl: './qr-settings.component.scss',

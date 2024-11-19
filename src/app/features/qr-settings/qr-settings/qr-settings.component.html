@@ -15,19 +15,14 @@
         ></color-input>
         <mat-divider></mat-divider>
         <div class="flex-aroud">
-          <button
+          <mat-slide-toggle
             class="tranparency-btn"
-            mat-flat-button
-            (click)="toggleTransparent()"
+            [checked]="qrDataService.qrTransparent()"
+            (change)="toggleTransparent()"
+            labelPosition="before"
           >
-            <span>Transparent</span>
-
-            @if(qrDataService.qrTransparent()){
-            <mat-icon class="icon-transparent"> visibility_off </mat-icon>
-            }@else{
-            <mat-icon class="icon-transparent"> visibility </mat-icon>
-            }
-          </button>
+            <p class="tranparency-btn-label">Transparent</p>
+          </mat-slide-toggle>
         </div>
       </div>
     </mat-tab>
