@@ -48,7 +48,7 @@
             <button
               mat-icon-button
               matTooltip="Go to link"
-              (click)="removeByDate(item.createdAt)"
+              (click)="qrService.goToLink(item)"
             >
               <mat-icon>link</mat-icon>
             </button>

@@ -59,12 +59,18 @@ export class HistoryComponent {
 
   protected readonly qrService = inject(QrDataService);
   protected dataSource = new MatTableDataSource<HistoryItem>(
-    this.storageService.history()
+    this.storageService.history().sort((a: HistoryItem, b: HistoryItem) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    })
   );
 
   dataSource$ = effect(() => {
     this.dataSource = new MatTableDataSource<HistoryItem>(
-      this.storageService.history()
+      this.storageService.history().sort((a: HistoryItem, b: HistoryItem) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      })
     );
     this.dataSource.paginator = this.paginator();
   });

@@ -69,6 +69,10 @@ export class QrSettingsComponent {
     this.qrDataService.qrIconName.set('');
   }
 
+  protected toggleTransparent() {
+    this.qrDataService.qrTransparent.update((value) => !value);
+  }
+
   protected handleColorChange(color: string) {
     this.qrDataService.qrColor.set(color);
   }

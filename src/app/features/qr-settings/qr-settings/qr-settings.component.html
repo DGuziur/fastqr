@@ -13,6 +13,22 @@
           [defaultColor]="qrDataService.qrBackground()"
           (colorChanged)="handleBackgroundChange($event)"
         ></color-input>
+        <mat-divider></mat-divider>
+        <div class="flex-aroud">
+          <button
+            class="tranparency-btn"
+            mat-flat-button
+            (click)="toggleTransparent()"
+          >
+            <span>Transparent</span>
+
+            @if(qrDataService.qrTransparent()){
+            <mat-icon class="icon-transparent"> visibility_off </mat-icon>
+            }@else{
+            <mat-icon class="icon-transparent"> visibility </mat-icon>
+            }
+          </button>
+        </div>
       </div>
     </mat-tab>
     <mat-tab label="Style">

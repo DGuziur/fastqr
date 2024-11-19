@@ -78,6 +78,6 @@ export class QrDataService implements QrData {
 
   goToLink(qr: HistoryItem) {
     if (!qr.qrValue) throw new Error('Nothing to go to');
-    chrome.tabs.create({ url: qr.qrValue });
+    chrome.tabs.create({ url: qr.qrValue, active: false });
   }
 }
