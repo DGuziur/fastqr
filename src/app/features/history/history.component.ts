@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { QrDataService } from '../../services/qr-data.service';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -56,6 +57,7 @@ export class HistoryComponent {
   private readonly table = viewChild.required<MatTable<HistoryItem>>('table');
   private readonly paginator = viewChild.required<MatPaginator>('paginator');
 
+  protected readonly qrService = inject(QrDataService);
   protected dataSource = new MatTableDataSource<HistoryItem>(
     this.storageService.history()
   );

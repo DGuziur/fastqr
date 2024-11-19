@@ -34,14 +34,14 @@
             <button
               mat-icon-button
               matTooltip="Download"
-              (click)="removeByDate(item.createdAt)"
+              (click)="qrService.downloadQr(item)"
             >
               <mat-icon>download</mat-icon>
             </button>
             <button
               mat-icon-button
               matTooltip="Copy"
-              (click)="removeByDate(item.createdAt)"
+              (click)="qrService.copyQrToClipboard(item)"
             >
               <mat-icon>content_copy</mat-icon>
             </button>

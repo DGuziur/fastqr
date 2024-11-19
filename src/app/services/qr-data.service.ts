@@ -38,4 +38,46 @@ export class QrDataService implements QrData {
     this.qrIconName.set(qr.qrIconName);
     this.qrTransparent.set(qr.qrTransparent || false);
   }
+
+  downloadQr(qr: HistoryItem) {
+    if (!qr.canvas) throw new Error('Nothing to download');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = qr.canvas;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      if (!ctx) throw new Error('Canvas context not supported');
+      ctx.drawImage(img, 0, 0);
+      const data = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `${qr.qrValue}.png`;
+      link.href = data;
+      link.click();
+    };
+  }
+
+  copyQrToClipboard(qr: HistoryItem) {
+    if (!qr.canvas) throw new Error('Nothing to copy');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = qr.canvas;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      if (!ctx) throw new Error('Canvas context not supported');
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob: Blob | null) => {
+        if (!blob) throw new Error('Error while converting qr image to blob');
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      });
+    };
+  }
+
+  goToLink(qr: HistoryItem) {
+    if (!qr.qrValue) throw new Error('Nothing to go to');
+    chrome.tabs.create({ url: qr.qrValue });
+  }
 }
