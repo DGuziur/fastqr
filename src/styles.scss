@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "./assets/styles/m3-theme.scss" as m3;
+@import "./assets/styles/variables.scss";
 
 @include mat.core();
 
@@ -16,17 +17,17 @@ body {
   margin: 0;
 
   &::-webkit-scrollbar {
-    width: 5px;
+    border-radius: 2px;
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
-    border-radius: 5px;
     background-color: #e7e7e7;
-    border: 1px solid #b0b0b0;
+    border: none;
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #c75959;
+    border-radius: 2px;
+    background-color: $primary-color;
   }
 }
