@@ -20,6 +20,10 @@ input[type="file"] {
       }
     }
   }
+
+  ::ng-deep .mat-mdc-tab-body {
+    height: min-content;
+  }
 }
 
 .settings-tab {
