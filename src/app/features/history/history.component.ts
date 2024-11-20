@@ -33,22 +33,21 @@ export type HistoryItem = {
 };
 
 @Component({
-  selector: 'history',
-  standalone: true,
-  imports: [
-    CdkDropList,
-    CdkDrag,
-    DatePipe,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    EmptyListComponent,
-  ],
-  templateUrl: './history.component.html',
-  styleUrl: './history.component.scss',
+    selector: 'history',
+    imports: [
+        CdkDropList,
+        CdkDrag,
+        DatePipe,
+        MatButtonModule,
+        MatIconModule,
+        MatTableModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        EmptyListComponent,
+    ],
+    templateUrl: './history.component.html',
+    styleUrl: './history.component.scss'
 })
 export class HistoryComponent {
   readonly editElement = output<HistoryItem>();

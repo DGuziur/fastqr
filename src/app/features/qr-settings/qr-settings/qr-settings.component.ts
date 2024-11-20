@@ -10,20 +10,19 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
-  selector: 'qr-settings',
-  standalone: true,
-  imports: [
-    ColorInputComponent,
-    MatDividerModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatSliderModule,
-    MatTabsModule,
-    MatSlideToggleModule,
-  ],
-  templateUrl: './qr-settings.component.html',
-  styleUrl: './qr-settings.component.scss',
+    selector: 'qr-settings',
+    imports: [
+        ColorInputComponent,
+        MatDividerModule,
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        MatSliderModule,
+        MatTabsModule,
+        MatSlideToggleModule,
+    ],
+    templateUrl: './qr-settings.component.html',
+    styleUrl: './qr-settings.component.scss'
 })
 export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);

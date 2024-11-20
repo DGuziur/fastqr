@@ -2,11 +2,10 @@ import { Component, input, output, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'color-input',
-  standalone: true,
-  imports: [MatCardModule],
-  templateUrl: './color-input.component.html',
-  styleUrl: './color-input.component.scss',
+    selector: 'color-input',
+    imports: [MatCardModule],
+    templateUrl: './color-input.component.html',
+    styleUrl: './color-input.component.scss'
 })
 export class ColorInputComponent {
   label = input('Label');

@@ -22,19 +22,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
 @Component({
-  selector: 'qr-generator',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    QrSettingsComponent,
-    MatIconModule,
-    MatTooltipModule,
-    SegmentedComponent,
-  ],
-  templateUrl: './qr-generator.component.html',
-  styleUrl: './qr-generator.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'qr-generator',
+    imports: [
+        MatButtonModule,
+        MatCardModule,
+        QrSettingsComponent,
+        MatIconModule,
+        MatTooltipModule,
+        SegmentedComponent,
+    ],
+    templateUrl: './qr-generator.component.html',
+    styleUrl: './qr-generator.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QrGeneratorComponent implements AfterViewInit {
   private readonly storageService = inject(StorageService);
