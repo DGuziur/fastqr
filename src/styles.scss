@@ -2,7 +2,8 @@
 @use "./assets/styles/m3-theme.scss" as m3;
 @import "./assets/styles/variables.scss";
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 .material-theme {
   @include mat.all-component-themes(m3.$primary-theme);
