@@ -1,6 +1,7 @@
 <mat-button-toggle-group
   class="error-level-toggle"
   [formControl]="errorLevel"
+  [value]="value()"
   name="errorLevel"
   aria-label="Error level"
   (change)="handleOptionChange()"

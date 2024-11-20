@@ -40,10 +40,11 @@ input[type="file"] {
 }
 
 .flex-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px 0;
+  display: grid;
+  place-items: center;
+  padding: 10px 0;
+  grid-template-columns: 5fr 1fr;
+  place-items: end end;
 }
 
 .button-container {
@@ -56,6 +57,10 @@ input[type="file"] {
     min-width: fit-content;
     padding: 5px 50px;
   }
+}
+
+.reset-qr {
+  place-self: end center;
 }
 
 .qr-textarea {

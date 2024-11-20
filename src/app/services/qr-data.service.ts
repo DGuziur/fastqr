@@ -32,6 +32,18 @@ export class QrDataService implements QrData {
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
 
+  resetQr() {
+    this.qrValue.set('');
+    this.qrBackground.set('#ffffff');
+    this.qrColor.set('#000000');
+    this.qrLevel.set('L');
+    this.qrIcon.set('');
+    this.qrIconName.set('');
+    this.qrIconSize.set(30);
+    this.qrTransparent.set(false);
+    this.qrMargin.set(4);
+  }
+
   editQr(qr: HistoryItem) {
     this.qrValue.set(qr.qrValue);
     this.qrBackground.set(qr.qrBackground);

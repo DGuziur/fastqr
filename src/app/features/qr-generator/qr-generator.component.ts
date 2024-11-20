@@ -199,6 +199,12 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.qrDataService.qrIconName.set('');
   }
 
+  protected async resetQr() {
+    const url = await this.getCurrentTabUrl();
+    this.qrDataService.resetQr();
+    this.qrDataService.qrValue.set(url);
+  }
+
   protected handleColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');

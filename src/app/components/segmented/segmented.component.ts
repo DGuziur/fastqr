@@ -5,13 +5,15 @@ import { FormControl, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'segmented',
-    imports: [MatButtonToggleModule, ReactiveFormsModule],
-    templateUrl: './segmented.component.html',
-    styleUrl: './segmented.component.scss'
+  selector: 'segmented',
+  imports: [MatButtonToggleModule, ReactiveFormsModule],
+  templateUrl: './segmented.component.html',
+  styleUrl: './segmented.component.scss',
 })
 export class SegmentedComponent {
   options = input.required<ErrorCodeLevel[]>();
+  value = input.required<ErrorCodeLevel>();
+
   optionChanged = output<ErrorCodeLevel>();
 
   errorLevel = new FormControl<ErrorCodeLevel>('L', {
