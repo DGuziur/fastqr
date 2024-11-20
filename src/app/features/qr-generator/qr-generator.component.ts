@@ -124,7 +124,7 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   saveQR() {
     this.storageService.saveQr({
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toLocaleDateString(),
       qrValue: this.qrDataService.qrValue(),
       qrColor: this.qrDataService.qrColor(),
       qrBackground: this.qrDataService.qrBackground(),

@@ -4,7 +4,6 @@ import {
   MatTableDataSource,
   MatTableModule,
 } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
 import {
   CdkDragDrop,
   CdkDropList,
@@ -33,21 +32,20 @@ export type HistoryItem = {
 };
 
 @Component({
-    selector: 'history',
-    imports: [
-        CdkDropList,
-        CdkDrag,
-        DatePipe,
-        MatButtonModule,
-        MatIconModule,
-        MatTableModule,
-        MatInputModule,
-        MatTooltipModule,
-        MatPaginatorModule,
-        EmptyListComponent,
-    ],
-    templateUrl: './history.component.html',
-    styleUrl: './history.component.scss'
+  selector: 'history',
+  imports: [
+    CdkDropList,
+    CdkDrag,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    EmptyListComponent,
+  ],
+  templateUrl: './history.component.html',
+  styleUrl: './history.component.scss',
 })
 export class HistoryComponent {
   readonly editElement = output<HistoryItem>();
@@ -58,18 +56,12 @@ export class HistoryComponent {
 
   protected readonly qrService = inject(QrDataService);
   protected dataSource = new MatTableDataSource<HistoryItem>(
-    this.storageService.history().sort((a: HistoryItem, b: HistoryItem) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    })
+    this.storageService.history()
   );
 
   dataSource$ = effect(() => {
     this.dataSource = new MatTableDataSource<HistoryItem>(
-      this.storageService.history().sort((a: HistoryItem, b: HistoryItem) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      })
+      this.storageService.history()
     );
     this.dataSource.paginator = this.paginator();
   });

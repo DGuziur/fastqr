@@ -35,10 +35,10 @@ export class StorageService implements Storage {
 
   async saveQr(qr: HistoryItem): Promise<void> {
     const history = await this.getAllSavedQrs();
-    history.push(qr);
+    const updatedHistory = [qr].concat(history);
 
     return new Promise((resolve) => {
-      chrome.storage.local.set({ [STORAGE_KEY]: history }, () => {
+      chrome.storage.local.set({ [STORAGE_KEY]: updatedHistory }, () => {
         this.refreshHistory();
         resolve();
       });
