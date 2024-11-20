@@ -1,6 +1,7 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import { HistoryItem } from '../features/history/history.component';
+import { SnackbarService } from './snackbar.service';
 
 interface QrData {
   qrValue: WritableSignal<string>;
@@ -19,6 +20,8 @@ interface QrData {
   providedIn: 'root',
 })
 export class QrDataService implements QrData {
+  private readonly snackbar = inject(SnackbarService);
+
   qrValue = signal('');
   qrBackground = signal('#ffffff');
   qrColor = signal('#000000');
@@ -74,6 +77,7 @@ export class QrDataService implements QrData {
         navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       });
     };
+    this.snackbar.open('Copied to clipboard');
   }
 
   goToLink(qr: HistoryItem) {

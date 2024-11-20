@@ -18,25 +18,27 @@ import { QrDataService } from '../../services/qr-data.service';
 import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SnackbarService } from '../../services/snackbar.service';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
 @Component({
-    selector: 'qr-generator',
-    imports: [
-        MatButtonModule,
-        MatCardModule,
-        QrSettingsComponent,
-        MatIconModule,
-        MatTooltipModule,
-        SegmentedComponent,
-    ],
-    templateUrl: './qr-generator.component.html',
-    styleUrl: './qr-generator.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'qr-generator',
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    QrSettingsComponent,
+    MatIconModule,
+    MatTooltipModule,
+    SegmentedComponent,
+  ],
+  templateUrl: './qr-generator.component.html',
+  styleUrl: './qr-generator.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QrGeneratorComponent implements AfterViewInit {
   private readonly storageService = inject(StorageService);
+  private readonly snackbar = inject(SnackbarService);
   protected readonly qrDataService = inject(QrDataService);
 
   private download =
@@ -46,7 +48,6 @@ export class QrGeneratorComponent implements AfterViewInit {
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
-  isCurrentlyCopied = signal(false);
 
   async ngAfterViewInit(): Promise<void> {
     const lastSession: any = await this.storageService.restoreLastSession();
@@ -117,8 +118,8 @@ export class QrGeneratorComponent implements AfterViewInit {
     canvas.toBlob((blob: Blob | null) => {
       if (!blob) throw console.error('Error while converting qr image to blob');
       navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-      this.isCurrentlyCopied.set(true);
     });
+    this.snackbar.open('Copied to clipboard');
   }
 
   saveQR() {
@@ -133,6 +134,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       canvas: this.canvas().nativeElement.toDataURL('image/png'),
       qrTransparent: this.qrDataService.qrTransparent(),
     });
+    this.snackbar.open('Saved');
   }
 
   addImage(e: Event) {
@@ -160,7 +162,6 @@ export class QrGeneratorComponent implements AfterViewInit {
     reader.onload = () => {
       const base64String = reader.result as string;
       this.qrDataService.qrIcon.set(base64String);
-      this.isCurrentlyCopied.set(false);
     };
 
     reader.onerror = (error) => {
@@ -196,31 +197,26 @@ export class QrGeneratorComponent implements AfterViewInit {
   resetIcon() {
     this.qrDataService.qrIcon.set('');
     this.qrDataService.qrIconName.set('');
-    this.isCurrentlyCopied.set(false);
   }
 
   protected handleColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
     this.qrDataService.qrColor.set(target.value);
-    this.isCurrentlyCopied.set(false);
   }
 
   protected handleBackgroundChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
     this.qrDataService.qrBackground.set(target.value);
-    this.isCurrentlyCopied.set(false);
   }
 
   protected handleTextareaChange(text: string) {
     this.qrDataService.qrValue.set(text);
-    this.isCurrentlyCopied.set(false);
   }
 
   protected handleErrorCodeLevelChange(newLevel: ErrorCodeLevel) {
     this.qrDataService.qrLevel.set(newLevel);
-    this.isCurrentlyCopied.set(false);
   }
 
   handleToggleTransparency(): void {
