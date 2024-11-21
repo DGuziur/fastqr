@@ -51,7 +51,9 @@ export class QrDataService implements QrData {
     this.qrLevel.set(<ErrorCodeLevel>qr.qrLevel);
     this.qrIcon.set(qr.qrIcon);
     this.qrIconName.set(qr.qrIconName);
+    this.qrIconSize.set(qr.qrIconSize);
     this.qrTransparent.set(qr.qrTransparent || false);
+    this.qrMargin.set(qr.qrMargin);
   }
 
   downloadQr(qr: HistoryItem) {

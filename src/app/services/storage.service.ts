@@ -1,5 +1,6 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { HistoryItem } from '../features/history/history.component';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 const STORAGE_KEY = 'fastqr-history';
 const SESSION_KEY = 'fastqr-session';
@@ -39,6 +40,19 @@ export class StorageService implements Storage {
 
     return new Promise((resolve) => {
       chrome.storage.local.set({ [STORAGE_KEY]: updatedHistory }, () => {
+        this.refreshHistory();
+        resolve();
+      });
+    });
+  }
+
+  async swapQr(event: CdkDragDrop<string>): Promise<void> {
+    const history = await this.getAllSavedQrs();
+
+    moveItemInArray(history, event.previousIndex, event.currentIndex);
+
+    return new Promise((resolve) => {
+      chrome.storage.local.set({ [STORAGE_KEY]: history }, () => {
         this.refreshHistory();
         resolve();
       });

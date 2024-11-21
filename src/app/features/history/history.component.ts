@@ -26,9 +26,11 @@ export type HistoryItem = {
   qrBackground: string;
   qrIcon: string;
   qrIconName: string;
+  qrIconSize: number;
   qrLevel: string;
   canvas?: string;
   qrTransparent?: boolean;
+  qrMargin: number;
 };
 
 @Component({
@@ -67,11 +69,7 @@ export class HistoryComponent {
   });
 
   drop(event: CdkDragDrop<string>) {
-    const previousIndex = this.dataSource.data.findIndex(
-      (d) => d === event.item.data
-    );
-
-    moveItemInArray(this.dataSource.data, previousIndex, event.currentIndex);
+    this.storageService.swapQr(event);
     this.table().renderRows();
   }
 

@@ -58,8 +58,10 @@ export class QrGeneratorComponent implements AfterViewInit {
       this.qrDataService.qrBackground.set(lastSession.qrBackground);
       this.qrDataService.qrIcon.set(lastSession.qrIcon);
       this.qrDataService.qrIconName.set(lastSession.qrIconName);
+      this.qrDataService.qrIconSize.set(lastSession.qrIconSize);
       this.qrDataService.qrLevel.set(lastSession.qrLevel);
       this.qrDataService.qrTransparent.set(lastSession.qrTransparent);
+      this.qrDataService.qrMargin.set(lastSession.qrMargin);
     } else {
       this.qrDataService.qrValue.set(url);
     }
@@ -73,8 +75,10 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrBackground: this.qrDataService.qrBackground(),
         qrIcon: this.qrDataService.qrIcon(),
         qrIconName: this.qrDataService.qrIconName(),
+        qrIconSize: this.qrDataService.qrIconSize(),
         qrLevel: this.qrDataService.qrLevel(),
         qrTransparent: this.qrDataService.qrTransparent(),
+        qrMargin: this.qrDataService.qrMargin(),
       });
     });
   }
@@ -124,15 +128,17 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   saveQR() {
     this.storageService.saveQr({
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toLocaleString(),
       qrValue: this.qrDataService.qrValue(),
       qrColor: this.qrDataService.qrColor(),
       qrBackground: this.qrDataService.qrBackground(),
       qrIcon: this.qrDataService.qrIcon(),
       qrIconName: this.qrDataService.qrIconName(),
+      qrIconSize: this.qrDataService.qrIconSize(),
       qrLevel: this.qrDataService.qrLevel(),
       canvas: this.canvas().nativeElement.toDataURL('image/png'),
       qrTransparent: this.qrDataService.qrTransparent(),
+      qrMargin: this.qrDataService.qrMargin(),
     });
     this.snackbar.open('Saved');
   }
