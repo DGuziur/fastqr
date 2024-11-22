@@ -7,9 +7,9 @@
 
   "version": "2.0.0",
 
-  "permissions": ["activeTab", "tabs", "scripting", "storage"],
+  "permissions": ["activeTab", "tabs", "scripting", "storage", "sidePanel"],
 
-  "action": {
-    "default_popup": "index.html"
+  "side_panel": {
+    "default_path": "index.html"
   }
 }
