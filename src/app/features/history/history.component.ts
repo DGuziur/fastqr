@@ -4,12 +4,7 @@ import {
   MatTableDataSource,
   MatTableModule,
 } from '@angular/material/table';
-import {
-  CdkDragDrop,
-  CdkDropList,
-  CdkDrag,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
 import { StorageService } from '../../services/storage.service';
 import { MatButtonModule } from '@angular/material/button';

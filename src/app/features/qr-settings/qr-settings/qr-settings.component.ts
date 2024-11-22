@@ -1,4 +1,4 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { QrDataService } from '../../../services/qr-data.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ColorInputComponent } from '../../../components/color-input/color-input.component';
@@ -10,19 +10,19 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
-    selector: 'qr-settings',
-    imports: [
-        ColorInputComponent,
-        MatDividerModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatSliderModule,
-        MatTabsModule,
-        MatSlideToggleModule,
-    ],
-    templateUrl: './qr-settings.component.html',
-    styleUrl: './qr-settings.component.scss'
+  selector: 'qr-settings',
+  imports: [
+    ColorInputComponent,
+    MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatSliderModule,
+    MatTabsModule,
+    MatSlideToggleModule,
+  ],
+  templateUrl: './qr-settings.component.html',
+  styleUrl: './qr-settings.component.scss',
 })
 export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);

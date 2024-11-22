@@ -5,7 +5,6 @@ import {
   effect,
   ElementRef,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
