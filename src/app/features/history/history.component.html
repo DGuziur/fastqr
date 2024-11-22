@@ -72,6 +72,8 @@
   </table>
   <mat-paginator
     #paginator
+    (page)="handlePageEvent($event)"
+    [pageSize]="userSettings.userSettings().itemsPerPage"
     [pageSizeOptions]="[5, 10, 20]"
     aria-label="Select page of periodic elements"
   >

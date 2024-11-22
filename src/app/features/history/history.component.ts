@@ -9,10 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { StorageService } from '../../services/storage.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { QrDataService } from '../../services/qr-data.service';
+import { UserSettingsService } from '../../services/userSettings.service';
 
 export type HistoryItem = {
   createdAt: Date | string;
@@ -52,6 +57,7 @@ export class HistoryComponent {
   private readonly paginator = viewChild.required<MatPaginator>('paginator');
 
   protected readonly qrService = inject(QrDataService);
+  protected readonly userSettings = inject(UserSettingsService);
   protected dataSource = new MatTableDataSource<HistoryItem>(
     this.storageService.history()
   );
@@ -74,6 +80,14 @@ export class HistoryComponent {
 
   removeByDate(date: string) {
     this.storageService.removeQrByDate(date);
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.userSettings.userSettings.update((settings) => ({
+      ...settings,
+      itemsPerPage: event.pageSize,
+    }));
+    this.userSettings.updateSettings();
   }
 
   search(event: Event) {
