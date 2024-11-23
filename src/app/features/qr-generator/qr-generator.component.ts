@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SegmentedComponent } from '../../components/segmented/segmented.component';
 import { MatIconModule } from '@angular/material/icon';
 import QrCode from 'qrcode';
+import QRCodeStyling from 'qr-code-styling';
 import { StorageService } from '../../services/storage.service';
 import { debounceTime, Subject } from 'rxjs';
 import { QrDataService } from '../../services/qr-data.service';
@@ -39,6 +40,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly storageService = inject(StorageService);
   private readonly snackbar = inject(SnackbarService);
   protected readonly qrDataService = inject(QrDataService);
+  qr: any = null;
 
   private download =
     viewChild.required<ElementRef<HTMLAnchorElement>>('download');
@@ -49,6 +51,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   errorCodeLevels: ErrorCodeLevel[] = ['L', 'M', 'Q', 'H'];
 
   async ngAfterViewInit(): Promise<void> {
+    this.intQr();
     const lastSession: any = await this.storageService.restoreLastSession();
     const url = await this.getCurrentTabUrl();
     if (lastSession && lastSession.qrValue) {
@@ -82,6 +85,77 @@ export class QrGeneratorComponent implements AfterViewInit {
     });
   }
 
+  intQr() {
+    this.qr = new QRCodeStyling({
+      width: 200,
+      height: 200,
+      data: this.qrDataService.qrValue(),
+      image: this.qrDataService.qrIcon(),
+      margin: this.qrDataService.qrMargin(),
+      qrOptions: {
+        typeNumber: 0,
+        mode: 'Byte',
+        errorCorrectionLevel: this.qrDataService.qrLevel(),
+      },
+      imageOptions: {
+        hideBackgroundDots: true,
+        imageSize: 0.4,
+        margin: 20,
+        crossOrigin: 'anonymous',
+      },
+      dotsOptions: {
+        color: '#BD022D',
+        gradient: {
+          type: 'linear', // 'radial'
+          rotation: 0,
+          colorStops: [
+            { offset: 0, color: '#8688B2' },
+            { offset: 1, color: '#77779C' },
+          ],
+        },
+        type: 'rounded',
+      },
+      backgroundOptions: {
+        color: '#e9ebee',
+        gradient: {
+          type: 'linear', // 'radial'
+          rotation: 0,
+          colorStops: [
+            { offset: 0, color: '#ededff' },
+            { offset: 1, color: '#e6e7ff' },
+          ],
+        },
+      },
+      cornersSquareOptions: {
+        color: '#BD022D',
+        type: 'extra-rounded',
+        gradient: {
+          type: 'linear', // 'radial'
+          rotation: 180,
+          colorStops: [
+            { offset: 0, color: '#25456e' },
+            { offset: 1, color: '#4267b2' },
+          ],
+        },
+      },
+      cornersDotOptions: {
+        color: '#BD022D',
+        type: 'dot',
+        gradient: {
+          type: 'linear', // 'radial'
+          rotation: 180,
+          colorStops: [
+            { offset: 0, color: '#00266e' },
+            { offset: 1, color: '#4060b3' },
+          ],
+        },
+      },
+    });
+
+    this.qr.append(this.canvas().nativeElement);
+    console.log(this.qr);
+  }
+
   private readonly paint$ = effect(() => {
     this.paintQR();
     this.saveSession$.next();
@@ -90,33 +164,49 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly saveSession$ = new Subject<void>();
 
   paintQR(): void {
-    const lol = this.qrDataService.qrIconSize();
-    const transparentString = this.qrDataService.qrTransparent() ? '00' : 'ff';
-    QrCode.toCanvas(this.canvas().nativeElement, this.qrDataService.qrValue(), {
-      width: 200,
-      color: {
-        light: `${this.qrDataService.qrBackground()}${transparentString}`,
-        dark: this.qrDataService.qrColor(),
-      },
-      errorCorrectionLevel: this.qrDataService.qrLevel(),
-      margin: this.qrDataService.qrMargin(),
-    });
-
-    if (this.qrDataService.qrIcon()) {
-      this.placeImg();
+    if (!this.qr) {
+      this.intQr();
+      return;
     }
+
+    while (this.canvas().nativeElement.firstChild) {
+      this.canvas().nativeElement.removeChild(
+        this.canvas().nativeElement.firstChild!
+      );
+    }
+
+    this.qr.update({
+      data: this.qrDataService.qrValue(),
+      image: this.qrDataService.qrIcon(),
+      margin: this.qrDataService.qrMargin(),
+      dotsOptions: {
+        color: this.qrDataService.qrColor(),
+      },
+      backgroundOptions: {
+        color: this.qrDataService.qrBackground(),
+      },
+      cornersSquareOptions: {
+        color: this.qrDataService.qrColor(),
+      },
+      cornersDotOptions: {
+        color: this.qrDataService.qrColor(),
+      },
+      qrOptions: {
+        errorCorrectionLevel: this.qrDataService.qrLevel(),
+      },
+    });
+    console.log(this.qr);
   }
 
   downloadQR() {
-    const canvas = this.canvas().nativeElement;
-    if (!canvas) throw console.error('Error while getting qr image');
-    this.download().nativeElement.href = canvas.toDataURL('image/png');
-    this.download().nativeElement.download = `${this.qrDataService.qrValue()}.png`;
-    this.download().nativeElement.dispatchEvent(new MouseEvent('click'));
+    this.qr.download({
+      name: `${this.qrDataService.qrValue()}`,
+      extension: `${this.qrDataService.qrDownloadType()}`,
+    });
   }
 
   copyToClipboard() {
-    const canvas = this.canvas().nativeElement;
+    const canvas = document.querySelector('canvas');
     if (!canvas) throw console.error('Error while getting qr image');
     canvas.toBlob((blob: Blob | null) => {
       if (!blob) throw console.error('Error while converting qr image to blob');
@@ -135,7 +225,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrIconName: this.qrDataService.qrIconName(),
       qrIconSize: this.qrDataService.qrIconSize(),
       qrLevel: this.qrDataService.qrLevel(),
-      canvas: this.canvas().nativeElement.toDataURL('image/png'),
+      canvas: document.querySelector('canvas')?.toDataURL('image/png'),
       qrTransparent: this.qrDataService.qrTransparent(),
       qrMargin: this.qrDataService.qrMargin(),
     });

@@ -29,6 +29,7 @@ export class QrDataService implements QrData {
   qrIcon = signal('');
   qrIconName = signal('');
   qrIconSize = signal<number>(30);
+  qrDownloadType = signal<string>('png');
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
 
