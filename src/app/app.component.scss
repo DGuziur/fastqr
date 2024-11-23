@@ -1,9 +1,9 @@
 @import "./../assets/styles/variables.scss";
 
 .main-container {
-  width: 300px;
+  width: 98vw;
+  box-sizing: border-box;
   min-height: 535px;
-  border: 2px solid #948585;
   border-radius: 5px;
 }
 
