@@ -74,6 +74,14 @@ export class QrSettingsComponent {
     this.qrDataService.qrTransparent.update((value) => !value);
   }
 
+  protected handleCornerSquareChange(color: string) {
+    this.qrDataService.qrCornerSquare.set(color);
+  }
+
+  protected handleCornerDotChange(color: string) {
+    this.qrDataService.qrCornerDot.set(color);
+  }
+
   protected handleColorChange(color: string) {
     this.qrDataService.qrColor.set(color);
   }

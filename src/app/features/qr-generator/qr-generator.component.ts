@@ -10,8 +10,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { SegmentedComponent } from '../../components/segmented/segmented.component';
 import { MatIconModule } from '@angular/material/icon';
-import QrCode from 'qrcode';
-import QRCodeStyling from 'qr-code-styling';
 import { StorageService } from '../../services/storage.service';
 import { debounceTime, Subject } from 'rxjs';
 import { QrDataService } from '../../services/qr-data.service';
@@ -75,82 +73,21 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrValue: this.qrDataService.qrValue(),
         qrColor: this.qrDataService.qrColor(),
         qrBackground: this.qrDataService.qrBackground(),
+        qrCornerSquare: this.qrDataService.qrCornerSquare(),
+        qrCornerDot: this.qrDataService.qrCornerDot(),
         qrIcon: this.qrDataService.qrIcon(),
         qrIconName: this.qrDataService.qrIconName(),
         qrIconSize: this.qrDataService.qrIconSize(),
         qrLevel: this.qrDataService.qrLevel(),
         qrTransparent: this.qrDataService.qrTransparent(),
         qrMargin: this.qrDataService.qrMargin(),
+        qrDownloadType: this.qrDataService.qrDownloadType(),
       });
     });
   }
 
   intQr() {
-    this.qr = new QRCodeStyling({
-      width: 200,
-      height: 200,
-      data: this.qrDataService.qrValue(),
-      image: this.qrDataService.qrIcon(),
-      margin: this.qrDataService.qrMargin(),
-      qrOptions: {
-        typeNumber: 0,
-        mode: 'Byte',
-        errorCorrectionLevel: this.qrDataService.qrLevel(),
-      },
-      imageOptions: {
-        hideBackgroundDots: true,
-        imageSize: 0.4,
-        margin: 20,
-        crossOrigin: 'anonymous',
-      },
-      dotsOptions: {
-        color: '#BD022D',
-        gradient: {
-          type: 'linear', // 'radial'
-          rotation: 0,
-          colorStops: [
-            { offset: 0, color: '#8688B2' },
-            { offset: 1, color: '#77779C' },
-          ],
-        },
-        type: 'rounded',
-      },
-      backgroundOptions: {
-        color: '#e9ebee',
-        gradient: {
-          type: 'linear', // 'radial'
-          rotation: 0,
-          colorStops: [
-            { offset: 0, color: '#ededff' },
-            { offset: 1, color: '#e6e7ff' },
-          ],
-        },
-      },
-      cornersSquareOptions: {
-        color: '#BD022D',
-        type: 'extra-rounded',
-        gradient: {
-          type: 'linear', // 'radial'
-          rotation: 180,
-          colorStops: [
-            { offset: 0, color: '#25456e' },
-            { offset: 1, color: '#4267b2' },
-          ],
-        },
-      },
-      cornersDotOptions: {
-        color: '#BD022D',
-        type: 'dot',
-        gradient: {
-          type: 'linear', // 'radial'
-          rotation: 180,
-          colorStops: [
-            { offset: 0, color: '#00266e' },
-            { offset: 1, color: '#4060b3' },
-          ],
-        },
-      },
-    });
+    this.qr = this.qrDataService.buildQr();
 
     this.qr.append(this.canvas().nativeElement);
     console.log(this.qr);
@@ -175,26 +112,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       );
     }
 
-    this.qr.update({
-      data: this.qrDataService.qrValue(),
-      image: this.qrDataService.qrIcon(),
-      margin: this.qrDataService.qrMargin(),
-      dotsOptions: {
-        color: this.qrDataService.qrColor(),
-      },
-      backgroundOptions: {
-        color: this.qrDataService.qrBackground(),
-      },
-      cornersSquareOptions: {
-        color: this.qrDataService.qrColor(),
-      },
-      cornersDotOptions: {
-        color: this.qrDataService.qrColor(),
-      },
-      qrOptions: {
-        errorCorrectionLevel: this.qrDataService.qrLevel(),
-      },
-    });
+    this.qrDataService.updateQr(this.qr);
     console.log(this.qr);
   }
 
@@ -221,6 +139,8 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrValue: this.qrDataService.qrValue(),
       qrColor: this.qrDataService.qrColor(),
       qrBackground: this.qrDataService.qrBackground(),
+      qrCornerSquare: this.qrDataService.qrCornerSquare(),
+      qrCornerDot: this.qrDataService.qrCornerDot(),
       qrIcon: this.qrDataService.qrIcon(),
       qrIconName: this.qrDataService.qrIconName(),
       qrIconSize: this.qrDataService.qrIconSize(),
@@ -228,6 +148,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       canvas: document.querySelector('canvas')?.toDataURL('image/png'),
       qrTransparent: this.qrDataService.qrTransparent(),
       qrMargin: this.qrDataService.qrMargin(),
+      qrDownloadType: this.qrDataService.qrDownloadType(),
     });
     this.snackbar.open('Saved');
   }

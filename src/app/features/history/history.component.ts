@@ -18,12 +18,15 @@ import { EmptyListComponent } from '../../components/empty-list/empty-list.compo
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { QrDataService } from '../../services/qr-data.service';
 import { UserSettingsService } from '../../services/userSettings.service';
+import { FileExtension } from 'qr-code-styling';
 
 export type HistoryItem = {
   createdAt: Date | string;
   qrValue: string;
   qrColor: string;
   qrBackground: string;
+  qrCornerSquare: string;
+  qrCornerDot: string;
   qrIcon: string;
   qrIconName: string;
   qrIconSize: number;
@@ -31,6 +34,7 @@ export type HistoryItem = {
   canvas?: string;
   qrTransparent?: boolean;
   qrMargin: number;
+  qrDownloadType: FileExtension;
 };
 
 @Component({
