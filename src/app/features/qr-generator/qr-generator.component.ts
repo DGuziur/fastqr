@@ -62,6 +62,15 @@ export class QrGeneratorComponent implements AfterViewInit {
       this.qrDataService.qrLevel.set(lastSession.qrLevel);
       this.qrDataService.qrTransparent.set(lastSession.qrTransparent);
       this.qrDataService.qrMargin.set(lastSession.qrMargin);
+      this.qrDataService.qrCornerSquare.set(lastSession.qrCornerSquare);
+      this.qrDataService.qrCornerDot.set(lastSession.qrCornerDot);
+      this.qrDataService.qrCornerDotType.set(lastSession.qrCornerDotType);
+      this.qrDataService.qrSquareType.set(lastSession.qrSquareType);
+      this.qrDataService.qrDotsType.set(lastSession.qrDotsType);
+      this.qrDataService.qrIconMargin.set(lastSession.qrIconMargin);
+      this.qrDataService.qrIconHideBackgroundDots.set(
+        lastSession.qrIconHideBackgroundDots
+      );
     } else {
       this.qrDataService.qrValue.set(url);
     }

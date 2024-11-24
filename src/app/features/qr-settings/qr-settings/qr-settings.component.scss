@@ -38,6 +38,12 @@ input[type="file"] {
   background-color: $primary-color;
 }
 
+.multiple-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 0px;
+}
+
 .file-upload-btn {
   max-width: 100%;
   padding: 0 30px;
