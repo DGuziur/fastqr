@@ -8,16 +8,16 @@
   <label class="color-label" [for]="colorInput" (click)="colorInput.click()">{{
     label()
   }}</label>
-  <div class="container">
+  <div class="content-container">
     <ng-content></ng-content>
-    <input
-      #colorStringInput
-      placeholder="#HEX"
-      class="color-string"
-      [value]="value()"
-      (focus)="colorStringInput.select()"
-      (input)="handleInput($event)"
-      type="text"
-    />
   </div>
+  <input
+    #colorStringInput
+    placeholder="#HEX"
+    class="color-string"
+    [value]="value()"
+    (focus)="colorStringInput.select()"
+    (input)="handleInput($event)"
+    type="text"
+  />
 </div>
