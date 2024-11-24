@@ -179,7 +179,7 @@ export class QrDataService implements QrData {
         color: this.qrColor(),
       },
       backgroundOptions: {
-        color: this.qrBackground(),
+        color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
       },
       cornersSquareOptions: {
         color: this.qrCornerSquare(),
