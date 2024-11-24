@@ -39,9 +39,16 @@ input[type="file"] {
 }
 
 .file-upload-btn {
+  max-width: 100%;
   padding: 0 30px;
   border-radius: 5px;
   background-color: $primary-color !important;
+}
+
+::ng-deep .mdc-button__label {
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .flex-aroud {
@@ -61,4 +68,15 @@ input[type="file"] {
 .tranparency-btn-label {
   font-size: 16px;
   margin: 0 15px;
+}
+
+.icon-margin-options {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 1fr;
+  place-items: center;
+}
+
+.slider {
+  place-self: center left;
 }
