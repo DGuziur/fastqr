@@ -2,7 +2,12 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import { HistoryItem } from '../features/history/history.component';
 import { SnackbarService } from './snackbar.service';
-import QRCodeStyling, { FileExtension } from 'qr-code-styling';
+import QRCodeStyling, {
+  CornerDotType,
+  CornerSquareType,
+  DotType,
+  FileExtension,
+} from 'qr-code-styling';
 
 interface QrData {
   qrValue: WritableSignal<string>;
@@ -33,7 +38,12 @@ export class QrDataService implements QrData {
   qrLevel = signal<ErrorCodeLevel>('L');
   qrIcon = signal('');
   qrIconName = signal('');
+  qrIconMargin = signal<number>(0);
+  qrIconHideBackgroundDots = signal<boolean>(false);
   qrIconSize = signal<number>(0.5);
+  qrDotsType = signal<DotType>('rounded');
+  qrCornerDotType = signal<CornerDotType>('dot');
+  qrSquareType = signal<CornerSquareType>('extra-rounded');
   qrDownloadType = signal<FileExtension>('svg');
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
@@ -50,6 +60,11 @@ export class QrDataService implements QrData {
     this.qrIconSize.set(0.5);
     this.qrTransparent.set(false);
     this.qrMargin.set(4);
+    this.qrCornerDotType.set('dot');
+    this.qrSquareType.set('extra-rounded');
+    this.qrDotsType.set('rounded');
+    this.qrIconMargin.set(0);
+    this.qrIconHideBackgroundDots.set(false);
   }
 
   editQr(qr: HistoryItem) {
@@ -64,6 +79,11 @@ export class QrDataService implements QrData {
     this.qrIconSize.set(qr.qrIconSize);
     this.qrTransparent.set(qr.qrTransparent || false);
     this.qrMargin.set(qr.qrMargin);
+    this.qrCornerDotType.set(qr.qrCornerDotType);
+    this.qrSquareType.set(qr.qrSquareType);
+    this.qrDotsType.set(qr.qrDotsType);
+    this.qrIconMargin.set(qr.qrIconMargin);
+    this.qrIconHideBackgroundDots.set(qr.qrIconHideBackgroundDots);
   }
 
   downloadQr(qr: HistoryItem) {
@@ -112,9 +132,10 @@ export class QrDataService implements QrData {
         errorCorrectionLevel: this.qrLevel(),
       },
       imageOptions: {
-        hideBackgroundDots: true,
+        hideBackgroundDots:
+          qr?.qrIconHideBackgroundDots || this.qrIconHideBackgroundDots(),
         imageSize: qr?.qrIconSize || this.qrIconSize(),
-        margin: 0,
+        margin: qr?.qrIconMargin || this.qrIconMargin(),
         crossOrigin: 'anonymous',
       },
       dotsOptions: {
@@ -127,7 +148,7 @@ export class QrDataService implements QrData {
         //     { offset: 1, color: '#77779C' },
         //   ],
         // },
-        type: 'rounded',
+        type: qr?.qrDotsType || this.qrDotsType(),
       },
       backgroundOptions: {
         color: qr?.qrBackground || this.qrBackground(),
@@ -142,7 +163,7 @@ export class QrDataService implements QrData {
       },
       cornersSquareOptions: {
         color: qr?.qrCornerSquare || this.qrCornerSquare(),
-        type: 'extra-rounded',
+        type: qr?.qrSquareType || this.qrSquareType(),
         // gradient: {
         //   type: 'linear', // 'radial'
         //   rotation: 180,
@@ -154,7 +175,7 @@ export class QrDataService implements QrData {
       },
       cornersDotOptions: {
         color: qr?.qrCornerDot || this.qrCornerDot(),
-        type: 'dot',
+        type: qr?.qrCornerDotType || this.qrCornerDotType(),
         // gradient: {
         //   type: 'linear', // 'radial'
         //   rotation: 180,
@@ -174,18 +195,23 @@ export class QrDataService implements QrData {
       margin: this.qrMargin(),
       imageOptions: {
         imageSize: this.qrIconSize(),
+        margin: this.qrIconMargin(),
+        hideBackgroundDots: this.qrIconHideBackgroundDots(),
       },
       dotsOptions: {
         color: this.qrColor(),
+        type: this.qrDotsType(),
       },
       backgroundOptions: {
         color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
       },
       cornersSquareOptions: {
         color: this.qrCornerSquare(),
+        type: this.qrSquareType(),
       },
       cornersDotOptions: {
         color: this.qrCornerDot(),
+        type: this.qrCornerDotType(),
       },
       qrOptions: {
         errorCorrectionLevel: this.qrLevel(),

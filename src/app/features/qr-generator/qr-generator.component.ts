@@ -82,6 +82,11 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrTransparent: this.qrDataService.qrTransparent(),
         qrMargin: this.qrDataService.qrMargin(),
         qrDownloadType: this.qrDataService.qrDownloadType(),
+        qrCornerDotType: this.qrDataService.qrCornerDotType(),
+        qrSquareType: this.qrDataService.qrSquareType(),
+        qrDotsType: this.qrDataService.qrDotsType(),
+        qrIconMargin: this.qrDataService.qrIconMargin(),
+        qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
       });
     });
   }
@@ -149,6 +154,11 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrTransparent: this.qrDataService.qrTransparent(),
       qrMargin: this.qrDataService.qrMargin(),
       qrDownloadType: this.qrDataService.qrDownloadType(),
+      qrCornerDotType: this.qrDataService.qrCornerDotType(),
+      qrSquareType: this.qrDataService.qrSquareType(),
+      qrDotsType: this.qrDataService.qrDotsType(),
+      qrIconMargin: this.qrDataService.qrIconMargin(),
+      qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
     });
     this.snackbar.open('Saved');
   }
