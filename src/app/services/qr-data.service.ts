@@ -7,6 +7,7 @@ import QRCodeStyling, {
   CornerSquareType,
   DotType,
   FileExtension,
+  GradientType,
 } from 'qr-code-styling';
 
 interface QrData {
@@ -47,6 +48,26 @@ export class QrDataService implements QrData {
   qrDownloadType = signal<FileExtension>('svg');
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
+  qrDotsGradient = signal<boolean>(false);
+  qrDotsGradientType = signal<GradientType>('linear');
+  qrDotsGradientRotation = signal<number>(0);
+  qrDotsGradientColor1 = signal<string>('#8688B2');
+  qrDotsGradientColor2 = signal<string>('#77779C');
+  qrBackgroundGradient = signal<boolean>(false);
+  qrBackgroundGradientType = signal<GradientType>('linear');
+  qrBackgroundGradientRotation = signal<number>(0);
+  qrBackgroundGradientColor1 = signal<string>('#ededff');
+  qrBackgroundGradientColor2 = signal<string>('#e6e7ff');
+  qrCornerSquareGradient = signal<boolean>(false);
+  qrCornerSquareGradientType = signal<GradientType>('linear');
+  qrCornerSquareGradientRotation = signal<number>(0);
+  qrCornerSquareGradientColor1 = signal<string>('#25456e');
+  qrCornerSquareGradientColor2 = signal<string>('#4267b2');
+  qrCornerDotGradient = signal<boolean>(false);
+  qrCornerDotGradientType = signal<GradientType>('linear');
+  qrCornerDotGradientRotation = signal<number>(0);
+  qrCornerDotGradientColor1 = signal<string>('#00266e');
+  qrCornerDotGradientColor2 = signal<string>('#4060b3');
 
   resetQr() {
     this.qrValue.set('');
@@ -198,21 +219,69 @@ export class QrDataService implements QrData {
         margin: this.qrIconMargin(),
         hideBackgroundDots: this.qrIconHideBackgroundDots(),
       },
-      dotsOptions: {
-        color: this.qrColor(),
-        type: this.qrDotsType(),
-      },
-      backgroundOptions: {
-        color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
-      },
-      cornersSquareOptions: {
-        color: this.qrCornerSquare(),
-        type: this.qrSquareType(),
-      },
-      cornersDotOptions: {
-        color: this.qrCornerDot(),
-        type: this.qrCornerDotType(),
-      },
+      dotsOptions: this.qrDotsGradient()
+        ? {
+            type: this.qrDotsType(),
+            gradient: {
+              type: this.qrDotsGradientType(),
+              rotation: this.qrDotsGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrDotsGradientColor1() },
+                { offset: 1, color: this.qrDotsGradientColor2() },
+              ],
+            },
+          }
+        : {
+            color: this.qrColor(),
+            type: this.qrDotsType(),
+          },
+      backgroundOptions:
+        this.qrBackgroundGradient() && !this.qrTransparent()
+          ? {
+              gradient: {
+                type: this.qrDotsGradientType(),
+                rotation: this.qrDotsGradientRotation(),
+                colorStops: [
+                  { offset: 0, color: this.qrDotsGradientColor1() },
+                  { offset: 1, color: this.qrDotsGradientColor2() },
+                ],
+              },
+            }
+          : {
+              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
+            },
+      cornersSquareOptions: this.qrCornerSquareGradient()
+        ? {
+            type: this.qrSquareType(),
+            gradient: {
+              type: this.qrCornerSquareGradientType(),
+              rotation: this.qrCornerSquareGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrCornerSquareGradientColor1() },
+                { offset: 1, color: this.qrCornerSquareGradientColor2() },
+              ],
+            },
+          }
+        : {
+            type: this.qrSquareType(),
+            color: this.qrCornerSquare(),
+          },
+      cornersDotOptions: this.qrCornerDotGradient()
+        ? {
+            type: this.qrCornerDotType(),
+            gradient: {
+              type: this.qrCornerDotGradientType(),
+              rotation: this.qrCornerDotGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrCornerDotGradientColor1() },
+                { offset: 1, color: this.qrCornerDotGradientColor2() },
+              ],
+            },
+          }
+        : {
+            color: this.qrCornerDot(),
+            type: this.qrCornerDotType(),
+          },
       qrOptions: {
         errorCorrectionLevel: this.qrLevel(),
       },
