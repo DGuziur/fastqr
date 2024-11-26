@@ -96,6 +96,60 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrDotsType: this.qrDataService.qrDotsType(),
         qrIconMargin: this.qrDataService.qrIconMargin(),
         qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
+        qrDotsGradient: this.qrDataService.qrDotsGradient(),
+        qrDotsGradientData: {
+          type: this.qrDataService.qrDotsGradientType(),
+          rotation: this.qrDataService.qrDotsGradientRotation(),
+          colorStops: [
+            { offset: 0, color: this.qrDataService.qrDotsGradientColor1() },
+            { offset: 1, color: this.qrDataService.qrDotsGradientColor2() },
+          ],
+        },
+        qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
+        qrBackgroundGradientData: {
+          type: this.qrDataService.qrBackgroundGradientType(),
+          rotation: this.qrDataService.qrBackgroundGradientRotation(),
+          colorStops: [
+            {
+              offset: 0,
+              color: this.qrDataService.qrBackgroundGradientColor1(),
+            },
+            {
+              offset: 1,
+              color: this.qrDataService.qrBackgroundGradientColor2(),
+            },
+          ],
+        },
+        qrCornerSquareGradient: this.qrDataService.qrCornerSquareGradient(),
+        qrCornerSquareGradientData: {
+          type: this.qrDataService.qrCornerSquareGradientType(),
+          rotation: this.qrDataService.qrCornerSquareGradientRotation(),
+          colorStops: [
+            {
+              offset: 0,
+              color: this.qrDataService.qrCornerSquareGradientColor1(),
+            },
+            {
+              offset: 1,
+              color: this.qrDataService.qrCornerSquareGradientColor2(),
+            },
+          ],
+        },
+        qrCornerDotGradient: this.qrDataService.qrCornerDotGradient(),
+        qrCornerDotGradientData: {
+          type: this.qrDataService.qrCornerDotGradientType(),
+          rotation: this.qrDataService.qrCornerDotGradientRotation(),
+          colorStops: [
+            {
+              offset: 0,
+              color: this.qrDataService.qrCornerDotGradientColor1(),
+            },
+            {
+              offset: 1,
+              color: this.qrDataService.qrCornerDotGradientColor2(),
+            },
+          ],
+        },
       });
     });
   }
@@ -168,6 +222,48 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrDotsType: this.qrDataService.qrDotsType(),
       qrIconMargin: this.qrDataService.qrIconMargin(),
       qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
+      qrDotsGradient: this.qrDataService.qrDotsGradient(),
+      qrDotsGradientData: {
+        type: this.qrDataService.qrDotsGradientType(),
+        rotation: this.qrDataService.qrDotsGradientRotation(),
+        colorStops: [
+          { offset: 0, color: this.qrDataService.qrDotsGradientColor1() },
+          { offset: 1, color: this.qrDataService.qrDotsGradientColor2() },
+        ],
+      },
+      qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
+      qrBackgroundGradientData: {
+        type: this.qrDataService.qrBackgroundGradientType(),
+        rotation: this.qrDataService.qrBackgroundGradientRotation(),
+        colorStops: [
+          { offset: 0, color: this.qrDataService.qrBackgroundGradientColor1() },
+          { offset: 1, color: this.qrDataService.qrBackgroundGradientColor2() },
+        ],
+      },
+      qrCornerSquareGradient: this.qrDataService.qrCornerSquareGradient(),
+      qrCornerSquareGradientData: {
+        type: this.qrDataService.qrCornerSquareGradientType(),
+        rotation: this.qrDataService.qrCornerSquareGradientRotation(),
+        colorStops: [
+          {
+            offset: 0,
+            color: this.qrDataService.qrCornerSquareGradientColor1(),
+          },
+          {
+            offset: 1,
+            color: this.qrDataService.qrCornerSquareGradientColor2(),
+          },
+        ],
+      },
+      qrCornerDotGradient: this.qrDataService.qrCornerDotGradient(),
+      qrCornerDotGradientData: {
+        type: this.qrDataService.qrCornerDotGradientType(),
+        rotation: this.qrDataService.qrCornerDotGradientRotation(),
+        colorStops: [
+          { offset: 0, color: this.qrDataService.qrCornerDotGradientColor1() },
+          { offset: 1, color: this.qrDataService.qrCornerDotGradientColor2() },
+        ],
+      },
     });
     this.snackbar.open('Saved');
   }

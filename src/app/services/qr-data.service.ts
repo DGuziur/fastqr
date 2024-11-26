@@ -48,6 +48,7 @@ export class QrDataService implements QrData {
   qrDownloadType = signal<FileExtension>('svg');
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
+
   qrDotsGradient = signal<boolean>(false);
   qrDotsGradientType = signal<GradientType>('linear');
   qrDotsGradientRotation = signal<number>(0);
@@ -86,6 +87,26 @@ export class QrDataService implements QrData {
     this.qrDotsType.set('rounded');
     this.qrIconMargin.set(0);
     this.qrIconHideBackgroundDots.set(false);
+    this.qrBackgroundGradient.set(false);
+    this.qrBackgroundGradientType.set('linear');
+    this.qrBackgroundGradientRotation.set(0);
+    this.qrBackgroundGradientColor1.set('#ededff');
+    this.qrBackgroundGradientColor2.set('#e6e7ff');
+    this.qrCornerSquareGradient.set(false);
+    this.qrCornerSquareGradientType.set('linear');
+    this.qrCornerSquareGradientRotation.set(0);
+    this.qrCornerSquareGradientColor1.set('#25456e');
+    this.qrCornerSquareGradientColor2.set('#4267b2');
+    this.qrCornerDotGradient.set(false);
+    this.qrCornerDotGradientType.set('linear');
+    this.qrCornerDotGradientRotation.set(0);
+    this.qrCornerDotGradientColor1.set('#00266e');
+    this.qrCornerDotGradientColor2.set('#4060b3');
+    this.qrDotsGradient.set(false);
+    this.qrDotsGradientType.set('linear');
+    this.qrDotsGradientRotation.set(0);
+    this.qrDotsGradientColor1.set('#8688B2');
+    this.qrDotsGradientColor2.set('#77779C');
   }
 
   editQr(qr: HistoryItem) {
@@ -105,6 +126,42 @@ export class QrDataService implements QrData {
     this.qrDotsType.set(qr.qrDotsType);
     this.qrIconMargin.set(qr.qrIconMargin);
     this.qrIconHideBackgroundDots.set(qr.qrIconHideBackgroundDots);
+    this.qrBackgroundGradient.set(qr.qrBackgroundGradient);
+    this.qrBackgroundGradientType.set(qr.qrBackgroundGradientData?.type);
+    this.qrBackgroundGradientRotation.set(
+      qr.qrBackgroundGradientData?.rotation
+    );
+    this.qrBackgroundGradientColor1.set(
+      qr.qrBackgroundGradientData?.colorStops[0].color
+    );
+    this.qrBackgroundGradientColor2.set(
+      qr.qrBackgroundGradientData?.colorStops[1].color
+    );
+    this.qrCornerSquareGradient.set(qr.qrCornerSquareGradient);
+    this.qrCornerSquareGradientType.set(qr.qrCornerSquareGradientData?.type);
+    this.qrCornerSquareGradientRotation.set(
+      qr.qrCornerSquareGradientData?.rotation
+    );
+    this.qrCornerSquareGradientColor1.set(
+      qr.qrCornerSquareGradientData?.colorStops[0].color
+    );
+    this.qrCornerSquareGradientColor2.set(
+      qr.qrCornerSquareGradientData?.colorStops[1].color
+    );
+    this.qrCornerDotGradient.set(qr.qrCornerDotGradient);
+    this.qrCornerDotGradientType.set(qr.qrCornerDotGradientData?.type);
+    this.qrCornerDotGradientRotation.set(qr.qrCornerDotGradientData?.rotation);
+    this.qrCornerDotGradientColor1.set(
+      qr.qrCornerDotGradientData?.colorStops[0].color
+    );
+    this.qrCornerDotGradientColor2.set(
+      qr.qrCornerDotGradientData?.colorStops[1].color
+    );
+    this.qrDotsGradient.set(qr.qrDotsGradient);
+    this.qrDotsGradientType.set(qr.qrDotsGradientData?.type);
+    this.qrDotsGradientRotation.set(qr.qrDotsGradientData?.rotation);
+    this.qrDotsGradientColor1.set(qr.qrDotsGradientData?.colorStops[0].color);
+    this.qrDotsGradientColor2.set(qr.qrDotsGradientData?.colorStops[1].color);
   }
 
   downloadQr(qr: HistoryItem) {
@@ -159,53 +216,69 @@ export class QrDataService implements QrData {
         margin: qr?.qrIconMargin || this.qrIconMargin(),
         crossOrigin: 'anonymous',
       },
-      dotsOptions: {
-        color: qr?.qrColor || this.qrColor(),
-        // gradient: {
-        //   type: 'linear', // 'radial'
-        //   rotation: 0,
-        //   colorStops: [
-        //     { offset: 0, color: '#8688B2' },
-        //     { offset: 1, color: '#77779C' },
-        //   ],
-        // },
-        type: qr?.qrDotsType || this.qrDotsType(),
-      },
-      backgroundOptions: {
-        color: qr?.qrBackground || this.qrBackground(),
-        // gradient: {
-        //   type: 'linear', // 'radial'
-        //   rotation: 0,
-        //   colorStops: [
-        //     { offset: 0, color: '#ededff' },
-        //     { offset: 1, color: '#e6e7ff' },
-        //   ],
-        // },
-      },
-      cornersSquareOptions: {
-        color: qr?.qrCornerSquare || this.qrCornerSquare(),
-        type: qr?.qrSquareType || this.qrSquareType(),
-        // gradient: {
-        //   type: 'linear', // 'radial'
-        //   rotation: 180,
-        //   colorStops: [
-        //     { offset: 0, color: '#25456e' },
-        //     { offset: 1, color: '#4267b2' },
-        //   ],
-        // },
-      },
-      cornersDotOptions: {
-        color: qr?.qrCornerDot || this.qrCornerDot(),
-        type: qr?.qrCornerDotType || this.qrCornerDotType(),
-        // gradient: {
-        //   type: 'linear', // 'radial'
-        //   rotation: 180,
-        //   colorStops: [
-        //     { offset: 0, color: '#00266e' },
-        //     { offset: 1, color: '#4060b3' },
-        //   ],
-        // },
-      },
+      dotsOptions: this.qrDotsGradient()
+        ? {
+            type: this.qrDotsType(),
+            gradient: {
+              type: this.qrDotsGradientType(),
+              rotation: this.qrDotsGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrDotsGradientColor1() },
+                { offset: 1, color: this.qrDotsGradientColor2() },
+              ],
+            },
+          }
+        : {
+            color: this.qrColor(),
+            type: this.qrDotsType(),
+          },
+      backgroundOptions:
+        this.qrBackgroundGradient() && !this.qrTransparent()
+          ? {
+              gradient: {
+                type: this.qrDotsGradientType(),
+                rotation: this.qrDotsGradientRotation(),
+                colorStops: [
+                  { offset: 0, color: this.qrDotsGradientColor1() },
+                  { offset: 1, color: this.qrDotsGradientColor2() },
+                ],
+              },
+            }
+          : {
+              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
+            },
+      cornersSquareOptions: this.qrCornerSquareGradient()
+        ? {
+            type: this.qrSquareType(),
+            gradient: {
+              type: this.qrCornerSquareGradientType(),
+              rotation: this.qrCornerSquareGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrCornerSquareGradientColor1() },
+                { offset: 1, color: this.qrCornerSquareGradientColor2() },
+              ],
+            },
+          }
+        : {
+            type: this.qrSquareType(),
+            color: this.qrCornerSquare(),
+          },
+      cornersDotOptions: this.qrCornerDotGradient()
+        ? {
+            type: this.qrCornerDotType(),
+            gradient: {
+              type: this.qrCornerDotGradientType(),
+              rotation: this.qrCornerDotGradientRotation(),
+              colorStops: [
+                { offset: 0, color: this.qrCornerDotGradientColor1() },
+                { offset: 1, color: this.qrCornerDotGradientColor2() },
+              ],
+            },
+          }
+        : {
+            color: this.qrCornerDot(),
+            type: this.qrCornerDotType(),
+          },
     });
   }
 
