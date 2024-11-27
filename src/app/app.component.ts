@@ -7,17 +7,19 @@ import {
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { QrDataService } from './services/qr-data.service';
+import { SupportPageComponent } from './features/support-page/support-page.component';
 
 @Component({
-    selector: 'app-root',
-    imports: [
-        HistoryComponent,
-        MatIconModule,
-        MatTabsModule,
-        QrGeneratorComponent,
-    ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [
+    HistoryComponent,
+    MatIconModule,
+    MatTabsModule,
+    QrGeneratorComponent,
+    SupportPageComponent,
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   private readonly qrDataService = inject(QrDataService);
