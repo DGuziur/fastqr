@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './support-page.component.html',
   styleUrl: './support-page.component.scss',
 })
-export class SupportPageComponent {}
+export class SupportPageComponent {
+  email = 'fastqr.feedback@gmail.com';
+}
