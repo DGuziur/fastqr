@@ -17,8 +17,23 @@ import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
+import { Form, FormControl, FormGroup } from '@angular/forms';
+import { PhoneContactFormComponent } from '../../components/phone-contact-form/phone-contact-form.component';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
+
+export type VCARD = {
+  BEGIN: 'VCARD';
+  VERSION: '3.0';
+  FN: string | null;
+  TEL: string | null;
+  EMAIL: string | null;
+  ADR: string | null;
+  ORG: string | null;
+  TITLE: string | null;
+  URL: string | null;
+  END: 'VCARD';
+};
 
 @Component({
   selector: 'qr-generator',
@@ -29,6 +44,7 @@ export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
     MatIconModule,
     MatTooltipModule,
     SegmentedComponent,
+    PhoneContactFormComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
@@ -40,8 +56,6 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrDataService = inject(QrDataService);
   qr: any = null;
 
-  private download =
-    viewChild.required<ElementRef<HTMLAnchorElement>>('download');
   private qrTextarea =
     viewChild.required<ElementRef<HTMLTextAreaElement>>('qrTextarea');
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
@@ -190,6 +204,8 @@ export class QrGeneratorComponent implements AfterViewInit {
       extension: `${this.qrDataService.qrDownloadType()}`,
     });
   }
+
+  phoneNumber() {}
 
   copyToClipboard() {
     const canvas = document.querySelector('canvas');
