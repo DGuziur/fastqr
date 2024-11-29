@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="contact-form-card">
   <mat-card-header>
     <mat-card-title> Contact form</mat-card-title>
     <mat-card-subtitle>
@@ -7,26 +7,45 @@
     </mat-card-subtitle>
   </mat-card-header>
   <form class="contact-form" [formGroup]="contactForm">
-    <mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
       <input matInput placeholder="Name" formControlName="FN" />
+      <mat-icon matSuffix>person</mat-icon>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Phone" formControlName="TEL" />
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" placeholder="Phone" formControlName="TEL" />
+      <mat-icon matSuffix>phone</mat-icon>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Email" formControlName="EMAIL" />
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        placeholder="Email"
+        formControlName="EMAIL"
+      />
+      <mat-icon matSuffix>email</mat-icon>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Address" formControlName="ADR" />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Organization" formControlName="ORG" />
-    </mat-form-field>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
       <input matInput placeholder="Title" formControlName="TITLE" />
+      <mat-icon matSuffix>title</mat-icon>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="address-field" appearance="outline">
+      <mat-label>Address</mat-label>
+      <input matInput placeholder="Address" formControlName="ADR" />
+      <mat-icon matSuffix>location_on</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Organization</mat-label>
+      <input matInput placeholder="Organization" formControlName="ORG" />
+      <mat-icon matSuffix>business</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Website</mat-label>
       <input matInput placeholder="Website" formControlName="URL" type="url" />
+      <mat-icon matSuffix>link</mat-icon>
     </mat-form-field>
   </form>
 </mat-card>

@@ -11,10 +11,11 @@ import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'phone-contact-form',
-  imports: [MatInputModule, ReactiveFormsModule, MatCardModule],
+  imports: [MatInputModule, ReactiveFormsModule, MatCardModule, MatIconModule],
   templateUrl: './phone-contact-form.component.html',
   styleUrl: './phone-contact-form.component.scss',
 })
