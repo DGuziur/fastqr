@@ -41,6 +41,9 @@
     >
       <mat-icon>contact_phone</mat-icon>
     </button>
+    <button mat-mini-fab matTooltip="wifi" (click)="qrType.set('wifi')">
+      <mat-icon>wifi</mat-icon>
+    </button>
   </div>
 
   @switch(qrType()) { @case('default') {
@@ -56,6 +59,9 @@
   <phone-contact-form
     (valueChanged)="qrDataService.qrValue.set($event)"
   ></phone-contact-form>
+  } @case ('wifi') {
+  <wifi-connect-form (valueChanged)="qrDataService.qrValue.set($event)">
+  </wifi-connect-form>
   } }
 
   <qr-settings (imageChanged)="placeImg()"></qr-settings>

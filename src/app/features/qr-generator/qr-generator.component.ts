@@ -19,8 +19,9 @@ import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.comp
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
 import { PhoneContactFormComponent } from '../../components/phone-contact-form/phone-contact-form.component';
+import { WifiConnectFormComponent } from '../../components/wifi-connect-form/wifi-connect-form.component';
 
-export type QrType = 'default' | 'phone-contact';
+export type QrType = 'default' | 'phone-contact' | 'wifi';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -47,6 +48,7 @@ export type VCARD = {
     MatTooltipModule,
     SegmentedComponent,
     PhoneContactFormComponent,
+    WifiConnectFormComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
