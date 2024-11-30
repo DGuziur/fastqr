@@ -1,0 +1,16 @@
+.contact-form {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 10px;
+}
+
+.contact-form-card {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.address-field {
+  grid-column: span 2;
+}
