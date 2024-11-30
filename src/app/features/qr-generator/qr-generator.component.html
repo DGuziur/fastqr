@@ -30,6 +30,20 @@
     </button>
   </div>
 
+  <div>
+    <button mat-mini-fab matTooltip="Default" (click)="qrType.set('default')">
+      <mat-icon>qr_code</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      matTooltip="phone-contact"
+      (click)="qrType.set('phone-contact')"
+    >
+      <mat-icon>contact_phone</mat-icon>
+    </button>
+  </div>
+
+  @switch(qrType()) { @case('default') {
   <textarea
     #qrTextarea
     class="qr-textarea"
@@ -38,10 +52,11 @@
     (click)="qrTextarea.select()"
     (input)="handleTextareaChange(qrTextarea.value)"
   ></textarea>
-
+  } @case('phone-contact') {
   <phone-contact-form
     (valueChanged)="qrDataService.qrValue.set($event)"
   ></phone-contact-form>
+  } }
 
   <qr-settings (imageChanged)="placeImg()"></qr-settings>
 </mat-card>

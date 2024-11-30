@@ -5,6 +5,7 @@ import {
   effect,
   ElementRef,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,8 +18,9 @@ import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
-import { Form, FormControl, FormGroup } from '@angular/forms';
 import { PhoneContactFormComponent } from '../../components/phone-contact-form/phone-contact-form.component';
+
+export type QrType = 'default' | 'phone-contact';
 
 export type ErrorCodeLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -55,6 +57,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly snackbar = inject(SnackbarService);
   protected readonly qrDataService = inject(QrDataService);
   qr: any = null;
+  qrType = signal<QrType>('default');
 
   private qrTextarea =
     viewChild.required<ElementRef<HTMLTextAreaElement>>('qrTextarea');
