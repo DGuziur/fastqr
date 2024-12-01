@@ -9,6 +9,7 @@ import QRCodeStyling, {
   FileExtension,
   GradientType,
 } from 'qr-code-styling';
+import { ColorStops } from '../components/gradient-input/gradient-input.component';
 
 interface QrData {
   qrValue: WritableSignal<string>;
@@ -49,11 +50,12 @@ export class QrDataService implements QrData {
   qrTransparent = signal<boolean>(false);
   qrMargin = signal<number>(4);
 
-  qrDotsGradient = signal<boolean>(false);
+  qrDotsGradient = signal<boolean>(true);
   qrDotsGradientType = signal<GradientType>('linear');
   qrDotsGradientRotation = signal<number>(0);
-  qrDotsGradientColor1 = signal<string>('#8688B2');
-  qrDotsGradientColor2 = signal<string>('#77779C');
+  qrDotsColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
+  // qrDotsGradientColor1 = signal<string>('#8688B2');
+  // qrDotsGradientColor2 = signal<string>('#77779C');
   qrBackgroundGradient = signal<boolean>(false);
   qrBackgroundGradientType = signal<GradientType>('linear');
   qrBackgroundGradientRotation = signal<number>(0);
@@ -105,8 +107,8 @@ export class QrDataService implements QrData {
     this.qrDotsGradient.set(false);
     this.qrDotsGradientType.set('linear');
     this.qrDotsGradientRotation.set(0);
-    this.qrDotsGradientColor1.set('#8688B2');
-    this.qrDotsGradientColor2.set('#77779C');
+    // this.qrDotsGradientColor1.set('#8688B2');
+    // this.qrDotsGradientColor2.set('#77779C');
   }
 
   editQr(qr: HistoryItem) {
@@ -160,8 +162,8 @@ export class QrDataService implements QrData {
     this.qrDotsGradient.set(qr.qrDotsGradient);
     this.qrDotsGradientType.set(qr.qrDotsGradientData?.type);
     this.qrDotsGradientRotation.set(qr.qrDotsGradientData?.rotation);
-    this.qrDotsGradientColor1.set(qr.qrDotsGradientData?.colorStops[0].color);
-    this.qrDotsGradientColor2.set(qr.qrDotsGradientData?.colorStops[1].color);
+    // this.qrDotsGradientColor1.set(qr.qrDotsGradientData?.colorStops[0].color);
+    // this.qrDotsGradientColor2.set(qr.qrDotsGradientData?.colorStops[1].color);
   }
 
   downloadQr(qr: HistoryItem) {
@@ -222,10 +224,7 @@ export class QrDataService implements QrData {
             gradient: {
               type: this.qrDotsGradientType(),
               rotation: this.qrDotsGradientRotation(),
-              colorStops: [
-                { offset: 0, color: this.qrDotsGradientColor1() },
-                { offset: 1, color: this.qrDotsGradientColor2() },
-              ],
+              colorStops: this.qrDotsColorStops(),
             },
           }
         : {
@@ -237,10 +236,10 @@ export class QrDataService implements QrData {
           ? {
               gradient: {
                 type: this.qrDotsGradientType(),
-                rotation: this.qrDotsGradientRotation(),
+                rotation: this.qrBackgroundGradientRotation(),
                 colorStops: [
-                  { offset: 0, color: this.qrDotsGradientColor1() },
-                  { offset: 1, color: this.qrDotsGradientColor2() },
+                  { offset: 0, color: this.qrBackgroundGradientColor1() },
+                  { offset: 1, color: this.qrBackgroundGradientColor2() },
                 ],
               },
             }
@@ -298,10 +297,7 @@ export class QrDataService implements QrData {
             gradient: {
               type: this.qrDotsGradientType(),
               rotation: this.qrDotsGradientRotation(),
-              colorStops: [
-                { offset: 0, color: this.qrDotsGradientColor1() },
-                { offset: 1, color: this.qrDotsGradientColor2() },
-              ],
+              colorStops: this.qrDotsColorStops(),
             },
           }
         : {
@@ -313,10 +309,10 @@ export class QrDataService implements QrData {
           ? {
               gradient: {
                 type: this.qrDotsGradientType(),
-                rotation: this.qrDotsGradientRotation(),
+                rotation: this.qrBackgroundGradientRotation(),
                 colorStops: [
-                  { offset: 0, color: this.qrDotsGradientColor1() },
-                  { offset: 1, color: this.qrDotsGradientColor2() },
+                  { offset: 0, color: this.qrBackgroundGradientColor1() },
+                  { offset: 1, color: this.qrBackgroundGradientColor2() },
                 ],
               },
             }
@@ -361,3 +357,8 @@ export class QrDataService implements QrData {
     });
   }
 }
+
+export const DEFAULT_COLOR_STOPS: ColorStops = [
+  { offset: 0, color: '#ffffff' },
+  { offset: 1, color: '#77779C' },
+];

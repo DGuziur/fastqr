@@ -10,6 +10,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {
+  ColorStops,
+  GradientInputComponent,
+} from '../../../components/gradient-input/gradient-input.component';
 
 @Component({
   selector: 'qr-settings',
@@ -24,6 +28,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTabsModule,
     MatSlideToggleModule,
     MatExpansionModule,
+    GradientInputComponent,
   ],
   templateUrl: './qr-settings.component.html',
   styleUrl: './qr-settings.component.scss',
@@ -90,5 +95,9 @@ export class QrSettingsComponent {
 
   protected handleBackgroundChange(color: string) {
     this.qrDataService.qrBackground.set(color);
+  }
+
+  handleDotsGradient(value: ColorStops) {
+    this.qrDataService.qrDotsColorStops.set(value);
   }
 }

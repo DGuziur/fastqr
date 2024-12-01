@@ -2,11 +2,21 @@
   <mat-tab-group class="settings-tab-group">
     <mat-tab label="Colors">
       <div class="settings-tab">
+        @if (qrDataService.qrDotsGradient()) {
+        <gradient-input
+          title="Dots"
+          (valueChanged)="handleDotsGradient($event)"
+          [(selectedGradientType)]="qrDataService.qrDotsGradientType"
+          [(rotation)]="qrDataService.qrDotsGradientRotation"
+        ></gradient-input>
+        } @else {
         <color-input
           label="Main"
           [defaultColor]="qrDataService.qrColor()"
           (colorChanged)="handleColorChange($event)"
         ></color-input>
+        }
+
         <mat-divider></mat-divider>
         <color-input
           label="Background"

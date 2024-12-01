@@ -119,10 +119,7 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrDotsGradientData: {
           type: this.qrDataService.qrDotsGradientType(),
           rotation: this.qrDataService.qrDotsGradientRotation(),
-          colorStops: [
-            { offset: 0, color: this.qrDataService.qrDotsGradientColor1() },
-            { offset: 1, color: this.qrDataService.qrDotsGradientColor2() },
-          ],
+          colorStops: this.qrDataService.qrDotsColorStops(),
         },
         qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
         qrBackgroundGradientData: {
@@ -247,10 +244,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrDotsGradientData: {
         type: this.qrDataService.qrDotsGradientType(),
         rotation: this.qrDataService.qrDotsGradientRotation(),
-        colorStops: [
-          { offset: 0, color: this.qrDataService.qrDotsGradientColor1() },
-          { offset: 1, color: this.qrDataService.qrDotsGradientColor2() },
-        ],
+        colorStops: this.qrDataService.qrDotsColorStops(),
       },
       qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
       qrBackgroundGradientData: {
