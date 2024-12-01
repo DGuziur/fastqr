@@ -1,0 +1,53 @@
+<div class="gradient-input-container">
+  <p class="title">{{ title() }}: {{ selectedGradientType() }} gradient</p>
+  <div class="actions">
+    <button mat-raised-button (click)="addGradientStop()">Add</button>
+    <button mat-raised-button [matMenuTriggerFor]="gradientTypeMenu">
+      Type
+    </button>
+    @if (selectedGradientType() === 'linear') {
+    <mat-form-field>
+      <mat-label>Rotation</mat-label>
+      <input
+        matInput
+        min="-360"
+        max="360"
+        type="number"
+        (input)="handleRotation($event)"
+      />
+    </mat-form-field>
+    }
+  </div>
+  <mat-menu #gradientTypeMenu="matMenu">
+    @for (option of gradientTypes; track option) {
+    <button mat-menu-item (click)="selectedGradientType.set(option.value)">
+      <span>{{ option.value }}</span>
+      <mat-icon>{{ option.icon }}</mat-icon>
+    </button>
+    }
+  </mat-menu>
+  <div class="gradient-form-list">
+    @for (form of gradientStopsForm.controls; track form) {
+    <form class="gradient-form-item" [formGroup]="form">
+      <input type="color" formControlName="color" />
+      <mat-form-field class="form-field">
+        <mat-label>Offset</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          max="1"
+          step="0.01"
+          formControlName="offset"
+        />
+        @if ($index >= 2) {
+        <button matSuffix mat-icon-button (click)="removeGradientStop($index)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        }
+        <mat-error>Between 0 and 1</mat-error>
+      </mat-form-field>
+    </form>
+    }
+  </div>
+</div>

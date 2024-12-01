@@ -1,0 +1,42 @@
+input[type="color"] {
+  border: none;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+}
+
+::-webkit-color-swatch {
+  border-radius: 5px;
+}
+
+.gradient-form-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.gradient-form-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  place-items: center;
+}
+
+.actions {
+  max-width: 100%;
+  padding: 5px;
+  gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.2rem;
+  width: 100%;
+  text-align: center;
+}
