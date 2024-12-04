@@ -100,4 +100,8 @@ export class QrSettingsComponent {
   handleDotsGradient(value: ColorStops) {
     this.qrDataService.qrDotsColorStops.set(value);
   }
+
+  handleBackgroundGradient(value: ColorStops) {
+    this.qrDataService.qrBackgroundColorStops.set(value);
+  }
 }

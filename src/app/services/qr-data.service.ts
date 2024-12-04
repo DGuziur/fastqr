@@ -54,13 +54,10 @@ export class QrDataService implements QrData {
   qrDotsGradientType = signal<GradientType>('linear');
   qrDotsGradientRotation = signal<number>(0);
   qrDotsColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  // qrDotsGradientColor1 = signal<string>('#8688B2');
-  // qrDotsGradientColor2 = signal<string>('#77779C');
-  qrBackgroundGradient = signal<boolean>(false);
+  qrBackgroundGradient = signal<boolean>(true);
   qrBackgroundGradientType = signal<GradientType>('linear');
   qrBackgroundGradientRotation = signal<number>(0);
-  qrBackgroundGradientColor1 = signal<string>('#ededff');
-  qrBackgroundGradientColor2 = signal<string>('#e6e7ff');
+  qrBackgroundColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
   qrCornerSquareGradient = signal<boolean>(false);
   qrCornerSquareGradientType = signal<GradientType>('linear');
   qrCornerSquareGradientRotation = signal<number>(0);
@@ -92,8 +89,7 @@ export class QrDataService implements QrData {
     this.qrBackgroundGradient.set(false);
     this.qrBackgroundGradientType.set('linear');
     this.qrBackgroundGradientRotation.set(0);
-    this.qrBackgroundGradientColor1.set('#ededff');
-    this.qrBackgroundGradientColor2.set('#e6e7ff');
+    this.qrBackgroundColorStops.set(DEFAULT_COLOR_STOPS);
     this.qrCornerSquareGradient.set(false);
     this.qrCornerSquareGradientType.set('linear');
     this.qrCornerSquareGradientRotation.set(0);
@@ -107,8 +103,7 @@ export class QrDataService implements QrData {
     this.qrDotsGradient.set(false);
     this.qrDotsGradientType.set('linear');
     this.qrDotsGradientRotation.set(0);
-    // this.qrDotsGradientColor1.set('#8688B2');
-    // this.qrDotsGradientColor2.set('#77779C');
+    this.qrDotsColorStops.set(DEFAULT_COLOR_STOPS);
   }
 
   editQr(qr: HistoryItem) {
@@ -133,12 +128,7 @@ export class QrDataService implements QrData {
     this.qrBackgroundGradientRotation.set(
       qr.qrBackgroundGradientData?.rotation
     );
-    this.qrBackgroundGradientColor1.set(
-      qr.qrBackgroundGradientData?.colorStops[0].color
-    );
-    this.qrBackgroundGradientColor2.set(
-      qr.qrBackgroundGradientData?.colorStops[1].color
-    );
+    this.qrBackgroundColorStops.set(qr.qrBackgroundGradientData?.colorStops);
     this.qrCornerSquareGradient.set(qr.qrCornerSquareGradient);
     this.qrCornerSquareGradientType.set(qr.qrCornerSquareGradientData?.type);
     this.qrCornerSquareGradientRotation.set(
@@ -162,8 +152,7 @@ export class QrDataService implements QrData {
     this.qrDotsGradient.set(qr.qrDotsGradient);
     this.qrDotsGradientType.set(qr.qrDotsGradientData?.type);
     this.qrDotsGradientRotation.set(qr.qrDotsGradientData?.rotation);
-    // this.qrDotsGradientColor1.set(qr.qrDotsGradientData?.colorStops[0].color);
-    // this.qrDotsGradientColor2.set(qr.qrDotsGradientData?.colorStops[1].color);
+    this.qrDotsColorStops.set(qr.qrDotsGradientData?.colorStops);
   }
 
   downloadQr(qr: HistoryItem) {
@@ -235,12 +224,9 @@ export class QrDataService implements QrData {
         this.qrBackgroundGradient() && !this.qrTransparent()
           ? {
               gradient: {
-                type: this.qrDotsGradientType(),
+                type: this.qrBackgroundGradientType(),
                 rotation: this.qrBackgroundGradientRotation(),
-                colorStops: [
-                  { offset: 0, color: this.qrBackgroundGradientColor1() },
-                  { offset: 1, color: this.qrBackgroundGradientColor2() },
-                ],
+                colorStops: this.qrBackgroundColorStops(),
               },
             }
           : {
@@ -308,12 +294,9 @@ export class QrDataService implements QrData {
         this.qrBackgroundGradient() && !this.qrTransparent()
           ? {
               gradient: {
-                type: this.qrDotsGradientType(),
+                type: this.qrBackgroundGradientType(),
                 rotation: this.qrBackgroundGradientRotation(),
-                colorStops: [
-                  { offset: 0, color: this.qrBackgroundGradientColor1() },
-                  { offset: 1, color: this.qrBackgroundGradientColor2() },
-                ],
+                colorStops: this.qrBackgroundColorStops(),
               },
             }
           : {

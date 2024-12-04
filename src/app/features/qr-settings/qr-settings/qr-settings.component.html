@@ -18,6 +18,14 @@
         }
 
         <mat-divider></mat-divider>
+        @if (qrDataService.qrBackgroundGradient()) {
+        <gradient-input
+          title="Dots"
+          (valueChanged)="handleBackgroundGradient($event)"
+          [(selectedGradientType)]="qrDataService.qrBackgroundGradientType"
+          [(rotation)]="qrDataService.qrBackgroundGradientRotation"
+        ></gradient-input>
+        } @else {
         <color-input
           label="Background"
           [defaultColor]="qrDataService.qrBackground()"
@@ -29,6 +37,7 @@
             }}</mat-icon>
           </button>
         </color-input>
+        }
         <mat-divider></mat-divider>
         <color-input
           label="Squares"
