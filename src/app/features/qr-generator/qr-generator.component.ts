@@ -137,16 +137,7 @@ export class QrGeneratorComponent implements AfterViewInit {
         qrCornerDotGradientData: {
           type: this.qrDataService.qrCornerDotGradientType(),
           rotation: this.qrDataService.qrCornerDotGradientRotation(),
-          colorStops: [
-            {
-              offset: 0,
-              color: this.qrDataService.qrCornerDotGradientColor1(),
-            },
-            {
-              offset: 1,
-              color: this.qrDataService.qrCornerDotGradientColor2(),
-            },
-          ],
+          colorStops: this.qrDataService.qrCornerDotColorStops(),
         },
       });
     });
@@ -244,10 +235,7 @@ export class QrGeneratorComponent implements AfterViewInit {
       qrCornerDotGradientData: {
         type: this.qrDataService.qrCornerDotGradientType(),
         rotation: this.qrDataService.qrCornerDotGradientRotation(),
-        colorStops: [
-          { offset: 0, color: this.qrDataService.qrCornerDotGradientColor1() },
-          { offset: 1, color: this.qrDataService.qrCornerDotGradientColor2() },
-        ],
+        colorStops: this.qrDataService.qrCornerDotColorStops(),
       },
     });
     this.snackbar.open('Saved');

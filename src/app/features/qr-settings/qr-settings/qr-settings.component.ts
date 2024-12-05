@@ -108,4 +108,8 @@ export class QrSettingsComponent {
   handleCornerSquareGradient(value: ColorStops) {
     this.qrDataService.qrCornerSquareColorStops.set(value);
   }
+
+  handleCornerDotGradient(value: ColorStops) {
+    this.qrDataService.qrCornerDotColorStops.set(value);
+  }
 }
