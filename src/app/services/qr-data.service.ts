@@ -58,11 +58,10 @@ export class QrDataService implements QrData {
   qrBackgroundGradientType = signal<GradientType>('linear');
   qrBackgroundGradientRotation = signal<number>(0);
   qrBackgroundColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrCornerSquareGradient = signal<boolean>(false);
+  qrCornerSquareGradient = signal<boolean>(true);
   qrCornerSquareGradientType = signal<GradientType>('linear');
   qrCornerSquareGradientRotation = signal<number>(0);
-  qrCornerSquareGradientColor1 = signal<string>('#25456e');
-  qrCornerSquareGradientColor2 = signal<string>('#4267b2');
+  qrCornerSquareColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
   qrCornerDotGradient = signal<boolean>(false);
   qrCornerDotGradientType = signal<GradientType>('linear');
   qrCornerDotGradientRotation = signal<number>(0);
@@ -90,11 +89,10 @@ export class QrDataService implements QrData {
     this.qrBackgroundGradientType.set('linear');
     this.qrBackgroundGradientRotation.set(0);
     this.qrBackgroundColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrCornerSquareGradient.set(false);
+    this.qrCornerSquareGradient.set(true);
     this.qrCornerSquareGradientType.set('linear');
     this.qrCornerSquareGradientRotation.set(0);
-    this.qrCornerSquareGradientColor1.set('#25456e');
-    this.qrCornerSquareGradientColor2.set('#4267b2');
+    this.qrCornerSquareColorStops.set(DEFAULT_COLOR_STOPS);
     this.qrCornerDotGradient.set(false);
     this.qrCornerDotGradientType.set('linear');
     this.qrCornerDotGradientRotation.set(0);
@@ -134,11 +132,8 @@ export class QrDataService implements QrData {
     this.qrCornerSquareGradientRotation.set(
       qr.qrCornerSquareGradientData?.rotation
     );
-    this.qrCornerSquareGradientColor1.set(
-      qr.qrCornerSquareGradientData?.colorStops[0].color
-    );
-    this.qrCornerSquareGradientColor2.set(
-      qr.qrCornerSquareGradientData?.colorStops[1].color
+    this.qrCornerSquareColorStops.set(
+      qr.qrCornerSquareGradientData?.colorStops
     );
     this.qrCornerDotGradient.set(qr.qrCornerDotGradient);
     this.qrCornerDotGradientType.set(qr.qrCornerDotGradientData?.type);
@@ -238,10 +233,7 @@ export class QrDataService implements QrData {
             gradient: {
               type: this.qrCornerSquareGradientType(),
               rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: [
-                { offset: 0, color: this.qrCornerSquareGradientColor1() },
-                { offset: 1, color: this.qrCornerSquareGradientColor2() },
-              ],
+              colorStops: this.qrCornerSquareColorStops(),
             },
           }
         : {
@@ -308,10 +300,7 @@ export class QrDataService implements QrData {
             gradient: {
               type: this.qrCornerSquareGradientType(),
               rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: [
-                { offset: 0, color: this.qrCornerSquareGradientColor1() },
-                { offset: 1, color: this.qrCornerSquareGradientColor2() },
-              ],
+              colorStops: this.qrCornerSquareColorStops(),
             },
           }
         : {

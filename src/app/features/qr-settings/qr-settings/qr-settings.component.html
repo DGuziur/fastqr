@@ -39,11 +39,20 @@
         </color-input>
         }
         <mat-divider></mat-divider>
+        @if (qrDataService.qrCornerSquareGradient()) {
+        <gradient-input
+          title="Squares"
+          (valueChanged)="handleCornerSquareGradient($event)"
+          [(selectedGradientType)]="qrDataService.qrCornerSquareGradientType"
+          [(rotation)]="qrDataService.qrCornerSquareGradientRotation"
+        ></gradient-input>
+        }@else {
         <color-input
           label="Squares"
           [defaultColor]="qrDataService.qrCornerSquare()"
           (colorChanged)="handleCornerSquareChange($event)"
         ></color-input>
+        }
         <mat-divider></mat-divider>
         <color-input
           label="Square dots"
