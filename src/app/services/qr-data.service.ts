@@ -7,7 +7,6 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
-import { HistoryItem } from '../features/history/history.component';
 import { SnackbarService } from './snackbar.service';
 import QRCodeStyling, {
   CornerDotType,
@@ -17,6 +16,11 @@ import QRCodeStyling, {
   GradientType,
 } from 'qr-code-styling';
 import { ColorStops } from '../components/gradient-input/gradient-input.component';
+
+export const DEFAULT_COLOR_STOPS: ColorStops = [
+  { offset: 0, color: '#ffffff' },
+  { offset: 1, color: '#77779C' },
+];
 
 type QrGradient = {
   type: GradientType;
@@ -57,34 +61,35 @@ type QrState = {
   value: string;
   level: ErrorCodeLevel;
   margin: number;
+  downloadType: FileExtension;
   background: QrBackground;
   cornerSquare: QrCornersSquare;
   cornerDot: QrCornersDot;
   icon: QrIcon;
 };
 
-interface QrData {
-  qrValue: WritableSignal<string>;
-  qrBackground: WritableSignal<string>;
-  qrColor: WritableSignal<string>;
-  qrLevel: WritableSignal<ErrorCodeLevel>;
-  qrIcon: WritableSignal<string>;
-  qrIconName: WritableSignal<string>;
-  qrIconSize: WritableSignal<number>;
-  qrTransparent: WritableSignal<boolean>;
-  qrMargin: WritableSignal<number>;
-  editQr(qr: HistoryItem): void;
-}
+export type HistoryItem = {
+  createdAt: Date | string;
+  canvas?: string;
+  value: string;
+  level: ErrorCodeLevel;
+  downloadType: FileExtension;
+  margin: number;
+  background: QrBackground;
+  cornerSquare: QrCornersSquare;
+  cornerDot: QrCornersDot;
+  icon: QrIcon;
+};
 
 @Injectable({
   providedIn: 'root',
 })
-export class QrDataService implements QrData {
+export class QrDataService {
   private readonly snackbar = inject(SnackbarService);
 
-  private initialState: QrState;
   public currentState: Signal<QrState>;
-  public resetState: Function;
+  private initialState: QrState;
+  private resetState: Function;
   constructor() {
     const { initialState, currentState, resetState } = this.createState();
     this.initialState = initialState;
@@ -95,6 +100,7 @@ export class QrDataService implements QrData {
   public value = signal<string>('');
   public level = signal<ErrorCodeLevel>('L');
   public margin = signal<number>(4);
+  public downloadType = signal<FileExtension>('png');
 
   public background = signal<QrBackground>({
     color: '#ffffff',
@@ -143,6 +149,7 @@ export class QrDataService implements QrData {
         value: this.value(),
         level: this.level(),
         margin: this.margin(),
+        downloadType: this.downloadType(),
         background: this.background(),
         cornerSquare: this.cornerSquare(),
         cornerDot: this.cornerDot(),
@@ -157,6 +164,7 @@ export class QrDataService implements QrData {
         this.value.set(initialState.value);
         this.level.set(initialState.level);
         this.margin.set(initialState.margin);
+        this.downloadType.set(initialState.downloadType);
         this.background.set(initialState.background);
         this.cornerSquare.set(initialState.cornerSquare);
         this.cornerDot.set(initialState.cornerDot);
@@ -165,125 +173,26 @@ export class QrDataService implements QrData {
     };
   };
 
-  qrValue = signal('');
-
-  qrColor = signal('#000000');
-  qrBackground = signal('#ffffff');
-  qrCornerSquare = signal('#000000');
-  qrCornerDot = signal('#000000');
-
-  qrLevel = signal<ErrorCodeLevel>('L');
-  qrIcon = signal('');
-  qrIconName = signal('');
-  qrIconMargin = signal<number>(0);
-  qrIconHideBackgroundDots = signal<boolean>(false);
-  qrIconSize = signal<number>(0.5);
-  qrDotsType = signal<DotType>('rounded');
-  qrCornerDotType = signal<CornerDotType>('dot');
-  qrSquareType = signal<CornerSquareType>('extra-rounded');
-  qrDownloadType = signal<FileExtension>('svg');
-  qrTransparent = signal<boolean>(false);
-  qrMargin = signal<number>(4);
-
-  qrDotsGradient = signal<boolean>(true);
-  qrDotsGradientType = signal<GradientType>('linear');
-  qrDotsGradientRotation = signal<number>(0);
-  qrDotsColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrBackgroundGradient = signal<boolean>(true);
-  qrBackgroundGradientType = signal<GradientType>('linear');
-  qrBackgroundGradientRotation = signal<number>(0);
-  qrBackgroundColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrCornerSquareGradient = signal<boolean>(true);
-  qrCornerSquareGradientType = signal<GradientType>('linear');
-  qrCornerSquareGradientRotation = signal<number>(0);
-  qrCornerSquareColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrCornerDotGradient = signal<boolean>(true);
-  qrCornerDotGradientType = signal<GradientType>('linear');
-  qrCornerDotGradientRotation = signal<number>(0);
-  qrCornerDotColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-
   resetQr() {
-    this.qrValue.set('');
-    this.qrBackground.set('#ffffff');
-    this.qrColor.set('#000000');
-    this.qrCornerSquare.set('#000000');
-    this.qrCornerDot.set('#000000');
-    this.qrLevel.set('L');
-    this.qrIcon.set('');
-    this.qrIconName.set('');
-    this.qrIconSize.set(0.5);
-    this.qrTransparent.set(false);
-    this.qrMargin.set(4);
-    this.qrCornerDotType.set('dot');
-    this.qrSquareType.set('extra-rounded');
-    this.qrDotsType.set('rounded');
-    this.qrIconMargin.set(0);
-    this.qrIconHideBackgroundDots.set(false);
-    this.qrBackgroundGradient.set(false);
-    this.qrBackgroundGradientType.set('linear');
-    this.qrBackgroundGradientRotation.set(0);
-    this.qrBackgroundColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrCornerSquareGradient.set(true);
-    this.qrCornerSquareGradientType.set('linear');
-    this.qrCornerSquareGradientRotation.set(0);
-    this.qrCornerSquareColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrCornerDotGradient.set(false);
-    this.qrCornerDotGradientType.set('linear');
-    this.qrCornerDotGradientRotation.set(0);
-    this.qrCornerDotColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrDotsGradient.set(false);
-    this.qrDotsGradientType.set('linear');
-    this.qrDotsGradientRotation.set(0);
-    this.qrDotsColorStops.set(DEFAULT_COLOR_STOPS);
+    this.resetState();
   }
 
   editQr(qr: HistoryItem) {
-    this.qrValue.set(qr.qrValue);
-    this.qrBackground.set(qr.qrBackground);
-    this.qrColor.set(qr.qrColor);
-    this.qrCornerSquare.set(qr.qrCornerSquare);
-    this.qrCornerDot.set(qr.qrCornerDot);
-    this.qrLevel.set(<ErrorCodeLevel>qr.qrLevel);
-    this.qrIcon.set(qr.qrIcon);
-    this.qrIconName.set(qr.qrIconName);
-    this.qrIconSize.set(qr.qrIconSize);
-    this.qrTransparent.set(qr.qrTransparent || false);
-    this.qrMargin.set(qr.qrMargin);
-    this.qrCornerDotType.set(qr.qrCornerDotType);
-    this.qrSquareType.set(qr.qrSquareType);
-    this.qrDotsType.set(qr.qrDotsType);
-    this.qrIconMargin.set(qr.qrIconMargin);
-    this.qrIconHideBackgroundDots.set(qr.qrIconHideBackgroundDots);
-    this.qrBackgroundGradient.set(qr.qrBackgroundGradient);
-    this.qrBackgroundGradientType.set(qr.qrBackgroundGradientData?.type);
-    this.qrBackgroundGradientRotation.set(
-      qr.qrBackgroundGradientData?.rotation
-    );
-    this.qrBackgroundColorStops.set(qr.qrBackgroundGradientData?.colorStops);
-    this.qrCornerSquareGradient.set(qr.qrCornerSquareGradient);
-    this.qrCornerSquareGradientType.set(qr.qrCornerSquareGradientData?.type);
-    this.qrCornerSquareGradientRotation.set(
-      qr.qrCornerSquareGradientData?.rotation
-    );
-    this.qrCornerSquareColorStops.set(
-      qr.qrCornerSquareGradientData?.colorStops
-    );
-    this.qrCornerDotGradient.set(qr.qrCornerDotGradient);
-    this.qrCornerDotGradientType.set(qr.qrCornerDotGradientData?.type);
-    this.qrCornerDotGradientRotation.set(qr.qrCornerDotGradientData?.rotation);
-    this.qrCornerDotColorStops.set(qr.qrCornerDotGradientData?.colorStops);
-    this.qrDotsGradient.set(qr.qrDotsGradient);
-    this.qrDotsGradientType.set(qr.qrDotsGradientData?.type);
-    this.qrDotsGradientRotation.set(qr.qrDotsGradientData?.rotation);
-    this.qrDotsColorStops.set(qr.qrDotsGradientData?.colorStops);
+    this.value.set(qr.value);
+    this.level.set(qr.level);
+    this.margin.set(qr.margin);
+    this.background.set(qr.background);
+    this.cornerSquare.set(qr.cornerSquare);
+    this.cornerDot.set(qr.cornerDot);
+    this.icon.set(qr.icon);
   }
 
   downloadQr(qr: HistoryItem) {
     if (!qr.canvas) throw new Error('Nothing to download');
     const qrCanvas = this.buildQr(qr);
     qrCanvas.download({
-      name: qr.qrValue,
-      extension: qr.qrDownloadType,
+      name: qr.value,
+      extension: qr.downloadType,
     });
   }
 
@@ -307,152 +216,67 @@ export class QrDataService implements QrData {
   }
 
   goToLink(qr: HistoryItem) {
-    if (!qr.qrValue) throw new Error('Nothing to go to');
-    chrome.tabs.create({ url: qr.qrValue, active: false });
+    if (!qr.value) throw new Error('Nothing to go to');
+    chrome.tabs.create({ url: qr.value, active: false });
   }
 
-  buildQr(qr?: HistoryItem) {
+  buildQr(state: QrState): QRCodeStyling {
     return new QRCodeStyling({
       width: 200,
       height: 200,
-      data: qr?.qrValue || this.qrValue(),
-      image: qr?.qrIcon || this.qrIcon(),
-      margin: qr?.qrMargin || this.qrMargin(),
+      data: state.value,
+      image: state.icon.name,
+      margin: state.margin,
       qrOptions: {
         typeNumber: 0,
         mode: 'Byte',
-        errorCorrectionLevel: this.qrLevel(),
+        errorCorrectionLevel: state.level,
       },
       imageOptions: {
-        hideBackgroundDots:
-          qr?.qrIconHideBackgroundDots || this.qrIconHideBackgroundDots(),
-        imageSize: qr?.qrIconSize || this.qrIconSize(),
-        margin: qr?.qrIconMargin || this.qrIconMargin(),
+        hideBackgroundDots: state.icon.hideBackgroundDots,
+        imageSize: state.icon.size,
+        margin: state.icon.margin,
         crossOrigin: 'anonymous',
       },
-      dotsOptions: this.qrDotsGradient()
+      dotsOptions: state.background.isGradient
         ? {
-            type: this.qrDotsType(),
-            gradient: {
-              type: this.qrDotsGradientType(),
-              rotation: this.qrDotsGradientRotation(),
-              colorStops: this.qrDotsColorStops(),
-            },
+            type: state.background.type,
+            gradient: state.background.gradient,
           }
         : {
-            color: this.qrColor(),
-            type: this.qrDotsType(),
-          },
-      backgroundOptions:
-        this.qrBackgroundGradient() && !this.qrTransparent()
-          ? {
-              gradient: {
-                type: this.qrBackgroundGradientType(),
-                rotation: this.qrBackgroundGradientRotation(),
-                colorStops: this.qrBackgroundColorStops(),
-              },
-            }
-          : {
-              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
-            },
-      cornersSquareOptions: this.qrCornerSquareGradient()
-        ? {
-            type: this.qrSquareType(),
-            gradient: {
-              type: this.qrCornerSquareGradientType(),
-              rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: this.qrCornerSquareColorStops(),
-            },
-          }
-        : {
-            type: this.qrSquareType(),
-            color: this.qrCornerSquare(),
-          },
-      cornersDotOptions: this.qrCornerDotGradient()
-        ? {
-            type: this.qrCornerDotType(),
-            gradient: {
-              type: this.qrCornerDotGradientType(),
-              rotation: this.qrCornerDotGradientRotation(),
-              colorStops: this.qrCornerDotColorStops(),
-            },
-          }
-        : {
-            color: this.qrCornerDot(),
-            type: this.qrCornerDotType(),
+            color: state.background.color,
+            type: state.background.type,
           },
     });
   }
 
-  updateQr(qr: QRCodeStyling) {
+  updateQr(qr: QRCodeStyling, state: QrState) {
     qr.update({
-      data: this.qrValue(),
-      image: this.qrIcon(),
-      margin: this.qrMargin(),
-      imageOptions: {
-        imageSize: this.qrIconSize(),
-        margin: this.qrIconMargin(),
-        hideBackgroundDots: this.qrIconHideBackgroundDots(),
-      },
-      dotsOptions: this.qrDotsGradient()
-        ? {
-            type: this.qrDotsType(),
-            gradient: {
-              type: this.qrDotsGradientType(),
-              rotation: this.qrDotsGradientRotation(),
-              colorStops: this.qrDotsColorStops(),
-            },
-          }
-        : {
-            color: this.qrColor(),
-            type: this.qrDotsType(),
-          },
-      backgroundOptions:
-        this.qrBackgroundGradient() && !this.qrTransparent()
-          ? {
-              gradient: {
-                type: this.qrBackgroundGradientType(),
-                rotation: this.qrBackgroundGradientRotation(),
-                colorStops: this.qrBackgroundColorStops(),
-              },
-            }
-          : {
-              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
-            },
-      cornersSquareOptions: this.qrCornerSquareGradient()
-        ? {
-            type: this.qrSquareType(),
-            gradient: {
-              type: this.qrCornerSquareGradientType(),
-              rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: this.qrCornerSquareColorStops(),
-            },
-          }
-        : {
-            type: this.qrSquareType(),
-            color: this.qrCornerSquare(),
-          },
-      cornersDotOptions: this.qrCornerDotGradient()
-        ? {
-            type: this.qrCornerDotType(),
-            gradient: {
-              type: this.qrCornerDotGradientType(),
-              rotation: this.qrCornerDotGradientRotation(),
-              colorStops: this.qrCornerDotColorStops(),
-            },
-          }
-        : {
-            color: this.qrCornerDot(),
-            type: this.qrCornerDotType(),
-          },
+      width: 200,
+      height: 200,
+      data: state.value,
+      image: state.icon.name,
+      margin: state.margin,
       qrOptions: {
-        errorCorrectionLevel: this.qrLevel(),
+        typeNumber: 0,
+        mode: 'Byte',
+        errorCorrectionLevel: state.level,
       },
+      imageOptions: {
+        hideBackgroundDots: state.icon.hideBackgroundDots,
+        imageSize: state.icon.size,
+        margin: state.icon.margin,
+        crossOrigin: 'anonymous',
+      },
+      dotsOptions: state.background.isGradient
+        ? {
+            type: state.background.type,
+            gradient: state.background.gradient,
+          }
+        : {
+            color: state.background.color,
+            type: state.background.type,
+          },
     });
   }
 }
-
-export const DEFAULT_COLOR_STOPS: ColorStops = [
-  { offset: 0, color: '#ffffff' },
-  { offset: 1, color: '#77779C' },
-];
