@@ -1,4 +1,11 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  computed,
+  inject,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import { HistoryItem } from '../features/history/history.component';
 import { SnackbarService } from './snackbar.service';
@@ -10,6 +17,51 @@ import QRCodeStyling, {
   GradientType,
 } from 'qr-code-styling';
 import { ColorStops } from '../components/gradient-input/gradient-input.component';
+
+type QrGradient = {
+  type: GradientType;
+  rotation: number;
+  colorStops: ColorStops;
+};
+
+type QrBackground = {
+  color: string;
+  type: DotType;
+  transparent: boolean;
+  isGradient: boolean;
+  gradient: QrGradient;
+};
+
+type QrCornersSquare = {
+  color: string;
+  type: CornerSquareType;
+  isGradient: boolean;
+  gradient: QrGradient;
+};
+
+type QrCornersDot = {
+  color: string;
+  type: CornerDotType;
+  isGradient: boolean;
+  gradient: QrGradient;
+};
+
+type QrIcon = {
+  hideBackgroundDots: boolean;
+  name: string;
+  margin: number;
+  size: number;
+};
+
+type QrState = {
+  value: string;
+  level: ErrorCodeLevel;
+  margin: number;
+  background: QrBackground;
+  cornerSquare: QrCornersSquare;
+  cornerDot: QrCornersDot;
+  icon: QrIcon;
+};
 
 interface QrData {
   qrValue: WritableSignal<string>;
@@ -30,57 +82,88 @@ interface QrData {
 export class QrDataService implements QrData {
   private readonly snackbar = inject(SnackbarService);
 
-  public current = signal({
-    value: '',
-    level: 'L',
-    margin: 4,
-    background: {
-      color: '#ffffff',
-      type: 'square',
-      transparent: false,
-      isGradient: false,
-      gradient: {
-        type: 'linear',
-        rotation: 0,
-        colorStops: [
-          { offset: 0, color: '#ffffff' },
-          { offset: 1, color: '#77779C' },
-        ],
-      },
-    },
-    cornerSquare: {
-      color: '#000000',
-      type: 'square',
-      isGradient: false,
-      gradient: {
-        type: 'linear',
-        rotation: 0,
-        colorStops: [
-          { offset: 0, color: '#ffffff' },
-          { offset: 1, color: '#77779C' },
-        ],
-      },
-    },
-    cornerDot: {
-      color: '#000000',
-      type: 'dot',
-      isGradient: false,
-      gradient: {
-        type: 'linear',
-        rotation: 0,
-        colorStops: [
-          { offset: 0, color: '#ffffff' },
-          { offset: 1, color: '#77779C' },
-        ],
-      },
-    },
-    icon: {
-      hideBackgroundDots: false,
-      name: '',
-      margin: 0,
-      size: 0.5,
+  private initialState: QrState;
+  public currentState: Signal<QrState>;
+  public resetState: Function;
+  constructor() {
+    const { initialState, currentState, resetState } = this.createState();
+    this.initialState = initialState;
+    this.currentState = currentState;
+    this.resetState = resetState;
+  }
+
+  public value = signal<string>('');
+  public level = signal<ErrorCodeLevel>('L');
+  public margin = signal<number>(4);
+
+  public background = signal<QrBackground>({
+    color: '#ffffff',
+    type: 'square',
+    transparent: false,
+    isGradient: false,
+    gradient: {
+      type: 'linear',
+      rotation: 0,
+      colorStops: DEFAULT_COLOR_STOPS,
     },
   });
+
+  public cornerSquare = signal<QrCornersSquare>({
+    color: '#000000',
+    type: 'square',
+    isGradient: false,
+    gradient: {
+      type: 'linear',
+      rotation: 0,
+      colorStops: DEFAULT_COLOR_STOPS,
+    },
+  });
+
+  public cornerDot = signal<QrCornersDot>({
+    color: '#000000',
+    type: 'dot',
+    isGradient: false,
+    gradient: {
+      type: 'linear',
+      rotation: 0,
+      colorStops: DEFAULT_COLOR_STOPS,
+    },
+  });
+
+  public icon = signal<QrIcon>({
+    hideBackgroundDots: false,
+    name: '',
+    margin: 0,
+    size: 0.5,
+  });
+
+  private readonly createState = () => {
+    const c = computed(() => {
+      return {
+        value: this.value(),
+        level: this.level(),
+        margin: this.margin(),
+        background: this.background(),
+        cornerSquare: this.cornerSquare(),
+        cornerDot: this.cornerDot(),
+        icon: this.icon(),
+      };
+    });
+    const initialState = c();
+    return {
+      initialState,
+      currentState: c,
+      resetState: () => {
+        this.value.set(initialState.value);
+        this.level.set(initialState.level);
+        this.margin.set(initialState.margin);
+        this.background.set(initialState.background);
+        this.cornerSquare.set(initialState.cornerSquare);
+        this.cornerDot.set(initialState.cornerDot);
+        this.icon.set(initialState.icon);
+      },
+    };
+  };
 
   qrValue = signal('');
 
