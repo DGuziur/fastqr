@@ -30,6 +30,58 @@ interface QrData {
 export class QrDataService implements QrData {
   private readonly snackbar = inject(SnackbarService);
 
+  public current = signal({
+    value: '',
+    level: 'L',
+    margin: 4,
+    background: {
+      color: '#ffffff',
+      type: 'square',
+      transparent: false,
+      isGradient: false,
+      gradient: {
+        type: 'linear',
+        rotation: 0,
+        colorStops: [
+          { offset: 0, color: '#ffffff' },
+          { offset: 1, color: '#77779C' },
+        ],
+      },
+    },
+    cornerSquare: {
+      color: '#000000',
+      type: 'square',
+      isGradient: false,
+      gradient: {
+        type: 'linear',
+        rotation: 0,
+        colorStops: [
+          { offset: 0, color: '#ffffff' },
+          { offset: 1, color: '#77779C' },
+        ],
+      },
+    },
+    cornerDot: {
+      color: '#000000',
+      type: 'dot',
+      isGradient: false,
+      gradient: {
+        type: 'linear',
+        rotation: 0,
+        colorStops: [
+          { offset: 0, color: '#ffffff' },
+          { offset: 1, color: '#77779C' },
+        ],
+      },
+    },
+    icon: {
+      hideBackgroundDots: false,
+      name: '',
+      margin: 0,
+      size: 0.5,
+    },
+  });
+
   qrValue = signal('');
 
   qrColor = signal('#000000');
