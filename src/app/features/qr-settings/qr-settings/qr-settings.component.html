@@ -5,11 +5,15 @@
         <button
           mat-button
           (click)="
-            qrDataService.qrDotsGradient.set(!qrDataService.qrDotsGradient())
+            updateSignalProperty(
+              qrDataService.mainDots,
+              'isGradient',
+              !qrDataService.mainDots().isGradient
+            )
           "
         >
           <mat-icon>{{
-            qrDataService.qrDotsGradient()
+            qrDataService.mainDots().isGradient
               ? "check_box"
               : "check_box_outline_blank"
           }}</mat-icon>
@@ -18,13 +22,15 @@
         <button
           mat-button
           (click)="
-            qrDataService.qrBackgroundGradient.set(
-              !qrDataService.qrBackgroundGradient()
+            updateSignalProperty(
+              qrDataService.background,
+              'isGradient',
+              !qrDataService.background().isGradient
             )
           "
         >
           <mat-icon>{{
-            qrDataService.qrBackgroundGradient()
+            qrDataService.background().isGradient
               ? "check_box"
               : "check_box_outline_blank"
           }}</mat-icon>
@@ -33,13 +39,15 @@
         <button
           mat-button
           (click)="
-            qrDataService.qrCornerSquareGradient.set(
-              !qrDataService.qrCornerSquareGradient()
+            updateSignalProperty(
+              qrDataService.cornerSquare,
+              'isGradient',
+              !qrDataService.cornerSquare().isGradient
             )
           "
         >
           <mat-icon>{{
-            qrDataService.qrCornerSquareGradient()
+            qrDataService.cornerSquare().isGradient
               ? "check_box"
               : "check_box_outline_blank"
           }}</mat-icon>
@@ -48,81 +56,87 @@
         <button
           mat-button
           (click)="
-            qrDataService.qrCornerDotGradient.set(
-              !qrDataService.qrCornerDotGradient()
+            updateSignalProperty(
+              qrDataService.cornerDot,
+              'isGradient',
+              !qrDataService.cornerDot().isGradient
             )
           "
         >
           <mat-icon>{{
-            qrDataService.qrCornerDotGradient()
+            qrDataService.cornerDot().isGradient
               ? "check_box"
               : "check_box_outline_blank"
           }}</mat-icon>
           Square dots
         </button>
-        @if (qrDataService.qrDotsGradient()) {
+        @if (qrDataService.mainDots().isGradient) {
         <gradient-input
           title="Dots"
-          (valueChanged)="handleDotsGradient($event)"
-          [(selectedGradientType)]="qrDataService.qrDotsGradientType"
-          [(rotation)]="qrDataService.qrDotsGradientRotation"
+          (valueChanged)="updateColorStops(qrDataService.mainDots, $event)"
+          [(selectedGradientType)]="qrDataService.mainDots().gradient.type"
+          [(rotation)]="qrDataService.mainDots().gradient.rotation"
         ></gradient-input>
         } @else {
         <color-input
           label="Main"
-          [defaultColor]="qrDataService.qrColor()"
+          [defaultColor]="qrDataService.mainDots().color"
           (colorChanged)="handleColorChange($event)"
         ></color-input>
         }
 
         <mat-divider></mat-divider>
-        @if (qrDataService.qrBackgroundGradient()) {
+        @if (qrDataService.background().isGradient) {
         <gradient-input
           title="Dots"
           (valueChanged)="handleBackgroundGradient($event)"
-          [(selectedGradientType)]="qrDataService.qrBackgroundGradientType"
-          [(rotation)]="qrDataService.qrBackgroundGradientRotation"
+          [(selectedGradientType)]="qrDataService.background().gradient.type"
+          [(rotation)]="qrDataService.background().gradient.rotation"
         ></gradient-input>
         } @else {
         <color-input
           label="Background"
-          [defaultColor]="qrDataService.qrBackground()"
-          (colorChanged)="handleBackgroundChange($event)"
+          [defaultColor]="qrDataService.background().color"
+          (colorChanged)="
+            updateSignalProperty(qrDataService.background, 'color', $event)
+          "
         >
           <button mat-icon-button (click)="toggleTransparent()">
             <mat-icon>{{
-              qrDataService.qrTransparent() ? "visibility_off" : "visibility"
+              qrDataService.background().transparent
+                ? "visibility_off"
+                : "visibility"
             }}</mat-icon>
           </button>
         </color-input>
         }
         <mat-divider></mat-divider>
-        @if (qrDataService.qrCornerSquareGradient()) {
+        @if (qrDataService.cornerSquare().isGradient) {
         <gradient-input
           title="Squares"
           (valueChanged)="handleCornerSquareGradient($event)"
-          [(selectedGradientType)]="qrDataService.qrCornerSquareGradientType"
-          [(rotation)]="qrDataService.qrCornerSquareGradientRotation"
+          [(selectedGradientType)]="qrDataService.cornerSquare().gradient.type"
+          [(rotation)]="qrDataService.cornerSquare().gradient.rotation"
         ></gradient-input>
         }@else {
         <color-input
           label="Squares"
-          [defaultColor]="qrDataService.qrCornerSquare()"
+          [defaultColor]="qrDataService.cornerSquare().color"
           (colorChanged)="handleCornerSquareChange($event)"
         ></color-input>
         }
         <mat-divider></mat-divider>
-        @if (qrDataService.qrCornerDotGradient()) {
+        @if (qrDataService.cornerDot().isGradient) {
         <gradient-input
           title="Square dots"
           (valueChanged)="handleCornerDotGradient($event)"
-          [(selectedGradientType)]="qrDataService.qrCornerDotGradientType"
-          [(rotation)]="qrDataService.qrCornerDotGradientRotation"
+          [(selectedGradientType)]="qrDataService.cornerDot().gradient.type"
+          [(rotation)]="qrDataService.cornerDot().gradient.rotation"
         ></gradient-input>
         } @else {
         <color-input
           label="Square dots"
-          [defaultColor]="qrDataService.qrCornerDot()"
+          [defaultColor]="qrDataService.cornerDot().color"
           (colorChanged)="handleCornerDotChange($event)"
         ></color-input>
         }
@@ -135,8 +149,8 @@
         <mat-slider min="0" max="20" step="1">
           <input
             matSliderThumb
-            [value]="qrDataService.qrMargin()"
-            (valueChange)="qrDataService.qrMargin.set($event)"
+            [value]="qrDataService.margin()"
+            (valueChange)="qrDataService.margin.set($event)"
           />
         </mat-slider>
       </div>
@@ -145,15 +159,15 @@
         <mat-expansion-panel-header>
           <mat-panel-title> Dot type </mat-panel-title>
           <mat-panel-description>
-            Currently selected: {{ qrDataService.qrDotsType() }}
+            Currently selected: {{ qrDataService.mainDots().type }}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-button-toggle-group
           class="multiple-choice"
           name="dotType"
-          [value]="qrDataService.qrDotsType()"
+          [value]="qrDataService.mainDots().type"
           aria-label="Dot type"
-          (valueChange)="qrDataService.qrDotsType.set($event)"
+          (valueChange)="qrDataService.mainDots().type = $event;"
         >
           <mat-button-toggle value="square">Square</mat-button-toggle>
           <mat-button-toggle value="dots">Dots</mat-button-toggle>
@@ -172,14 +186,14 @@
         <mat-expansion-panel-header>
           <mat-panel-title> Corner square type </mat-panel-title>
           <mat-panel-description>
-            Currently selected: {{ qrDataService.qrSquareType() }}
+            Currently selected: {{ qrDataService.cornerSquare().type }}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-button-toggle-group
           name="dotType"
-          [value]="qrDataService.qrSquareType()"
+          [value]="qrDataService.cornerSquare().type"
           aria-label="Dot type"
-          (valueChange)="qrDataService.qrSquareType.set($event)"
+          (valueChange)="qrDataService.cornerSquare().type = $event"
         >
           <mat-button-toggle value="dot">Dot</mat-button-toggle>
           <mat-button-toggle value="square">Square</mat-button-toggle>
@@ -193,14 +207,14 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Corner dot type</mat-panel-title>
           <mat-panel-description>
-            Currently selected: {{ qrDataService.qrCornerDotType() }}
+            Currently selected: {{ qrDataService.cornerDot().type }}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-button-toggle-group
           name="dotType"
-          [value]="qrDataService.qrCornerDotType()"
+          [value]="qrDataService.cornerDot().type"
           aria-label="Dot type"
-          (valueChange)="qrDataService.qrCornerDotType.set($event)"
+          (valueChange)="qrDataService.cornerDot().type = $event"
         >
           <mat-button-toggle value="dot">Dot</mat-button-toggle>
           <mat-button-toggle value="square">Square</mat-button-toggle>
@@ -210,9 +224,9 @@
     <mat-tab label="Logo">
       <div class="flex-aroud">
         <span>Upload</span>
-        @if (qrDataService.qrIconName() || qrDataService.qrIcon()) {
+        @if (qrDataService.icon().name || qrDataService.icon().src) {
         <button class="file-upload-btn" mat-flat-button (click)="resetIcon()">
-          {{ qrDataService.qrIconName() }}
+          {{ qrDataService.icon().name }}
           <mat-icon>delete</mat-icon>
         </button>
         } @else {
@@ -233,8 +247,8 @@
         <mat-slider min="0.05" max="1" step="0.05">
           <input
             matSliderThumb
-            [value]="qrDataService.qrIconSize()"
-            (valueChange)="qrDataService.qrIconSize.set($event)"
+            [value]="qrDataService.icon().size"
+            (valueChange)="qrDataService.icon().size = $event"
           />
         </mat-slider>
       </div>
@@ -244,23 +258,22 @@
         <button
           mat-icon-button
           (click)="
-            qrDataService.qrIconHideBackgroundDots.set(
-              !qrDataService.qrIconHideBackgroundDots()
-            )
+            qrDataService.icon().hideBackgroundDots =
+              !qrDataService.icon().hideBackgroundDots
           "
         >
           <mat-icon>{{
-            qrDataService.qrIconHideBackgroundDots()
+            qrDataService.icon().hideBackgroundDots
               ? "visibility"
               : "visibility_off"
           }}</mat-icon>
         </button>
-        @if (qrDataService.qrIconHideBackgroundDots()) {
+        @if (qrDataService.icon().hideBackgroundDots) {
         <mat-slider class="slider" min="1" max="10" step="0.5">
           <input
             matSliderThumb
-            [value]="qrDataService.qrIconMargin()"
-            (valueChange)="qrDataService.qrIconMargin.set($event)"
+            [value]="qrDataService.icon().margin"
+            (valueChange)="qrDataService.icon().margin = $event"
           />
         </mat-slider>
         } @else {
@@ -268,8 +281,8 @@
           <input
             disabled
             matSliderThumb
-            [value]="qrDataService.qrIconMargin()"
-            (valueChange)="qrDataService.qrIconMargin.set($event)"
+            [value]="qrDataService.icon().margin"
+            (valueChange)="qrDataService.icon().margin = $event"
           />
         </mat-slider>
         }

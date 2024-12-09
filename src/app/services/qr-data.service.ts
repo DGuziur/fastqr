@@ -22,7 +22,7 @@ export const DEFAULT_COLOR_STOPS: ColorStops = [
   { offset: 1, color: '#77779C' },
 ];
 
-type QrGradient = {
+export type QrGradient = {
   type: GradientType;
   rotation: number;
   colorStops: ColorStops;
@@ -32,6 +32,19 @@ type QrBackground = {
   color: string;
   type: DotType;
   transparent: boolean;
+  isGradient: boolean;
+  gradient: QrGradient;
+};
+
+export type QrColorOptions = {
+  color: string;
+  isGradient: boolean;
+  gradient: QrGradient;
+};
+
+type QrMainDots = {
+  color: string;
+  type: DotType;
   isGradient: boolean;
   gradient: QrGradient;
 };
@@ -55,6 +68,7 @@ type QrIcon = {
   name: string;
   margin: number;
   size: number;
+  src: string;
 };
 
 type QrState = {
@@ -62,6 +76,7 @@ type QrState = {
   level: ErrorCodeLevel;
   margin: number;
   downloadType: FileExtension;
+  mainDots: QrMainDots;
   background: QrBackground;
   cornerSquare: QrCornersSquare;
   cornerDot: QrCornersDot;
@@ -75,6 +90,7 @@ export type HistoryItem = {
   level: ErrorCodeLevel;
   downloadType: FileExtension;
   margin: number;
+  mainDots: QrMainDots;
   background: QrBackground;
   cornerSquare: QrCornersSquare;
   cornerDot: QrCornersDot;
@@ -101,6 +117,17 @@ export class QrDataService {
   public level = signal<ErrorCodeLevel>('L');
   public margin = signal<number>(4);
   public downloadType = signal<FileExtension>('png');
+
+  public mainDots = signal<QrMainDots>({
+    color: '#000000',
+    type: 'square',
+    isGradient: false,
+    gradient: {
+      type: 'linear',
+      rotation: 0,
+      colorStops: DEFAULT_COLOR_STOPS,
+    },
+  });
 
   public background = signal<QrBackground>({
     color: '#ffffff',
@@ -137,6 +164,7 @@ export class QrDataService {
   });
 
   public icon = signal<QrIcon>({
+    src: '',
     hideBackgroundDots: false,
     name: '',
     margin: 0,
@@ -150,6 +178,7 @@ export class QrDataService {
         level: this.level(),
         margin: this.margin(),
         downloadType: this.downloadType(),
+        mainDots: this.mainDots(),
         background: this.background(),
         cornerSquare: this.cornerSquare(),
         cornerDot: this.cornerDot(),
@@ -165,6 +194,7 @@ export class QrDataService {
         this.level.set(initialState.level);
         this.margin.set(initialState.margin);
         this.downloadType.set(initialState.downloadType);
+        this.mainDots.set(initialState.mainDots);
         this.background.set(initialState.background);
         this.cornerSquare.set(initialState.cornerSquare);
         this.cornerDot.set(initialState.cornerDot);
@@ -181,6 +211,7 @@ export class QrDataService {
     this.value.set(qr.value);
     this.level.set(qr.level);
     this.margin.set(qr.margin);
+    this.mainDots.set(qr.mainDots);
     this.background.set(qr.background);
     this.cornerSquare.set(qr.cornerSquare);
     this.cornerDot.set(qr.cornerDot);
@@ -224,28 +255,56 @@ export class QrDataService {
     return new QRCodeStyling({
       width: 200,
       height: 200,
-      data: state.value,
-      image: state.icon.name,
-      margin: state.margin,
+      data: state.value, // QR code content
+      image: state.icon.src,
+      margin: state.margin, // QR margin
       qrOptions: {
         typeNumber: 0,
         mode: 'Byte',
-        errorCorrectionLevel: state.level,
+        errorCorrectionLevel: state.level, // Error correction level
       },
       imageOptions: {
-        hideBackgroundDots: state.icon.hideBackgroundDots,
-        imageSize: state.icon.size,
-        margin: state.icon.margin,
+        hideBackgroundDots: state.icon.hideBackgroundDots, // Hide dots behind the icon
+        imageSize: state.icon.size, // Icon size
+        margin: state.icon.margin, // Icon margin
         crossOrigin: 'anonymous',
       },
-      dotsOptions: state.background.isGradient
+      dotsOptions: state.mainDots.isGradient
         ? {
-            type: state.background.type,
-            gradient: state.background.gradient,
+            type: state.mainDots.type, // Dot type
+            gradient: state.mainDots.gradient,
           }
         : {
-            color: state.background.color,
-            type: state.background.type,
+            color: state.mainDots.color,
+            type: state.mainDots.type,
+          },
+      backgroundOptions:
+        state.background.isGradient && !state.background.transparent
+          ? {
+              gradient: state.background.gradient,
+            }
+          : {
+              color: state.background.transparent
+                ? 'transparent'
+                : state.background.color,
+            },
+      cornersSquareOptions: state.cornerSquare.isGradient
+        ? {
+            type: state.cornerSquare.type,
+            gradient: state.cornerSquare.gradient,
+          }
+        : {
+            color: state.cornerSquare.color,
+            type: state.cornerSquare.type,
+          },
+      cornersDotOptions: state.cornerDot.isGradient
+        ? {
+            type: state.cornerDot.type,
+            gradient: state.cornerDot.gradient,
+          }
+        : {
+            color: state.cornerDot.color,
+            type: state.cornerDot.type,
           },
     });
   }
@@ -254,29 +313,49 @@ export class QrDataService {
     qr.update({
       width: 200,
       height: 200,
-      data: state.value,
-      image: state.icon.name,
-      margin: state.margin,
+      data: state.value, // QR code content
+      image: state.icon.src, // Image or icon for the QR code
+      margin: state.margin, // QR margin
       qrOptions: {
         typeNumber: 0,
         mode: 'Byte',
-        errorCorrectionLevel: state.level,
+        errorCorrectionLevel: state.level, // Error correction level
       },
       imageOptions: {
-        hideBackgroundDots: state.icon.hideBackgroundDots,
-        imageSize: state.icon.size,
-        margin: state.icon.margin,
+        hideBackgroundDots: state.icon.hideBackgroundDots, // Hide dots behind the icon
+        imageSize: state.icon.size, // Icon size
+        margin: state.icon.margin, // Icon margin
         crossOrigin: 'anonymous',
       },
-      dotsOptions: state.background.isGradient
-        ? {
-            type: state.background.type,
-            gradient: state.background.gradient,
-          }
-        : {
-            color: state.background.color,
-            type: state.background.type,
-          },
+      dotsOptions: {
+        type: state.mainDots.type, // Dot type
+        color: state.mainDots.color,
+        gradient: state.mainDots.isGradient
+          ? state.mainDots.gradient
+          : undefined,
+      },
+      backgroundOptions: {
+        color: state.background.transparent
+          ? 'transparent'
+          : state.background.color,
+        gradient: state.background.isGradient
+          ? state.background.gradient
+          : undefined,
+      },
+      cornersSquareOptions: {
+        type: state.cornerSquare.type,
+        color: state.cornerSquare.color,
+        gradient: state.cornerSquare.isGradient
+          ? state.cornerSquare.gradient
+          : undefined,
+      },
+      cornersDotOptions: {
+        type: state.cornerDot.type,
+        color: state.cornerDot.color,
+        gradient: state.cornerDot.isGradient
+          ? state.cornerDot.gradient
+          : undefined,
+      },
     });
   }
 }

@@ -8,7 +8,7 @@
 <mat-card class="theme-violet">
   <segmented
     class="segmented"
-    [value]="qrDataService.qrLevel()"
+    [value]="qrDataService.level()"
     [options]="errorCodeLevels"
     (optionChanged)="handleErrorCodeLevelChange($event)"
   ></segmented>
@@ -51,16 +51,16 @@
     #qrTextarea
     class="qr-textarea"
     placeholder="Enter URL"
-    [value]="qrDataService.qrValue()"
+    [value]="qrDataService.value()"
     (click)="qrTextarea.select()"
     (input)="handleTextareaChange(qrTextarea.value)"
   ></textarea>
   } @case('phone-contact') {
   <phone-contact-form
-    (valueChanged)="qrDataService.qrValue.set($event)"
+    (valueChanged)="qrDataService.value.set($event)"
   ></phone-contact-form>
   } @case ('wifi') {
-  <wifi-connect-form (valueChanged)="qrDataService.qrValue.set($event)">
+  <wifi-connect-form (valueChanged)="qrDataService.value.set($event)">
   </wifi-connect-form>
   } }
 

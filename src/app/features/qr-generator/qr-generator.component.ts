@@ -71,83 +71,24 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.intQr();
     const lastSession: any = await this.storageService.restoreLastSession();
     const url = await this.getCurrentTabUrl();
-    if (lastSession && lastSession.qrValue) {
-      this.qrDataService.qrValue.set(lastSession.qrValue);
-      this.qrDataService.qrColor.set(lastSession.qrColor);
-      this.qrDataService.qrBackground.set(lastSession.qrBackground);
-      this.qrDataService.qrIcon.set(lastSession.qrIcon);
-      this.qrDataService.qrIconName.set(lastSession.qrIconName);
-      this.qrDataService.qrIconSize.set(lastSession.qrIconSize);
-      this.qrDataService.qrLevel.set(lastSession.qrLevel);
-      this.qrDataService.qrTransparent.set(lastSession.qrTransparent);
-      this.qrDataService.qrMargin.set(lastSession.qrMargin);
-      this.qrDataService.qrCornerSquare.set(lastSession.qrCornerSquare);
-      this.qrDataService.qrCornerDot.set(lastSession.qrCornerDot);
-      this.qrDataService.qrCornerDotType.set(lastSession.qrCornerDotType);
-      this.qrDataService.qrSquareType.set(lastSession.qrSquareType);
-      this.qrDataService.qrDotsType.set(lastSession.qrDotsType);
-      this.qrDataService.qrIconMargin.set(lastSession.qrIconMargin);
-      this.qrDataService.qrIconHideBackgroundDots.set(
-        lastSession.qrIconHideBackgroundDots
-      );
+    if (lastSession && lastSession.value) {
+      this.qrDataService.updateQr(this.qr, lastSession);
     } else {
-      this.qrDataService.qrValue.set(url);
+      this.qrDataService.value.set(url);
     }
     this.paint$;
     this.qrTextarea().nativeElement.select();
     this.saveSession$.pipe(debounceTime(1000)).subscribe(() => {
       this.storageService.saveSession({
+        ...this.qrDataService.currentState(),
         createdAt: new Date().toISOString(),
-        qrValue: this.qrDataService.qrValue(),
-        qrColor: this.qrDataService.qrColor(),
-        qrBackground: this.qrDataService.qrBackground(),
-        qrCornerSquare: this.qrDataService.qrCornerSquare(),
-        qrCornerDot: this.qrDataService.qrCornerDot(),
-        qrIcon: this.qrDataService.qrIcon(),
-        qrIconName: this.qrDataService.qrIconName(),
-        qrIconSize: this.qrDataService.qrIconSize(),
-        qrLevel: this.qrDataService.qrLevel(),
-        qrTransparent: this.qrDataService.qrTransparent(),
-        qrMargin: this.qrDataService.qrMargin(),
-        qrDownloadType: this.qrDataService.qrDownloadType(),
-        qrCornerDotType: this.qrDataService.qrCornerDotType(),
-        qrSquareType: this.qrDataService.qrSquareType(),
-        qrDotsType: this.qrDataService.qrDotsType(),
-        qrIconMargin: this.qrDataService.qrIconMargin(),
-        qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
-        qrDotsGradient: this.qrDataService.qrDotsGradient(),
-        qrDotsGradientData: {
-          type: this.qrDataService.qrDotsGradientType(),
-          rotation: this.qrDataService.qrDotsGradientRotation(),
-          colorStops: this.qrDataService.qrDotsColorStops(),
-        },
-        qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
-        qrBackgroundGradientData: {
-          type: this.qrDataService.qrBackgroundGradientType(),
-          rotation: this.qrDataService.qrBackgroundGradientRotation(),
-          colorStops: this.qrDataService.qrBackgroundColorStops(),
-        },
-        qrCornerSquareGradient: this.qrDataService.qrCornerSquareGradient(),
-        qrCornerSquareGradientData: {
-          type: this.qrDataService.qrCornerSquareGradientType(),
-          rotation: this.qrDataService.qrCornerSquareGradientRotation(),
-          colorStops: this.qrDataService.qrCornerSquareColorStops(),
-        },
-        qrCornerDotGradient: this.qrDataService.qrCornerDotGradient(),
-        qrCornerDotGradientData: {
-          type: this.qrDataService.qrCornerDotGradientType(),
-          rotation: this.qrDataService.qrCornerDotGradientRotation(),
-          colorStops: this.qrDataService.qrCornerDotColorStops(),
-        },
       });
     });
   }
 
   intQr() {
-    this.qr = this.qrDataService.buildQr();
-
+    this.qr = this.qrDataService.buildQr(this.qrDataService.currentState());
     this.qr.append(this.canvas().nativeElement);
-    console.log(this.qr);
   }
 
   private readonly paint$ = effect(() => {
@@ -169,14 +110,13 @@ export class QrGeneratorComponent implements AfterViewInit {
       );
     }
 
-    this.qrDataService.updateQr(this.qr);
-    console.log(this.qr);
+    this.qrDataService.updateQr(this.qr, this.qrDataService.currentState());
   }
 
   downloadQR() {
     this.qr.download({
-      name: `${this.qrDataService.qrValue()}`,
-      extension: `${this.qrDataService.qrDownloadType()}`,
+      name: `${this.qrDataService.value()}`,
+      extension: `${this.qrDataService.downloadType()}`,
     });
   }
 
@@ -195,48 +135,8 @@ export class QrGeneratorComponent implements AfterViewInit {
   saveQR() {
     this.storageService.saveQr({
       createdAt: new Date().toLocaleString(),
-      qrValue: this.qrDataService.qrValue(),
-      qrColor: this.qrDataService.qrColor(),
-      qrBackground: this.qrDataService.qrBackground(),
-      qrCornerSquare: this.qrDataService.qrCornerSquare(),
-      qrCornerDot: this.qrDataService.qrCornerDot(),
-      qrIcon: this.qrDataService.qrIcon(),
-      qrIconName: this.qrDataService.qrIconName(),
-      qrIconSize: this.qrDataService.qrIconSize(),
-      qrLevel: this.qrDataService.qrLevel(),
       canvas: document.querySelector('canvas')?.toDataURL('image/png'),
-      qrTransparent: this.qrDataService.qrTransparent(),
-      qrMargin: this.qrDataService.qrMargin(),
-      qrDownloadType: this.qrDataService.qrDownloadType(),
-      qrCornerDotType: this.qrDataService.qrCornerDotType(),
-      qrSquareType: this.qrDataService.qrSquareType(),
-      qrDotsType: this.qrDataService.qrDotsType(),
-      qrIconMargin: this.qrDataService.qrIconMargin(),
-      qrIconHideBackgroundDots: this.qrDataService.qrIconHideBackgroundDots(),
-      qrDotsGradient: this.qrDataService.qrDotsGradient(),
-      qrDotsGradientData: {
-        type: this.qrDataService.qrDotsGradientType(),
-        rotation: this.qrDataService.qrDotsGradientRotation(),
-        colorStops: this.qrDataService.qrDotsColorStops(),
-      },
-      qrBackgroundGradient: this.qrDataService.qrBackgroundGradient(),
-      qrBackgroundGradientData: {
-        type: this.qrDataService.qrBackgroundGradientType(),
-        rotation: this.qrDataService.qrBackgroundGradientRotation(),
-        colorStops: this.qrDataService.qrBackgroundColorStops(),
-      },
-      qrCornerSquareGradient: this.qrDataService.qrCornerSquareGradient(),
-      qrCornerSquareGradientData: {
-        type: this.qrDataService.qrCornerSquareGradientType(),
-        rotation: this.qrDataService.qrCornerSquareGradientRotation(),
-        colorStops: this.qrDataService.qrCornerSquareColorStops(),
-      },
-      qrCornerDotGradient: this.qrDataService.qrCornerDotGradient(),
-      qrCornerDotGradientData: {
-        type: this.qrDataService.qrCornerDotGradientType(),
-        rotation: this.qrDataService.qrCornerDotGradientRotation(),
-        colorStops: this.qrDataService.qrCornerDotColorStops(),
-      },
+      ...this.qrDataService.currentState(),
     });
     this.snackbar.open('Saved');
   }
@@ -259,13 +159,16 @@ export class QrGeneratorComponent implements AfterViewInit {
       throw console.error('Invalid file type. Only JPG and PNG are accepted.');
     }
 
-    this.qrDataService.qrIconName.set(file.name);
+    this.qrDataService.icon.update((val) => ({
+      ...val,
+      name: file.name,
+    }));
 
     const reader = new FileReader();
 
     reader.onload = () => {
       const base64String = reader.result as string;
-      this.qrDataService.qrIcon.set(base64String);
+      this.qrDataService.icon.update((val) => ({ ...val, src: base64String }));
     };
 
     reader.onerror = (error) => {
@@ -283,14 +186,14 @@ export class QrGeneratorComponent implements AfterViewInit {
     if (!ctx) throw console.error('Error while getting canvas context');
 
     const img = new Image();
-    img.src = this.qrDataService.qrIcon();
+    img.src = this.qrDataService.icon().src;
     img.onload = () => {
       ctx.drawImage(
         img,
-        (canvas.width - this.qrDataService.qrIconSize()) / 2,
-        (canvas.height - this.qrDataService.qrIconSize()) / 2,
-        this.qrDataService.qrIconSize(),
-        this.qrDataService.qrIconSize()
+        (canvas.width - this.qrDataService.icon().size) / 2,
+        (canvas.height - this.qrDataService.icon().size) / 2,
+        this.qrDataService.icon().size,
+        this.qrDataService.icon().size
       );
     };
     img.onerror = (error) => {
@@ -299,38 +202,50 @@ export class QrGeneratorComponent implements AfterViewInit {
   }
 
   resetIcon() {
-    this.qrDataService.qrIcon.set('');
-    this.qrDataService.qrIconName.set('');
+    this.qrDataService.icon.update((val) => ({
+      ...val,
+      name: '',
+      src: '',
+    }));
   }
 
   protected async resetQr() {
     const url = await this.getCurrentTabUrl();
     this.qrDataService.resetQr();
-    this.qrDataService.qrValue.set(url);
+    this.qrDataService.value.set(url);
   }
 
   protected handleColorChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
-    this.qrDataService.qrColor.set(target.value);
+    this.qrDataService.mainDots.update((val) => ({
+      ...val,
+      color: target.value,
+    }));
   }
 
   protected handleBackgroundChange(e: Event) {
     const target = e.target as HTMLInputElement;
     if (!target.value) throw console.error('No color selected');
-    this.qrDataService.qrBackground.set(target.value);
+    this.qrDataService.background.update((val) => ({
+      ...val,
+      color: target.value,
+    }));
   }
 
   protected handleTextareaChange(text: string) {
-    this.qrDataService.qrValue.set(text);
+    this.qrDataService.value.set(text);
   }
 
   protected handleErrorCodeLevelChange(newLevel: ErrorCodeLevel) {
-    this.qrDataService.qrLevel.set(newLevel);
+    this.qrDataService.level.set(newLevel);
   }
 
   handleToggleTransparency(): void {
-    this.qrDataService.qrTransparent.update((value: boolean) => !value);
+    this.qrDataService.background.update((val) => ({
+      ...val,
+      transparent: !val.transparent,
+    }));
   }
 
   private getCurrentTabUrl(): Promise<string> {

@@ -43,7 +43,6 @@ export class PhoneContactFormComponent implements AfterViewInit {
         const stringValue = Object.entries(value)
           .map(([key, value]) => `${key}:${value}`)
           .join('\n');
-        console.log(stringValue);
         this.valueChanged.emit(stringValue);
       });
   }
