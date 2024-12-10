@@ -5,11 +5,9 @@
         <button
           mat-button
           (click)="
-            updateSignalProperty(
-              qrDataService.mainDots,
-              'isGradient',
-              !qrDataService.mainDots().isGradient
-            )
+            patchSignal(qrDataService.mainDots, {
+              isGradient: !qrDataService.mainDots().isGradient
+            })
           "
         >
           <mat-icon>{{
@@ -167,7 +165,7 @@
           name="dotType"
           [value]="qrDataService.mainDots().type"
           aria-label="Dot type"
-          (valueChange)="qrDataService.mainDots().type = $event;"
+          (valueChange)="qrDataService.mainDots().type = $event"
         >
           <mat-button-toggle value="square">Square</mat-button-toggle>
           <mat-button-toggle value="dots">Dots</mat-button-toggle>

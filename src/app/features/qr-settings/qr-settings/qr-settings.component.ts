@@ -18,6 +18,7 @@ import {
   ColorStops,
   GradientInputComponent,
 } from '../../../components/gradient-input/gradient-input.component';
+import { SignalUtils } from '../../../utils/signal-utils';
 
 @Component({
   selector: 'qr-settings',
@@ -39,6 +40,7 @@ import {
 })
 export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);
+  protected readonly patchSignal = inject(SignalUtils);
   imageChanged = output();
 
   addImage(e: Event) {
