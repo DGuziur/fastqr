@@ -20,11 +20,9 @@
         <button
           mat-button
           (click)="
-            updateSignalProperty(
-              qrDataService.background,
-              'isGradient',
-              !qrDataService.background().isGradient
-            )
+            patchSignal(qrDataService.background, {
+              isGradient: !qrDataService.background().isGradient
+            })
           "
         >
           <mat-icon>{{
@@ -37,11 +35,9 @@
         <button
           mat-button
           (click)="
-            updateSignalProperty(
-              qrDataService.cornerSquare,
-              'isGradient',
-              !qrDataService.cornerSquare().isGradient
-            )
+            patchSignal(qrDataService.cornerSquare, {
+              isGradient: !qrDataService.cornerSquare().isGradient
+            })
           "
         >
           <mat-icon>{{
@@ -54,11 +50,9 @@
         <button
           mat-button
           (click)="
-            updateSignalProperty(
-              qrDataService.cornerDot,
-              'isGradient',
-              !qrDataService.cornerDot().isGradient
-            )
+            patchSignal(qrDataService.cornerDot, {
+              isGradient: !qrDataService.cornerDot().isGradient
+            })
           "
         >
           <mat-icon>{{
