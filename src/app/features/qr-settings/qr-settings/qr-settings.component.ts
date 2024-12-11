@@ -1,9 +1,5 @@
-import { Component, inject, output, WritableSignal } from '@angular/core';
-import {
-  QrColorOptions,
-  QrDataService,
-  QrGradient,
-} from '../../../services/qr-data.service';
+import { Component, inject, output } from '@angular/core';
+import { QrDataService } from '../../../services/qr-data.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ColorInputComponent } from '../../../components/color-input/color-input.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,7 +14,6 @@ import {
   ColorStops,
   GradientInputComponent,
 } from '../../../components/gradient-input/gradient-input.component';
-import { SignalUtils } from '../../../utils/signal-utils';
 
 @Component({
   selector: 'qr-settings',
@@ -40,7 +35,6 @@ import { SignalUtils } from '../../../utils/signal-utils';
 })
 export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);
-  protected readonly patchSignal = inject(SignalUtils);
   imageChanged = output();
 
   addImage(e: Event) {
@@ -61,15 +55,13 @@ export class QrSettingsComponent {
       throw console.error('Invalid file type. Only JPG and PNG are accepted.');
     }
 
+    this.qrDataService.qrIconName.set(file.name);
+
     const reader = new FileReader();
 
     reader.onload = () => {
       const base64String = reader.result as string;
-      this.qrDataService.icon.update((val) => ({
-        ...val,
-        name: file.name,
-        src: base64String,
-      }));
+      this.qrDataService.qrIcon.set(base64String);
     };
 
     reader.onerror = (error) => {
@@ -81,144 +73,43 @@ export class QrSettingsComponent {
   }
 
   resetIcon() {
-    this.qrDataService.icon.update((val) => ({
-      ...val,
-      name: '',
-      src: '',
-    }));
+    this.qrDataService.qrIcon.set('');
+    this.qrDataService.qrIconName.set('');
   }
 
   protected toggleTransparent() {
-    this.qrDataService.background.update((val) => ({
-      ...val,
-      transparent: !val.transparent,
-    }));
+    this.qrDataService.qrTransparent.update((value) => !value);
   }
 
   protected handleCornerSquareChange(color: string) {
-    this.qrDataService.cornerSquare.update((val) => ({
-      ...val,
-      color: color,
-    }));
-  }
-
-  protected updateSignalProperty(
-    signal: WritableSignal<any>,
-    property: string,
-    value: any
-  ) {
-    signal.update((val: any) => ({ ...val, [property]: value }));
-  }
-
-  updateColorStops<T extends QrColorOptions>(
-    signal: WritableSignal<T>,
-    value: ColorStops
-  ) {
-    signal.update((val: T) => ({
-      ...val,
-      gradient: {
-        ...val.gradient,
-        colorStops: value,
-      },
-    }));
-  }
-
-  protected handleUpdate<T>(
-    service: { update: (updateFn: (val: T) => T) => void },
-    updates: Partial<T>
-  ) {
-    service.update((current) => ({
-      ...current,
-      ...updates,
-    }));
+    this.qrDataService.qrCornerSquare.set(color);
   }
 
   protected handleCornerDotChange(color: string) {
-    this.qrDataService.cornerDot.update((val) => ({
-      ...val,
-      color: color,
-    }));
+    this.qrDataService.qrCornerDot.set(color);
   }
 
   protected handleColorChange(color: string) {
-    this.qrDataService.mainDots.update((val) => ({
-      ...val,
-      color: color,
-    }));
+    this.qrDataService.qrColor.set(color);
   }
 
   protected handleBackgroundChange(color: string) {
-    this.qrDataService.background.update((val) => ({
-      ...val,
-      color: color,
-    }));
+    this.qrDataService.qrBackground.set(color);
   }
 
   handleDotsGradient(value: ColorStops) {
-    this.qrDataService.mainDots.update((val) => ({
-      ...val,
-      gradient: {
-        ...val.gradient,
-        colorStops: value,
-      },
-    }));
+    this.qrDataService.qrDotsColorStops.set(value);
   }
 
   handleBackgroundGradient(value: ColorStops) {
-    this.qrDataService.background.update((val) => ({
-      ...val,
-      gradient: {
-        ...val.gradient,
-        colorStops: value,
-      },
-    }));
+    this.qrDataService.qrBackgroundColorStops.set(value);
   }
 
   handleCornerSquareGradient(value: ColorStops) {
-    this.qrDataService.cornerSquare.update((val) => ({
-      ...val,
-      gradient: {
-        ...val.gradient,
-        colorStops: value,
-      },
-    }));
+    this.qrDataService.qrCornerSquareColorStops.set(value);
   }
 
   handleCornerDotGradient(value: ColorStops) {
-    this.qrDataService.cornerDot.update((val) => ({
-      ...val,
-      gradient: {
-        ...val.gradient,
-        colorStops: value,
-      },
-    }));
-  }
-
-  mainDotsGradientToggle() {
-    this.qrDataService.mainDots.update((val) => ({
-      ...val,
-      isGradient: !val.isGradient,
-    }));
-  }
-
-  backgroundGradientToggle() {
-    this.qrDataService.background.update((val) => ({
-      ...val,
-      isGradient: !val.isGradient,
-    }));
-  }
-
-  cornerSquareGradientToggle() {
-    this.qrDataService.cornerSquare.update((val) => ({
-      ...val,
-      isGradient: !val.isGradient,
-    }));
-  }
-
-  cornerDotGradientToggle() {
-    this.qrDataService.cornerDot.update((val) => ({
-      ...val,
-      isGradient: !val.isGradient,
-    }));
+    this.qrDataService.qrCornerDotColorStops.set(value);
   }
 }

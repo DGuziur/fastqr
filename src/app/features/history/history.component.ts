@@ -18,7 +18,12 @@ import { EmptyListComponent } from '../../components/empty-list/empty-list.compo
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { QrDataService } from '../../services/qr-data.service';
 import { UserSettingsService } from '../../services/userSettings.service';
-import { HistoryItem } from '../../services/qr-data.service';
+import {
+  CornerDotType,
+  CornerSquareType,
+  DotType,
+  FileExtension,
+} from 'qr-code-styling';
 
 export type GradientData = {
   type: 'linear' | 'radial';
@@ -27,6 +32,36 @@ export type GradientData = {
     offset: number;
     color: string;
   }[];
+};
+
+export type HistoryItem = {
+  createdAt: Date | string;
+  qrValue: string;
+  qrColor: string;
+  qrBackground: string;
+  qrCornerSquare: string;
+  qrCornerDot: string;
+  qrCornerDotType: CornerDotType;
+  qrIcon: string;
+  qrIconName: string;
+  qrIconSize: number;
+  qrIconHideBackgroundDots: boolean;
+  qrIconMargin: number;
+  qrSquareType: CornerSquareType;
+  qrDotsType: DotType;
+  qrLevel: string;
+  canvas?: string;
+  qrTransparent?: boolean;
+  qrMargin: number;
+  qrDownloadType: FileExtension;
+  qrBackgroundGradient: boolean;
+  qrBackgroundGradientData: GradientData;
+  qrCornerSquareGradient: boolean;
+  qrCornerSquareGradientData: GradientData;
+  qrCornerDotGradient: boolean;
+  qrCornerDotGradientData: GradientData;
+  qrDotsGradient: boolean;
+  qrDotsGradientData: GradientData;
 };
 
 @Component({

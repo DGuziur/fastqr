@@ -1,6 +1,6 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
+import { HistoryItem } from '../features/history/history.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { HistoryItem } from './qr-data.service';
 
 const STORAGE_KEY = 'fastqr-history';
 const SESSION_KEY = 'fastqr-session';
