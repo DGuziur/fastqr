@@ -12,6 +12,7 @@ export class QrStyleService {
   qrDotsColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
 
   qrBackground = signal('#ffffff');
+  qrBackgroundTransparent = signal<boolean>(false);
   qrBackgroundGradient = signal<boolean>(true);
   qrBackgroundGradientType = signal<GradientType>('linear');
   qrBackgroundGradientRotation = signal<number>(0);
