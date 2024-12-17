@@ -1,9 +1,12 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  inject,
   input,
   model,
   output,
+  Signal,
   signal,
 } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
@@ -36,8 +39,10 @@ export class GradientInputComponent implements AfterViewInit {
   title = input<string>('Gradient');
   value = input<ColorStops>(DEFAULT_COLOR_STOPS);
   valueChanged = output<ColorStops>();
-  selectedGradientType = model<GradientType>('linear');
-  rotation = model<number>(0);
+  selectedGradientType = model<GradientType | string>('linear');
+  rotation = model<number | Signal<number>>(0);
+
+  ref = inject(ChangeDetectorRef);
 
   gradientStopsForm = new FormArray<FormGroup>([]);
 
@@ -53,6 +58,7 @@ export class GradientInputComponent implements AfterViewInit {
     this.gradientStopsForm.valueChanges.subscribe((value) => {
       this.valueChanged.emit(value);
     });
+    this.ref.detectChanges();
   }
 
   addGradientStop(offset: number = 0, color: string = '#000000') {

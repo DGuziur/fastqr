@@ -14,6 +14,12 @@ import {
   ColorStops,
   GradientInputComponent,
 } from '../../../components/gradient-input/gradient-input.component';
+import {
+  qrConfigStore,
+  qrIconStore,
+  qrStyleStore,
+} from '../../../store/qr-data.store';
+import { patchState } from '@ngrx/signals';
 
 @Component({
   selector: 'qr-settings',
@@ -35,6 +41,9 @@ import {
 })
 export class QrSettingsComponent {
   protected readonly qrDataService = inject(QrDataService);
+  protected readonly qrStyleStore = inject(qrStyleStore);
+  protected readonly qrIconStore = inject(qrIconStore);
+  protected readonly qrConfigStore = inject(qrConfigStore);
   imageChanged = output();
 
   addImage(e: Event) {

@@ -1,11 +1,13 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 
+type Section = 'dots' | 'square' | 'cornerDot' | 'background';
+
 const qrStyleDefaultState = {
   dots: {
     color: '#000000',
-    isGradient: true,
     type: 'rounded',
     gradient: {
+      enabled: true,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -16,9 +18,9 @@ const qrStyleDefaultState = {
   },
   cornerDot: {
     color: '#000000',
-    isGradient: true,
     type: 'dot',
     gradient: {
+      enabled: true,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -29,9 +31,9 @@ const qrStyleDefaultState = {
   },
   square: {
     color: '#000000',
-    isGradient: true,
     type: 'extra-rounded',
     gradient: {
+      enabled: true,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -43,8 +45,8 @@ const qrStyleDefaultState = {
   background: {
     color: '#ffffff',
     isTransparent: false,
-    isGradient: true,
     gradient: {
+      enabled: true,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -75,6 +77,12 @@ export const qrConfigStore = signalStore(
   withState(qrConfigDefaultState),
   withMethods((store) => {
     return {
+      update(value: any) {
+        patchState(store, (state) => ({
+          ...state,
+          ...value,
+        }));
+      },
       reset() {
         patchState(store, () => qrConfigDefaultState);
       },
@@ -90,6 +98,12 @@ export const qrIconStore = signalStore(
   withState(qrIconDefaultState),
   withMethods((store) => {
     return {
+      update(value: any) {
+        patchState(store, (state) => ({
+          ...state,
+          ...value,
+        }));
+      },
       reset() {
         patchState(store, () => qrIconDefaultState);
       },
@@ -105,6 +119,24 @@ export const qrStyleStore = signalStore(
   withState(qrStyleDefaultState),
   withMethods((store) => {
     return {
+      updateGradient(param: Section, value: any) {
+        patchState(store, (state) => ({
+          ...state,
+          [param]: {
+            ...state[param],
+            gradient: { ...state.dots.gradient, ...value },
+          },
+        }));
+      },
+      update(param: Section, value: any) {
+        patchState(store, (state) => ({
+          ...state,
+          [param]: {
+            ...state[param],
+            ...value,
+          },
+        }));
+      },
       reset() {
         patchState(store, () => qrStyleDefaultState);
       },
