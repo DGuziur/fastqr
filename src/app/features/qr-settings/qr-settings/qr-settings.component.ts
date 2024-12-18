@@ -19,7 +19,6 @@ import {
   qrIconStore,
   qrStyleStore,
 } from '../../../store/qr-data.store';
-import { patchState } from '@ngrx/signals';
 
 @Component({
   selector: 'qr-settings',

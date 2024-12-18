@@ -26,6 +26,7 @@ import {
 } from 'qr-code-styling';
 
 export type GradientData = {
+  enabled?: boolean;
   type: 'linear' | 'radial';
   rotation: number;
   colorStops: {

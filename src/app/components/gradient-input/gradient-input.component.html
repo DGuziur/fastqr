@@ -20,7 +20,7 @@
   </div>
   <mat-menu #gradientTypeMenu="matMenu">
     @for (option of gradientTypes; track option) {
-    <button mat-menu-item (click)="selectedGradientType.set(option.value)">
+    <button mat-menu-item (click)="gradientTypeChanged.emit(option.value)">
       <span>{{ option.value }}</span>
       <mat-icon>{{ option.icon }}</mat-icon>
     </button>

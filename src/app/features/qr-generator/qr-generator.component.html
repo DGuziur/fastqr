@@ -1,14 +1,14 @@
 <a #download></a>
 <div class="flex-container">
   <div #canvas></div>
-  <button mat-mini-fab class="reset-qr" (click)="resetQr()">
+  <button mat-mini-fab class="reset-qr" (click)="qrConfigStore.reset()">
     <mat-icon>refresh</mat-icon>
   </button>
 </div>
 <mat-card class="theme-violet">
   <segmented
     class="segmented"
-    [value]="qrDataService.qrLevel()"
+    [value]="qrConfigStore.level()"
     [options]="errorCodeLevels"
     (optionChanged)="handleErrorCodeLevelChange($event)"
   ></segmented>

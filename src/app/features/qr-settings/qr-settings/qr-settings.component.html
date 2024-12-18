@@ -69,11 +69,13 @@
             qrStyleStore.updateGradient('dots', { colorStops: $event })
           "
           [selectedGradientType]="qrStyleStore.dots.gradient.type()"
-          (selectedGradientType)="
+          (gradientTypeChanged)="
             qrStyleStore.updateGradient('dots', { type: $event })
           "
           [rotation]="qrStyleStore.dots.gradient.rotation()"
-          (rotation)="qrStyleStore.updateGradient('dots', { rotation: $event })"
+          (rotationChanged)="
+            qrStyleStore.updateGradient('dots', { rotation: $event })
+          "
         ></gradient-input>
         } @else {
         <color-input
@@ -91,11 +93,11 @@
             qrStyleStore.updateGradient('background', { colorStops: $event })
           "
           [selectedGradientType]="qrStyleStore.background.gradient.type()"
-          (selectedGradientType)="
+          (gradientTypeChanged)="
             qrStyleStore.updateGradient('background', { type: $event })
           "
           [rotation]="qrStyleStore.background.gradient.rotation()"
-          (rotation)="
+          (rotationChanged)="
             qrStyleStore.updateGradient('background', { rotation: $event })
           "
         ></gradient-input>
@@ -129,11 +131,11 @@
             qrStyleStore.updateGradient('square', { colorStops: $event })
           "
           [selectedGradientType]="qrStyleStore.square.gradient.type()"
-          (selectedGradientType)="
+          (gradientTypeChanged)="
             qrStyleStore.updateGradient('square', { type: $event })
           "
           [rotation]="qrStyleStore.square.gradient.rotation()"
-          (rotation)="
+          (rotationChanged)="
             qrStyleStore.updateGradient('square', { rotation: $event })
           "
         ></gradient-input>
@@ -152,11 +154,11 @@
             qrStyleStore.updateGradient('cornerDot', { colorStops: $event })
           "
           [selectedGradientType]="qrStyleStore.cornerDot.gradient.type()"
-          (selectedGradientType)="
+          (gradientTypeChanged)="
             qrStyleStore.updateGradient('cornerDot', { type: $event })
           "
           [rotation]="qrStyleStore.cornerDot.gradient.rotation()"
-          (rotation)="
+          (rotationChanged)="
             qrStyleStore.updateGradient('cornerDot', { rotation: $event })
           "
         ></gradient-input>

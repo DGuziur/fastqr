@@ -1,4 +1,7 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
+import { DownloadOptions } from 'qr-code-styling';
+import { GradientData } from '../features/history/history.component';
 
 type Section = 'dots' | 'square' | 'cornerDot' | 'background';
 
@@ -57,7 +60,7 @@ const qrStyleDefaultState = {
   },
 };
 
-const qrConfigDefaultState = {
+const qrConfigDefaultState: ConfigStore = {
   value: '',
   level: 'L',
   margin: 4,
@@ -72,13 +75,22 @@ const qrIconDefaultState = {
   margin: 0,
 };
 
+type ConfigStore = {
+  value: string;
+  level: ErrorCodeLevel;
+  margin: number;
+  downloadType: string;
+};
+
+type IconStore = typeof qrIconDefaultState;
+type StyleStore = typeof qrStyleDefaultState;
 export const qrConfigStore = signalStore(
   { providedIn: 'root' },
   withState(qrConfigDefaultState),
   withMethods((store) => {
     return {
-      update(value: any) {
-        patchState(store, (state) => ({
+      update(value: Partial<ConfigStore>) {
+        patchState(store, (state: ConfigStore) => ({
           ...state,
           ...value,
         }));
@@ -86,7 +98,7 @@ export const qrConfigStore = signalStore(
       reset() {
         patchState(store, () => qrConfigDefaultState);
       },
-      patchFromHistory(historyItem: any) {
+      patchFromHistory(historyItem: Partial<ConfigStore>) {
         patchState(store, (state) => historyItem);
       },
     };
@@ -98,7 +110,7 @@ export const qrIconStore = signalStore(
   withState(qrIconDefaultState),
   withMethods((store) => {
     return {
-      update(value: any) {
+      update(value: Partial<IconStore>) {
         patchState(store, (state) => ({
           ...state,
           ...value,
@@ -107,7 +119,7 @@ export const qrIconStore = signalStore(
       reset() {
         patchState(store, () => qrIconDefaultState);
       },
-      patchFromHistory(historyItem: any) {
+      patchFromHistory(historyItem: Partial<IconStore>) {
         patchState(store, (state) => historyItem);
       },
     };
@@ -119,7 +131,7 @@ export const qrStyleStore = signalStore(
   withState(qrStyleDefaultState),
   withMethods((store) => {
     return {
-      updateGradient(param: Section, value: any) {
+      updateGradient(param: Section, value: Partial<GradientData>) {
         patchState(store, (state) => ({
           ...state,
           [param]: {
@@ -128,7 +140,14 @@ export const qrStyleStore = signalStore(
           },
         }));
       },
-      update(param: Section, value: any) {
+      update(
+        param: Section,
+        value:
+          | Partial<StyleStore['dots']>
+          | Partial<StyleStore['background']>
+          | Partial<StyleStore['square']>
+          | Partial<StyleStore['cornerDot']>
+      ) {
         patchState(store, (state) => ({
           ...state,
           [param]: {
@@ -140,7 +159,7 @@ export const qrStyleStore = signalStore(
       reset() {
         patchState(store, () => qrStyleDefaultState);
       },
-      patchFromHistory(historyItem: any) {
+      patchFromHistory(historyItem: Partial<StyleStore>) {
         patchState(store, (state) => historyItem);
       },
     };

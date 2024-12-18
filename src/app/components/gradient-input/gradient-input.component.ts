@@ -39,8 +39,10 @@ export class GradientInputComponent implements AfterViewInit {
   title = input<string>('Gradient');
   value = input<ColorStops>(DEFAULT_COLOR_STOPS);
   valueChanged = output<ColorStops>();
-  selectedGradientType = model<GradientType | string>('linear');
-  rotation = model<number | Signal<number>>(0);
+  selectedGradientType = input<GradientType | string>('linear');
+  gradientTypeChanged = output<GradientType>();
+  rotation = input<number>(0);
+  rotationChanged = output<number>();
 
   ref = inject(ChangeDetectorRef);
 
@@ -55,7 +57,7 @@ export class GradientInputComponent implements AfterViewInit {
     this.value().forEach((stop) => {
       this.addGradientStop(stop.offset, stop.color);
     });
-    this.gradientStopsForm.valueChanges.subscribe((value) => {
+    this.gradientStopsForm.valueChanges.subscribe((value: ColorStops) => {
       this.valueChanged.emit(value);
     });
     this.ref.detectChanges();
@@ -71,7 +73,7 @@ export class GradientInputComponent implements AfterViewInit {
 
   handleRotation(event: Event) {
     const target = event.target as HTMLInputElement;
-    this.rotation.set(target.valueAsNumber);
+    this.rotationChanged.emit(target.valueAsNumber);
   }
 
   removeGradientStop(index: number) {

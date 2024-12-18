@@ -20,6 +20,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
 import { PhoneContactFormComponent } from '../../components/phone-contact-form/phone-contact-form.component';
 import { WifiConnectFormComponent } from '../../components/wifi-connect-form/wifi-connect-form.component';
+import {
+  qrConfigStore,
+  qrIconStore,
+  qrStyleStore,
+} from '../../store/qr-data.store';
 
 export type QrType = 'default' | 'phone-contact' | 'wifi';
 
@@ -58,6 +63,10 @@ export class QrGeneratorComponent implements AfterViewInit {
   private readonly storageService = inject(StorageService);
   private readonly snackbar = inject(SnackbarService);
   protected readonly qrDataService = inject(QrDataService);
+
+  protected readonly qrConfigStore = inject(qrConfigStore);
+  protected readonly qrIconStore = inject(qrIconStore);
+  protected readonly qrStyleStore = inject(qrStyleStore);
   qr: any = null;
   qrType = signal<QrType>('default');
 
