@@ -1,11 +1,19 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
-import { DownloadOptions } from 'qr-code-styling';
-import { GradientData } from '../features/history/history.component';
+import {
+  GradientData,
+  HistoryItem,
+} from '../features/history/history.component';
+import {
+  CornerDotType,
+  CornerSquareType,
+  DotType,
+  FileExtension,
+} from 'qr-code-styling';
 
 type Section = 'dots' | 'square' | 'cornerDot' | 'background';
 
-const qrStyleDefaultState = {
+const qrStyleDefaultState: StyleStore = {
   dots: {
     color: '#000000',
     type: 'rounded',
@@ -79,11 +87,32 @@ type ConfigStore = {
   value: string;
   level: ErrorCodeLevel;
   margin: number;
-  downloadType: string;
+  downloadType: FileExtension;
 };
 
 type IconStore = typeof qrIconDefaultState;
-type StyleStore = typeof qrStyleDefaultState;
+type StyleStore = {
+  dots: {
+    type: DotType;
+    color: string;
+    gradient: GradientData;
+  };
+  cornerDot: {
+    type: CornerDotType;
+    color: string;
+    gradient: GradientData;
+  };
+  square: {
+    type: CornerSquareType;
+    color: string;
+    gradient: GradientData;
+  };
+  background: {
+    isTransparent: boolean;
+    color: string;
+    gradient: GradientData;
+  };
+};
 export const qrConfigStore = signalStore(
   { providedIn: 'root' },
   withState(qrConfigDefaultState),
@@ -159,8 +188,8 @@ export const qrStyleStore = signalStore(
       reset() {
         patchState(store, () => qrStyleDefaultState);
       },
-      patchFromHistory(historyItem: Partial<StyleStore>) {
-        patchState(store, (state) => historyItem);
+      patchFromHistory(historyItem: HistoryItem) {
+        patchState(store, (state) => state);
       },
     };
   })

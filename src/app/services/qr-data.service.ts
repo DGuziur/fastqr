@@ -1,4 +1,10 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  computed,
+  inject,
+  Injectable,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import { HistoryItem } from '../features/history/history.component';
 import { SnackbarService } from './snackbar.service';
@@ -8,8 +14,14 @@ import QRCodeStyling, {
   DotType,
   FileExtension,
   GradientType,
+  Options,
 } from 'qr-code-styling';
 import { ColorStops } from '../components/gradient-input/gradient-input.component';
+import {
+  qrStyleStore,
+  qrIconStore,
+  qrConfigStore,
+} from '../store/qr-data.store';
 
 interface QrData {
   qrValue: WritableSignal<string>;
@@ -29,6 +41,84 @@ interface QrData {
 })
 export class QrDataService implements QrData {
   private readonly snackbar = inject(SnackbarService);
+  private readonly styleStore = inject(qrStyleStore);
+  private readonly iconStore = inject(qrIconStore);
+  private readonly configStore = inject(qrConfigStore);
+
+  qrState = computed<Options>(() => {
+    return {
+      width: 200,
+      height: 200,
+      data: this.configStore.value(),
+      image: this.iconStore.src(),
+      margin: this.configStore.margin(),
+      qrOptions: {
+        typeNumber: 0,
+        mode: 'Byte',
+        errorCorrectionLevel: this.configStore.level(),
+      },
+      imageOptions: {
+        hideBackgroundDots: this.iconStore.hideBackgroundDots(),
+        imageSize: this.iconStore.size(),
+        margin: this.iconStore.size(),
+        crossOrigin: 'anonymous',
+      },
+      dotsOptions: this.styleStore.dots.gradient.enabled()
+        ? {
+            type: this.styleStore.dots.type(),
+            gradient: {
+              type: this.styleStore.dots.gradient.type(),
+              rotation: this.styleStore.dots.gradient.rotation(),
+              colorStops: this.styleStore.dots.gradient.colorStops(),
+            },
+          }
+        : {
+            color: this.styleStore.dots.color(),
+            type: this.styleStore.dots.type(),
+          },
+      backgroundOptions:
+        this.styleStore.background.gradient.enabled() &&
+        !this.styleStore.background.isTransparent()
+          ? {
+              gradient: {
+                type: this.styleStore.background.gradient.type(),
+                rotation: this.styleStore.background.gradient.rotation(),
+                colorStops: this.styleStore.background.gradient.colorStops(),
+              },
+            }
+          : {
+              color: this.styleStore.background.isTransparent()
+                ? 'transparent'
+                : this.styleStore.background.color(),
+            },
+      cornersSquareOptions: this.styleStore.square.gradient.enabled()
+        ? {
+            type: this.styleStore.square.type(),
+            gradient: {
+              type: this.styleStore.square.gradient.type(),
+              rotation: this.styleStore.square.gradient.rotation(),
+              colorStops: this.styleStore.square.gradient.colorStops(),
+            },
+          }
+        : {
+            type: this.styleStore.square.type(),
+            color: this.styleStore.square.color(),
+          },
+      cornersDotOptions: this.styleStore.cornerDot.gradient.enabled()
+        ? {
+            type: this.styleStore.cornerDot.type(),
+            gradient: {
+              type: this.styleStore.cornerDot.gradient.type(),
+              rotation: this.styleStore.cornerDot.gradient.rotation(),
+              colorStops: this.styleStore.cornerDot.gradient.colorStops(),
+            },
+          }
+        : {
+            color: this.styleStore.cornerDot.color(),
+            type: this.styleStore.cornerDot.type(),
+          },
+    };
+  });
 
   qrValue = signal('');
 
@@ -177,143 +267,11 @@ export class QrDataService implements QrData {
   }
 
   buildQr(qr?: HistoryItem) {
-    return new QRCodeStyling({
-      width: 200,
-      height: 200,
-      data: qr?.qrValue || this.qrValue(),
-      image: qr?.qrIcon || this.qrIcon(),
-      margin: qr?.qrMargin || this.qrMargin(),
-      qrOptions: {
-        typeNumber: 0,
-        mode: 'Byte',
-        errorCorrectionLevel: this.qrLevel(),
-      },
-      imageOptions: {
-        hideBackgroundDots:
-          qr?.qrIconHideBackgroundDots || this.qrIconHideBackgroundDots(),
-        imageSize: qr?.qrIconSize || this.qrIconSize(),
-        margin: qr?.qrIconMargin || this.qrIconMargin(),
-        crossOrigin: 'anonymous',
-      },
-      dotsOptions: this.qrDotsGradient()
-        ? {
-            type: this.qrDotsType(),
-            gradient: {
-              type: this.qrDotsGradientType(),
-              rotation: this.qrDotsGradientRotation(),
-              colorStops: this.qrDotsColorStops(),
-            },
-          }
-        : {
-            color: this.qrColor(),
-            type: this.qrDotsType(),
-          },
-      backgroundOptions:
-        this.qrBackgroundGradient() && !this.qrTransparent()
-          ? {
-              gradient: {
-                type: this.qrBackgroundGradientType(),
-                rotation: this.qrBackgroundGradientRotation(),
-                colorStops: this.qrBackgroundColorStops(),
-              },
-            }
-          : {
-              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
-            },
-      cornersSquareOptions: this.qrCornerSquareGradient()
-        ? {
-            type: this.qrSquareType(),
-            gradient: {
-              type: this.qrCornerSquareGradientType(),
-              rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: this.qrCornerSquareColorStops(),
-            },
-          }
-        : {
-            type: this.qrSquareType(),
-            color: this.qrCornerSquare(),
-          },
-      cornersDotOptions: this.qrCornerDotGradient()
-        ? {
-            type: this.qrCornerDotType(),
-            gradient: {
-              type: this.qrCornerDotGradientType(),
-              rotation: this.qrCornerDotGradientRotation(),
-              colorStops: this.qrCornerDotColorStops(),
-            },
-          }
-        : {
-            color: this.qrCornerDot(),
-            type: this.qrCornerDotType(),
-          },
-    });
+    return new QRCodeStyling(this.qrState());
   }
 
   updateQr(qr: QRCodeStyling) {
-    qr.update({
-      data: this.qrValue(),
-      image: this.qrIcon(),
-      margin: this.qrMargin(),
-      imageOptions: {
-        imageSize: this.qrIconSize(),
-        margin: this.qrIconMargin(),
-        hideBackgroundDots: this.qrIconHideBackgroundDots(),
-      },
-      dotsOptions: this.qrDotsGradient()
-        ? {
-            type: this.qrDotsType(),
-            gradient: {
-              type: this.qrDotsGradientType(),
-              rotation: this.qrDotsGradientRotation(),
-              colorStops: this.qrDotsColorStops(),
-            },
-          }
-        : {
-            color: this.qrColor(),
-            type: this.qrDotsType(),
-          },
-      backgroundOptions:
-        this.qrBackgroundGradient() && !this.qrTransparent()
-          ? {
-              gradient: {
-                type: this.qrBackgroundGradientType(),
-                rotation: this.qrBackgroundGradientRotation(),
-                colorStops: this.qrBackgroundColorStops(),
-              },
-            }
-          : {
-              color: this.qrTransparent() ? 'transparent' : this.qrBackground(),
-            },
-      cornersSquareOptions: this.qrCornerSquareGradient()
-        ? {
-            type: this.qrSquareType(),
-            gradient: {
-              type: this.qrCornerSquareGradientType(),
-              rotation: this.qrCornerSquareGradientRotation(),
-              colorStops: this.qrCornerSquareColorStops(),
-            },
-          }
-        : {
-            type: this.qrSquareType(),
-            color: this.qrCornerSquare(),
-          },
-      cornersDotOptions: this.qrCornerDotGradient()
-        ? {
-            type: this.qrCornerDotType(),
-            gradient: {
-              type: this.qrCornerDotGradientType(),
-              rotation: this.qrCornerDotGradientRotation(),
-              colorStops: this.qrCornerDotColorStops(),
-            },
-          }
-        : {
-            color: this.qrCornerDot(),
-            type: this.qrCornerDotType(),
-          },
-      qrOptions: {
-        errorCorrectionLevel: this.qrLevel(),
-      },
-    });
+    qr.update(this.qrState());
   }
 }
 

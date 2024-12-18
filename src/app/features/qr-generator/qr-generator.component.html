@@ -10,7 +10,7 @@
     class="segmented"
     [value]="qrConfigStore.level()"
     [options]="errorCodeLevels"
-    (optionChanged)="handleErrorCodeLevelChange($event)"
+    (optionChanged)="qrConfigStore.update({ level: $event })"
   ></segmented>
 
   <div class="button-container">
