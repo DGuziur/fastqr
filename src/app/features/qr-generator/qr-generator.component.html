@@ -51,16 +51,16 @@
     #qrTextarea
     class="qr-textarea"
     placeholder="Enter URL"
-    [value]="qrDataService.qrValue()"
+    [value]="qrConfigStore.value()"
     (click)="qrTextarea.select()"
-    (input)="handleTextareaChange(qrTextarea.value)"
+    (input)="qrConfigStore.update({ value: qrTextarea.value })"
   ></textarea>
   } @case('phone-contact') {
   <phone-contact-form
-    (valueChanged)="qrDataService.qrValue.set($event)"
+    (valueChanged)="qrConfigStore.update({ value: $event })"
   ></phone-contact-form>
   } @case ('wifi') {
-  <wifi-connect-form (valueChanged)="qrDataService.qrValue.set($event)">
+  <wifi-connect-form (valueChanged)="qrConfigStore.update({ value: $event })">
   </wifi-connect-form>
   } }
 

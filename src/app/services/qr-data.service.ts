@@ -158,38 +158,9 @@ export class QrDataService implements QrData {
   qrCornerDotColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
 
   resetQr() {
-    this.qrValue.set('');
-    this.qrBackground.set('#ffffff');
-    this.qrColor.set('#000000');
-    this.qrCornerSquare.set('#000000');
-    this.qrCornerDot.set('#000000');
-    this.qrLevel.set('L');
-    this.qrIcon.set('');
-    this.qrIconName.set('');
-    this.qrIconSize.set(0.5);
-    this.qrTransparent.set(false);
-    this.qrMargin.set(4);
-    this.qrCornerDotType.set('dot');
-    this.qrSquareType.set('extra-rounded');
-    this.qrDotsType.set('rounded');
-    this.qrIconMargin.set(0);
-    this.qrIconHideBackgroundDots.set(false);
-    this.qrBackgroundGradient.set(false);
-    this.qrBackgroundGradientType.set('linear');
-    this.qrBackgroundGradientRotation.set(0);
-    this.qrBackgroundColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrCornerSquareGradient.set(true);
-    this.qrCornerSquareGradientType.set('linear');
-    this.qrCornerSquareGradientRotation.set(0);
-    this.qrCornerSquareColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrCornerDotGradient.set(false);
-    this.qrCornerDotGradientType.set('linear');
-    this.qrCornerDotGradientRotation.set(0);
-    this.qrCornerDotColorStops.set(DEFAULT_COLOR_STOPS);
-    this.qrDotsGradient.set(false);
-    this.qrDotsGradientType.set('linear');
-    this.qrDotsGradientRotation.set(0);
-    this.qrDotsColorStops.set(DEFAULT_COLOR_STOPS);
+    this.configStore.reset();
+    this.iconStore.reset();
+    this.styleStore.reset();
   }
 
   editQr(qr: HistoryItem) {

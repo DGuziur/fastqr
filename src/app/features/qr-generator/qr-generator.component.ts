@@ -160,7 +160,6 @@ export class QrGeneratorComponent implements AfterViewInit {
     this.qr = this.qrDataService.buildQr();
 
     this.qr.append(this.canvas().nativeElement);
-    console.log(this.qr);
   }
 
   private readonly paint$ = effect(() => {
