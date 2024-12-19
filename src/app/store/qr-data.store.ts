@@ -18,7 +18,7 @@ const qrStyleDefaultState: StyleStore = {
     color: '#000000',
     type: 'rounded',
     gradient: {
-      enabled: true,
+      enabled: false,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -31,7 +31,7 @@ const qrStyleDefaultState: StyleStore = {
     color: '#000000',
     type: 'dot',
     gradient: {
-      enabled: true,
+      enabled: false,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -44,7 +44,7 @@ const qrStyleDefaultState: StyleStore = {
     color: '#000000',
     type: 'extra-rounded',
     gradient: {
-      enabled: true,
+      enabled: false,
       type: 'linear',
       rotation: 0,
       colorStops: [
@@ -57,7 +57,7 @@ const qrStyleDefaultState: StyleStore = {
     color: '#ffffff',
     isTransparent: false,
     gradient: {
-      enabled: true,
+      enabled: false,
       type: 'linear',
       rotation: 0,
       colorStops: [
