@@ -1,5 +1,6 @@
 import {
   computed,
+  effect,
   inject,
   Injectable,
   signal,
@@ -73,6 +74,7 @@ export class QrDataService implements QrData {
             },
           }
         : {
+            gradient: undefined,
             color: this.styleStore.dots.color(),
             type: this.styleStore.dots.type(),
           },
@@ -87,6 +89,7 @@ export class QrDataService implements QrData {
               },
             }
           : {
+              gradient: undefined,
               color: this.styleStore.background.isTransparent()
                 ? 'transparent'
                 : this.styleStore.background.color(),
@@ -101,6 +104,7 @@ export class QrDataService implements QrData {
             },
           }
         : {
+            gradient: undefined,
             type: this.styleStore.square.type(),
             color: this.styleStore.square.color(),
           },
@@ -114,10 +118,15 @@ export class QrDataService implements QrData {
             },
           }
         : {
+            gradient: undefined,
             color: this.styleStore.cornerDot.color(),
             type: this.styleStore.cornerDot.type(),
           },
     };
+  });
+
+  test = effect(() => {
+    console.log(this.qrState());
   });
 
   qrValue = signal('');
