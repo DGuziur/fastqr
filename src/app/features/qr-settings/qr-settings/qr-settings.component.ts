@@ -83,8 +83,7 @@ export class QrSettingsComponent {
   }
 
   resetIcon() {
-    this.qrDataService.qrIcon.set('');
-    this.qrDataService.qrIconName.set('');
+    this.qrIconStore.reset();
   }
 
   protected toggleTransparent() {
