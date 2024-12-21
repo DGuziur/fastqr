@@ -78,8 +78,4 @@ export class QrSettingsComponent {
     reader.readAsDataURL(file);
     this.imageChanged.emit();
   }
-
-  resetIcon() {
-    this.qrIconStore.reset();
-  }
 }

@@ -61,7 +61,7 @@ export class QrDataService implements QrData {
       imageOptions: {
         hideBackgroundDots: this.iconStore.hideBackgroundDots(),
         imageSize: this.iconStore.size(),
-        margin: this.iconStore.size(),
+        margin: this.iconStore.margin(),
         crossOrigin: 'anonymous',
       },
       dotsOptions: this.styleStore.dots.gradient.enabled()
