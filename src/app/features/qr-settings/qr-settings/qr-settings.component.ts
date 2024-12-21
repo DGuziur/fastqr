@@ -10,10 +10,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {
-  ColorStops,
-  GradientInputComponent,
-} from '../../../components/gradient-input/gradient-input.component';
+import { GradientInputComponent } from '../../../components/gradient-input/gradient-input.component';
 import {
   qrConfigStore,
   qrIconStore,
@@ -84,41 +81,5 @@ export class QrSettingsComponent {
 
   resetIcon() {
     this.qrIconStore.reset();
-  }
-
-  protected toggleTransparent() {
-    this.qrDataService.qrTransparent.update((value) => !value);
-  }
-
-  protected handleCornerSquareChange(color: string) {
-    this.qrDataService.qrCornerSquare.set(color);
-  }
-
-  protected handleCornerDotChange(color: string) {
-    this.qrDataService.qrCornerDot.set(color);
-  }
-
-  protected handleColorChange(color: string) {
-    this.qrDataService.qrColor.set(color);
-  }
-
-  protected handleBackgroundChange(color: string) {
-    this.qrDataService.qrBackground.set(color);
-  }
-
-  handleDotsGradient(value: ColorStops) {
-    this.qrDataService.qrDotsColorStops.set(value);
-  }
-
-  handleBackgroundGradient(value: ColorStops) {
-    this.qrDataService.qrBackgroundColorStops.set(value);
-  }
-
-  handleCornerSquareGradient(value: ColorStops) {
-    this.qrDataService.qrCornerSquareColorStops.set(value);
-  }
-
-  handleCornerDotGradient(value: ColorStops) {
-    this.qrDataService.qrCornerDotColorStops.set(value);
   }
 }
