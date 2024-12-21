@@ -63,13 +63,15 @@ export class QrSettingsComponent {
       throw console.error('Invalid file type. Only JPG and PNG are accepted.');
     }
 
-    this.qrDataService.qrIconName.set(file.name);
-
     const reader = new FileReader();
 
     reader.onload = () => {
       const base64String = reader.result as string;
-      this.qrDataService.qrIcon.set(base64String);
+      this.qrIconStore.update({
+        name: file.name,
+        src: base64String,
+        size: 0.5,
+      });
     };
 
     reader.onerror = (error) => {
