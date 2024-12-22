@@ -1,22 +1,7 @@
-import {
-  computed,
-  effect,
-  inject,
-  Injectable,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
-import { HistoryItem } from '../features/history/history.component';
+import { computed, effect, inject, Injectable } from '@angular/core';
+import { HistoryItem } from '../store/qr-data.store';
 import { SnackbarService } from './snackbar.service';
-import QRCodeStyling, {
-  CornerDotType,
-  CornerSquareType,
-  DotType,
-  FileExtension,
-  GradientType,
-  Options,
-} from 'qr-code-styling';
+import QRCodeStyling, { Options } from 'qr-code-styling';
 import { ColorStops } from '../components/gradient-input/gradient-input.component';
 import {
   qrStyleStore,
@@ -24,23 +9,10 @@ import {
   qrConfigStore,
 } from '../store/qr-data.store';
 
-interface QrData {
-  qrValue: WritableSignal<string>;
-  qrBackground: WritableSignal<string>;
-  qrColor: WritableSignal<string>;
-  qrLevel: WritableSignal<ErrorCodeLevel>;
-  qrIcon: WritableSignal<string>;
-  qrIconName: WritableSignal<string>;
-  qrIconSize: WritableSignal<number>;
-  qrTransparent: WritableSignal<boolean>;
-  qrMargin: WritableSignal<number>;
-  editQr(qr: HistoryItem): void;
-}
-
 @Injectable({
   providedIn: 'root',
 })
-export class QrDataService implements QrData {
+export class QrDataService {
   private readonly snackbar = inject(SnackbarService);
   private readonly styleStore = inject(qrStyleStore);
   private readonly iconStore = inject(qrIconStore);
@@ -125,47 +97,6 @@ export class QrDataService implements QrData {
     };
   });
 
-  test = effect(() => {
-    console.log(this.qrState());
-  });
-
-  qrValue = signal('');
-
-  qrColor = signal('#000000');
-  qrBackground = signal('#ffffff');
-  qrCornerSquare = signal('#000000');
-  qrCornerDot = signal('#000000');
-
-  qrLevel = signal<ErrorCodeLevel>('L');
-  qrIcon = signal('');
-  qrIconName = signal('');
-  qrIconMargin = signal<number>(0);
-  qrIconHideBackgroundDots = signal<boolean>(false);
-  qrIconSize = signal<number>(0.5);
-  qrDotsType = signal<DotType>('rounded');
-  qrCornerDotType = signal<CornerDotType>('dot');
-  qrSquareType = signal<CornerSquareType>('extra-rounded');
-  qrDownloadType = signal<FileExtension>('svg');
-  qrTransparent = signal<boolean>(false);
-  qrMargin = signal<number>(4);
-
-  qrDotsGradient = signal<boolean>(true);
-  qrDotsGradientType = signal<GradientType>('linear');
-  qrDotsGradientRotation = signal<number>(0);
-  qrDotsColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrBackgroundGradient = signal<boolean>(true);
-  qrBackgroundGradientType = signal<GradientType>('linear');
-  qrBackgroundGradientRotation = signal<number>(0);
-  qrBackgroundColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrCornerSquareGradient = signal<boolean>(true);
-  qrCornerSquareGradientType = signal<GradientType>('linear');
-  qrCornerSquareGradientRotation = signal<number>(0);
-  qrCornerSquareColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-  qrCornerDotGradient = signal<boolean>(true);
-  qrCornerDotGradientType = signal<GradientType>('linear');
-  qrCornerDotGradientRotation = signal<number>(0);
-  qrCornerDotColorStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
-
   resetQr() {
     this.configStore.reset();
     this.iconStore.reset();
@@ -173,52 +104,15 @@ export class QrDataService implements QrData {
   }
 
   editQr(qr: HistoryItem) {
-    this.qrValue.set(qr.qrValue);
-    this.qrBackground.set(qr.qrBackground);
-    this.qrColor.set(qr.qrColor);
-    this.qrCornerSquare.set(qr.qrCornerSquare);
-    this.qrCornerDot.set(qr.qrCornerDot);
-    this.qrLevel.set(<ErrorCodeLevel>qr.qrLevel);
-    this.qrIcon.set(qr.qrIcon);
-    this.qrIconName.set(qr.qrIconName);
-    this.qrIconSize.set(qr.qrIconSize);
-    this.qrTransparent.set(qr.qrTransparent || false);
-    this.qrMargin.set(qr.qrMargin);
-    this.qrCornerDotType.set(qr.qrCornerDotType);
-    this.qrSquareType.set(qr.qrSquareType);
-    this.qrDotsType.set(qr.qrDotsType);
-    this.qrIconMargin.set(qr.qrIconMargin);
-    this.qrIconHideBackgroundDots.set(qr.qrIconHideBackgroundDots);
-    this.qrBackgroundGradient.set(qr.qrBackgroundGradient);
-    this.qrBackgroundGradientType.set(qr.qrBackgroundGradientData?.type);
-    this.qrBackgroundGradientRotation.set(
-      qr.qrBackgroundGradientData?.rotation
-    );
-    this.qrBackgroundColorStops.set(qr.qrBackgroundGradientData?.colorStops);
-    this.qrCornerSquareGradient.set(qr.qrCornerSquareGradient);
-    this.qrCornerSquareGradientType.set(qr.qrCornerSquareGradientData?.type);
-    this.qrCornerSquareGradientRotation.set(
-      qr.qrCornerSquareGradientData?.rotation
-    );
-    this.qrCornerSquareColorStops.set(
-      qr.qrCornerSquareGradientData?.colorStops
-    );
-    this.qrCornerDotGradient.set(qr.qrCornerDotGradient);
-    this.qrCornerDotGradientType.set(qr.qrCornerDotGradientData?.type);
-    this.qrCornerDotGradientRotation.set(qr.qrCornerDotGradientData?.rotation);
-    this.qrCornerDotColorStops.set(qr.qrCornerDotGradientData?.colorStops);
-    this.qrDotsGradient.set(qr.qrDotsGradient);
-    this.qrDotsGradientType.set(qr.qrDotsGradientData?.type);
-    this.qrDotsGradientRotation.set(qr.qrDotsGradientData?.rotation);
-    this.qrDotsColorStops.set(qr.qrDotsGradientData?.colorStops);
+    this.configStore.patchFromHistory(qr);
   }
 
   downloadQr(qr: HistoryItem) {
     if (!qr.canvas) throw new Error('Nothing to download');
     const qrCanvas = this.buildQr(qr);
     qrCanvas.download({
-      name: qr.qrValue,
-      extension: qr.qrDownloadType,
+      name: qr.config.value,
+      extension: qr.config.downloadType,
     });
   }
 
@@ -242,8 +136,8 @@ export class QrDataService implements QrData {
   }
 
   goToLink(qr: HistoryItem) {
-    if (!qr.qrValue) throw new Error('Nothing to go to');
-    chrome.tabs.create({ url: qr.qrValue, active: false });
+    if (!qr.config.value) throw new Error('Nothing to go to');
+    chrome.tabs.create({ url: qr.config.value, active: false });
   }
 
   buildQr(qr?: HistoryItem) {

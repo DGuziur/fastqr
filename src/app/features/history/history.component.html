@@ -18,8 +18,8 @@
           <span class="created-at">{{ item.createdAt }}</span>
           <div class="qr-value">
             <img [height]="70" [width]="70" [src]="item.canvas" />
-            <a class="qr-link" href="{{ item.qrValue }}" target="_blank">
-              {{ item.qrValue }}
+            <a class="qr-link" href="{{ item.config.value }}" target="_blank">
+              {{ item.config.value }}
             </a>
           </div>
           <div class="actions">

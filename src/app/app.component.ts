@@ -1,9 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { QrGeneratorComponent } from './features/qr-generator/qr-generator.component';
-import {
-  HistoryComponent,
-  HistoryItem,
-} from './features/history/history.component';
+import { HistoryComponent } from './features/history/history.component';
+import { HistoryItem } from './store/qr-data.store';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { QrDataService } from './services/qr-data.service';

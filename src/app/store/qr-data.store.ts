@@ -1,15 +1,19 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 import {
-  GradientData,
-  HistoryItem,
-} from '../features/history/history.component';
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
+import { GradientData } from '../features/history/history.component';
 import {
   CornerDotType,
   CornerSquareType,
   DotType,
   FileExtension,
 } from 'qr-code-styling';
+import { computed } from '@angular/core';
 
 type Section = 'dots' | 'square' | 'cornerDot' | 'background';
 
@@ -113,6 +117,15 @@ type StyleStore = {
     gradient: GradientData;
   };
 };
+
+export type HistoryItem = {
+  createdAt: Date | string;
+  canvas?: string;
+  config: ConfigStore;
+  icon: IconStore;
+  style: StyleStore;
+};
+
 export const qrConfigStore = signalStore(
   { providedIn: 'root' },
   withState(qrConfigDefaultState),
@@ -127,8 +140,11 @@ export const qrConfigStore = signalStore(
       reset() {
         patchState(store, () => qrConfigDefaultState);
       },
-      patchFromHistory(historyItem: Partial<ConfigStore>) {
-        patchState(store, (state) => historyItem);
+      patchFromHistory(historyItem: HistoryItem) {
+        patchState(store, (state: ConfigStore) => ({
+          ...state,
+          ...historyItem.config,
+        }));
       },
     };
   })
@@ -148,8 +164,11 @@ export const qrIconStore = signalStore(
       reset() {
         patchState(store, () => qrIconDefaultState);
       },
-      patchFromHistory(historyItem: Partial<IconStore>) {
-        patchState(store, (state) => historyItem);
+      patchFromHistory(historyItem: HistoryItem) {
+        patchState(store, (state: IconStore) => ({
+          ...state,
+          ...historyItem.icon,
+        }));
       },
     };
   })
@@ -189,7 +208,10 @@ export const qrStyleStore = signalStore(
         patchState(store, () => qrStyleDefaultState);
       },
       patchFromHistory(historyItem: HistoryItem) {
-        patchState(store, (state) => state);
+        patchState(store, (state: StyleStore) => ({
+          ...state,
+          ...historyItem.style,
+        }));
       },
     };
   })
