@@ -25,6 +25,7 @@ import {
   qrIconStore,
   qrStyleStore,
 } from '../../store/qr-data.store';
+import QRCodeStyling from 'qr-code-styling';
 import { getState } from '@ngrx/signals';
 
 export type QrType = 'default' | 'phone-contact' | 'wifi';
@@ -68,7 +69,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrConfigStore = inject(qrConfigStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrStyleStore = inject(qrStyleStore);
-  qr: any = null;
+  qr: QRCodeStyling | undefined;
   qrType = signal<QrType>('default');
 
   private qrTextarea =
@@ -79,9 +80,9 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     this.intQr();
-    const lastSession: any = await this.storageService.restoreLastSession();
+    const lastSession = await this.storageService.restoreLastSession();
     const url = await this.getCurrentTabUrl();
-    if (lastSession && lastSession.qrValue) {
+    if (lastSession && lastSession.config.value) {
       this.qrConfigStore.patchFromHistory(lastSession);
       this.qrIconStore.patchFromHistory(lastSession);
       this.qrStyleStore.patchFromHistory(lastSession);
@@ -102,7 +103,6 @@ export class QrGeneratorComponent implements AfterViewInit {
 
   intQr() {
     this.qr = this.qrDataService.buildQr();
-
     this.qr.append(this.canvas().nativeElement);
   }
 
@@ -130,13 +130,11 @@ export class QrGeneratorComponent implements AfterViewInit {
   }
 
   downloadQR() {
-    this.qr.download({
+    this.qr?.download({
       name: `${this.qrConfigStore.value()}`,
       extension: `${this.qrConfigStore.downloadType()}`,
     });
   }
-
-  phoneNumber() {}
 
   copyToClipboard() {
     const canvas = document.querySelector('canvas');
