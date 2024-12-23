@@ -191,29 +191,6 @@ export class QrGeneratorComponent implements AfterViewInit {
     };
 
     reader.readAsDataURL(file);
-    this.placeImg();
-  }
-
-  placeImg() {
-    const canvas = this.canvas().nativeElement;
-    if (!canvas) throw console.error('Error while getting qr image');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw console.error('Error while getting canvas context');
-
-    const img = new Image();
-    img.src = this.qrIconStore.src();
-    img.onload = () => {
-      ctx.drawImage(
-        img,
-        (canvas.width - this.qrIconStore.size()) / 2,
-        (canvas.height - this.qrIconStore.size()) / 2,
-        this.qrIconStore.size(),
-        this.qrIconStore.size()
-      );
-    };
-    img.onerror = (error) => {
-      throw console.error('Error loading image:', error);
-    };
   }
 
   resetIcon() {

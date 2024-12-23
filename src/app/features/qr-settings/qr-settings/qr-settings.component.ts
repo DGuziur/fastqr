@@ -40,7 +40,6 @@ export class QrSettingsComponent {
   protected readonly qrStyleStore = inject(qrStyleStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrConfigStore = inject(qrConfigStore);
-  imageChanged = output();
 
   addImage(e: Event) {
     const target = e.target as HTMLInputElement;
@@ -76,6 +75,6 @@ export class QrSettingsComponent {
     };
 
     reader.readAsDataURL(file);
-    this.imageChanged.emit();
+    target.value = '';
   }
 }
