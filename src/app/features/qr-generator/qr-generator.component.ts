@@ -69,6 +69,7 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrConfigStore = inject(qrConfigStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrStyleStore = inject(qrStyleStore);
+
   qr: QRCodeStyling | undefined;
   qrType = signal<QrType>('default');
 
@@ -126,7 +127,6 @@ export class QrGeneratorComponent implements AfterViewInit {
     }
 
     this.qrDataService.updateQr(this.qr);
-    console.log(this.qr);
   }
 
   downloadQR() {
@@ -155,42 +155,6 @@ export class QrGeneratorComponent implements AfterViewInit {
       style: getState(this.qrStyleStore),
     });
     this.snackbar.open('Saved');
-  }
-
-  addImage(e: Event) {
-    const target = e.target as HTMLInputElement;
-    if (!target.files || target.files.length === 0) {
-      throw console.error('No file selected');
-    }
-
-    const file = target.files[0];
-    const validExtensions = [
-      'image/jpeg',
-      'image/png',
-      'image/svg+xml',
-      'application/pdf',
-    ];
-
-    if (!validExtensions.includes(file.type)) {
-      throw console.error('Invalid file type. Only JPG and PNG are accepted.');
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64String = reader.result as string;
-      this.qrIconStore.update({
-        src: base64String,
-        size: 0.5,
-        name: file.name,
-      });
-    };
-
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-    };
-
-    reader.readAsDataURL(file);
   }
 
   resetIcon() {

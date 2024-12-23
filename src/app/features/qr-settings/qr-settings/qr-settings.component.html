@@ -272,7 +272,11 @@
           <mat-icon>upload</mat-icon>
         </button>
         }
-        <input #fileInput type="file" (change)="addImage($event)" />
+        <input
+          #fileInput
+          type="file"
+          (change)="filesService.uploadImage($event)"
+        />
       </div>
       <mat-divider></mat-divider>
       <div class="flex-aroud">

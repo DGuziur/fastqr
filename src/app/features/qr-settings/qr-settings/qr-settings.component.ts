@@ -16,6 +16,7 @@ import {
   qrIconStore,
   qrStyleStore,
 } from '../../../store/qr-data.store';
+import { FilesService } from '../../../services/files.service';
 
 @Component({
   selector: 'qr-settings',
@@ -40,41 +41,5 @@ export class QrSettingsComponent {
   protected readonly qrStyleStore = inject(qrStyleStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrConfigStore = inject(qrConfigStore);
-
-  addImage(e: Event) {
-    const target = e.target as HTMLInputElement;
-    if (!target.files || target.files.length === 0) {
-      throw console.error('No file selected');
-    }
-
-    const file = target.files[0];
-    const validExtensions = [
-      'image/jpeg',
-      'image/png',
-      'image/svg+xml',
-      'application/pdf',
-    ];
-
-    if (!validExtensions.includes(file.type)) {
-      throw console.error('Invalid file type. Only JPG and PNG are accepted.');
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64String = reader.result as string;
-      this.qrIconStore.update({
-        name: file.name,
-        src: base64String,
-        size: 0.5,
-      });
-    };
-
-    reader.onerror = (error) => {
-      console.error('Error reading file:', error);
-    };
-
-    reader.readAsDataURL(file);
-    target.value = '';
-  }
+  protected readonly filesService = inject(FilesService);
 }
