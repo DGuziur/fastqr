@@ -1,4 +1,4 @@
-<div class="container theme-yellow">
+<div class="container">
   <input
     [value]="value()"
     #colorInput
@@ -11,18 +11,4 @@
   <div class="content-container">
     <ng-content></ng-content>
   </div>
-  <mat-form-field class="color-string" subscriptSizing="dynamic">
-    <input
-      #colorStringInput
-      matInput
-      placeholder="#HEX"
-      [value]="value()"
-      (focus)="colorStringInput.select()"
-      (input)="handleInput($event)"
-      type="text"
-    />
-    <mat-icon matSuffix (click)="colorInput.click()"
-      >format_color_fill</mat-icon
-    >
-  </mat-form-field>
 </div>
