@@ -105,6 +105,8 @@ export class QrDataService {
 
   editQr(qr: HistoryItem) {
     this.configStore.patchFromHistory(qr);
+    this.styleStore.patchFromHistory(qr);
+    this.iconStore.patchFromHistory(qr);
   }
 
   downloadQr(qr: HistoryItem) {
