@@ -77,6 +77,7 @@ const qrConfigDefaultState: ConfigStore = {
   level: 'L',
   margin: 4,
   downloadType: 'png',
+  type: 'default',
 };
 
 const qrIconDefaultState = {
@@ -92,6 +93,7 @@ type ConfigStore = {
   level: ErrorCodeLevel;
   margin: number;
   downloadType: FileExtension;
+  type: QrType;
 };
 
 type IconStore = typeof qrIconDefaultState;
@@ -118,7 +120,10 @@ type StyleStore = {
   };
 };
 
+export type QrType = 'default' | 'phone-contact' | 'wifi';
+
 export type HistoryItem = {
+  type?: QrType;
   createdAt: Date | string;
   canvas?: string;
   config: ConfigStore;
