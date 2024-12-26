@@ -18,7 +18,7 @@ import { EmptyListComponent } from '../../components/empty-list/empty-list.compo
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { QrDataService } from '../../services/qr-data.service';
 import { UserSettingsService } from '../../services/userSettings.service';
-import { HistoryItem } from '../../store/qr-data.store';
+import { HistoryItem } from '../../types/history-item.type';
 
 export type GradientData = {
   enabled: boolean;

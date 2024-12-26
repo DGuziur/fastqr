@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable } from '@angular/core';
-import { HistoryItem } from '../store/qr-data.store';
+import { HistoryItem } from '../types/history-item.type';
 import { SnackbarService } from './snackbar.service';
 import QRCodeStyling, { Options } from 'qr-code-styling';
 import { ColorStops } from '../components/gradient-input/gradient-input.component';
