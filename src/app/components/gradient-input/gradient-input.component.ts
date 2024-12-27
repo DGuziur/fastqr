@@ -16,13 +16,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { DEFAULT_COLOR_STOPS } from '../../services/qr-data.service';
+import { ColorStops } from '../../types/store.types';
+
+const DEFAULT_COLOR_STOPS: ColorStops = [
+  { offset: 0, color: '#ffffff' },
+  { offset: 1, color: '#77779C' },
+];
 
 type GradientTypeOption = { value: GradientType; icon: string };
-export type ColorStops = {
-  offset: number;
-  color: string;
-}[];
+
 @Component({
   selector: 'gradient-input',
   imports: [

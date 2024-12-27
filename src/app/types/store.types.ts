@@ -5,7 +5,6 @@ import {
   FileExtension,
 } from 'qr-code-styling';
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
-import { GradientData } from '../features/history/history.component';
 
 export type ConfigStore = {
   value: string;
@@ -47,3 +46,15 @@ export type IconStore = {
 };
 
 export type QrType = 'default' | 'phone-contact' | 'wifi';
+
+export type GradientData = {
+  enabled: boolean;
+  type: 'linear' | 'radial';
+  rotation: number;
+  colorStops: ColorStops;
+};
+
+export type ColorStops = {
+  offset: number;
+  color: string;
+}[];

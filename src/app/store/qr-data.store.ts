@@ -1,5 +1,4 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { GradientData } from '../features/history/history.component';
 import {
   DEFAULT_QR_CONFIG,
   DEFAULT_QR_ICON,
@@ -7,6 +6,7 @@ import {
 } from './qr-data.config';
 import { HistoryItem } from '../types/history-item.type';
 import { ConfigStore, IconStore, StyleStore } from '../types/store.types';
+import { GradientData } from '../types/store.types';
 
 type Section = 'dots' | 'square' | 'cornerDot' | 'background';
 

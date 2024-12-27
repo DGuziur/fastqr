@@ -1,8 +1,7 @@
-import { computed, effect, inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { HistoryItem } from '../types/history-item.type';
 import { SnackbarService } from './snackbar.service';
 import QRCodeStyling, { Options } from 'qr-code-styling';
-import { ColorStops } from '../components/gradient-input/gradient-input.component';
 import {
   qrStyleStore,
   qrIconStore,
@@ -150,8 +149,3 @@ export class QrDataService {
     qr.update(this.qrState());
   }
 }
-
-export const DEFAULT_COLOR_STOPS: ColorStops = [
-  { offset: 0, color: '#ffffff' },
-  { offset: 1, color: '#77779C' },
-];

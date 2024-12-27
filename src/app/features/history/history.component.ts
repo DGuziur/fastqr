@@ -20,16 +20,6 @@ import { QrDataService } from '../../services/qr-data.service';
 import { UserSettingsService } from '../../services/userSettings.service';
 import { HistoryItem } from '../../types/history-item.type';
 
-export type GradientData = {
-  enabled: boolean;
-  type: 'linear' | 'radial';
-  rotation: number;
-  colorStops: {
-    offset: number;
-    color: string;
-  }[];
-};
-
 @Component({
   selector: 'history',
   imports: [
