@@ -6,11 +6,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { QrDataService } from './services/qr-data.service';
 import { SupportPageComponent } from './features/support-page/support-page.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
   imports: [
     HistoryComponent,
+    MatButtonModule,
     MatIconModule,
     MatTabsModule,
     QrGeneratorComponent,

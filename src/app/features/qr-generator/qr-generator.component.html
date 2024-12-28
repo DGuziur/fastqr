@@ -1,67 +1,68 @@
-<div class="flex-container">
-  <div #canvas></div>
-  <button mat-mini-fab class="reset-qr" (click)="resetQr()">
-    <mat-icon>refresh</mat-icon>
-  </button>
+<div class="create-qr">
+  <div class="flex-container">
+    <div class="qr-type-container">
+      <button mat-mini-fab matTooltip="Default" (click)="qrType.set('default')">
+        <mat-icon>qr_code</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        matTooltip="phone-contact"
+        (click)="qrType.set('phone-contact')"
+      >
+        <mat-icon>contact_phone</mat-icon>
+      </button>
+      <button mat-mini-fab matTooltip="wifi" (click)="qrType.set('wifi')">
+        <mat-icon>wifi</mat-icon>
+      </button>
+    </div>
+    <div #canvas></div>
+    <button mat-mini-fab class="reset-qr" (click)="resetQr()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+  <div class="actions-container">
+    <segmented
+      class="segmented"
+      [value]="qrConfigStore.level()"
+      [options]="errorCodeLevels"
+      (optionChanged)="qrConfigStore.update({ level: $event })"
+    ></segmented>
+
+    <div class="button-container">
+      <button class="download-btn" mat-mini-fab extended (click)="downloadQR()">
+        Download
+        <mat-icon>download</mat-icon>
+      </button>
+      <button
+        mat-mini-fab
+        matTooltip="Copy to clipboard"
+        (click)="copyToClipboard()"
+      >
+        <mat-icon>content_copy</mat-icon>
+      </button>
+      <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+
+    @switch(qrType()) { @case('default') {
+    <textarea
+      #qrTextarea
+      class="qr-textarea"
+      placeholder="Enter URL"
+      [value]="qrConfigStore.value()"
+      (click)="qrTextarea.select()"
+      (input)="qrConfigStore.update({ value: qrTextarea.value })"
+    ></textarea>
+    } @case('phone-contact') {
+    <phone-contact-form
+      (valueChanged)="qrConfigStore.update({ value: $event })"
+    ></phone-contact-form>
+    } @case ('wifi') {
+    <wifi-connect-form (valueChanged)="qrConfigStore.update({ value: $event })">
+    </wifi-connect-form>
+    } }
+  </div>
+
+  <qr-settings class="config"></qr-settings>
 </div>
-<mat-card class="theme-violet">
-  <segmented
-    class="segmented"
-    [value]="qrConfigStore.level()"
-    [options]="errorCodeLevels"
-    (optionChanged)="qrConfigStore.update({ level: $event })"
-  ></segmented>
-
-  <div class="button-container">
-    <button class="download-btn" mat-mini-fab extended (click)="downloadQR()">
-      Download
-      <mat-icon>download</mat-icon>
-    </button>
-    <button
-      mat-mini-fab
-      matTooltip="Copy to clipboard"
-      (click)="copyToClipboard()"
-    >
-      <mat-icon>content_copy</mat-icon>
-    </button>
-    <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
-      <mat-icon>save</mat-icon>
-    </button>
-  </div>
-
-  <div>
-    <button mat-mini-fab matTooltip="Default" (click)="qrType.set('default')">
-      <mat-icon>qr_code</mat-icon>
-    </button>
-    <button
-      mat-mini-fab
-      matTooltip="phone-contact"
-      (click)="qrType.set('phone-contact')"
-    >
-      <mat-icon>contact_phone</mat-icon>
-    </button>
-    <button mat-mini-fab matTooltip="wifi" (click)="qrType.set('wifi')">
-      <mat-icon>wifi</mat-icon>
-    </button>
-  </div>
-
-  @switch(qrType()) { @case('default') {
-  <textarea
-    #qrTextarea
-    class="qr-textarea"
-    placeholder="Enter URL"
-    [value]="qrConfigStore.value()"
-    (click)="qrTextarea.select()"
-    (input)="qrConfigStore.update({ value: qrTextarea.value })"
-  ></textarea>
-  } @case('phone-contact') {
-  <phone-contact-form
-    (valueChanged)="qrConfigStore.update({ value: $event })"
-  ></phone-contact-form>
-  } @case ('wifi') {
-  <wifi-connect-form (valueChanged)="qrConfigStore.update({ value: $event })">
-  </wifi-connect-form>
-  } }
-
-  <qr-settings></qr-settings>
-</mat-card>

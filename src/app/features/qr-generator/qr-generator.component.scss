@@ -39,12 +39,18 @@ input[type="file"] {
   min-width: min-content;
 }
 
+.qr-type-container {
+  grid-column: span 2;
+}
+
 .flex-container {
   display: grid;
   place-items: center;
   padding: 10px 0;
+  grid-template-rows: 50px 1fr;
   grid-template-columns: 1fr 60px;
   place-items: center;
+  grid-area: canvas;
 }
 
 .button-container {
@@ -91,4 +97,21 @@ input[type="file"] {
   width: 100%;
   border-radius: 0;
   background-color: $primary-color !important;
+}
+
+.create-qr {
+  height: 100%;
+  display: grid;
+  grid-template-areas:
+    "canvas config"
+    "actions config";
+  grid-template-columns: 1fr 1fr;
+}
+
+.action-container {
+  grid-area: actions;
+}
+
+.config {
+  grid-area: config;
 }

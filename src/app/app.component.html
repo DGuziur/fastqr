@@ -1,4 +1,43 @@
 <main class="main-container">
+  <div class="side-menu">
+    <span class="title">FastQR</span>
+    <button
+      class="tab-button"
+      [class.selected]="tabIndex() === 0"
+      mat-fab
+      (click)="tabIndex.set(0)"
+    >
+      <mat-icon>qr_code</mat-icon>
+      <span>Create</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.selected]="tabIndex() === 1"
+      mat-fab
+      (click)="tabIndex.set(1)"
+    >
+      <mat-icon>history</mat-icon>
+      <span>History</span>
+    </button>
+    <button
+      class="tab-button"
+      [class.selected]="tabIndex() === 2"
+      mat-fab
+      (click)="tabIndex.set(2)"
+    >
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <button
+      class="tab-button support-btn"
+      [class.selected]="tabIndex() === 2"
+      mat-fab
+      (click)="tabIndex.set(2)"
+    >
+      <mat-icon>coffee</mat-icon>
+      <span>Support</span>
+    </button>
+  </div>
   <mat-tab-group
     [selectedIndex]="tabIndex()"
     (selectedIndexChange)="tabIndex.set($event)"

@@ -13,9 +13,8 @@
 
 html,
 body {
-  width: min-content;
-  height: min-content;
   margin: 0;
+  height: 100%;
 
   &::-webkit-scrollbar {
     border-radius: 2px;
