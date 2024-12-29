@@ -5,7 +5,6 @@ import {
   effect,
   ElementRef,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,8 +17,6 @@ import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
-import { PhoneContactFormComponent } from '../../components/phone-contact-form/phone-contact-form.component';
-import { WifiConnectFormComponent } from '../../components/wifi-connect-form/wifi-connect-form.component';
 import {
   qrConfigStore,
   qrIconStore,
@@ -54,8 +51,6 @@ export type VCARD = {
     MatIconModule,
     MatTooltipModule,
     SegmentedComponent,
-    PhoneContactFormComponent,
-    WifiConnectFormComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
@@ -71,7 +66,6 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrStyleStore = inject(qrStyleStore);
 
   qr: QRCodeStyling | undefined;
-  qrType = signal<QrType>('default');
 
   private qrTextarea =
     viewChild.required<ElementRef<HTMLTextAreaElement>>('qrTextarea');

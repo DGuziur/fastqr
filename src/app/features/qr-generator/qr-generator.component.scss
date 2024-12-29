@@ -47,7 +47,6 @@ input[type="file"] {
   display: grid;
   place-items: center;
   padding: 10px 0;
-  grid-template-rows: 50px 1fr;
   grid-template-columns: 1fr 60px;
   place-items: center;
   grid-area: canvas;

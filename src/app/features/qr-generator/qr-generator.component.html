@@ -1,20 +1,5 @@
 <div class="create-qr">
   <div class="flex-container">
-    <div class="qr-type-container">
-      <button mat-mini-fab matTooltip="Default" (click)="qrType.set('default')">
-        <mat-icon>qr_code</mat-icon>
-      </button>
-      <button
-        mat-mini-fab
-        matTooltip="phone-contact"
-        (click)="qrType.set('phone-contact')"
-      >
-        <mat-icon>contact_phone</mat-icon>
-      </button>
-      <button mat-mini-fab matTooltip="wifi" (click)="qrType.set('wifi')">
-        <mat-icon>wifi</mat-icon>
-      </button>
-    </div>
     <div #canvas></div>
     <button mat-mini-fab class="reset-qr" (click)="resetQr()">
       <mat-icon>refresh</mat-icon>
@@ -45,23 +30,19 @@
       </button>
     </div>
 
-    @switch(qrType()) { @case('default') {
     <textarea
       #qrTextarea
+      [disabled]="qrConfigStore.type() !== 'default'"
       class="qr-textarea"
       placeholder="Enter URL"
-      [value]="qrConfigStore.value()"
+      [value]="
+        qrConfigStore.type() === 'default'
+          ? qrConfigStore.value()
+          : qrConfigStore.type()
+      "
       (click)="qrTextarea.select()"
       (input)="qrConfigStore.update({ value: qrTextarea.value })"
     ></textarea>
-    } @case('phone-contact') {
-    <phone-contact-form
-      (valueChanged)="qrConfigStore.update({ value: $event })"
-    ></phone-contact-form>
-    } @case ('wifi') {
-    <wifi-connect-form (valueChanged)="qrConfigStore.update({ value: $event })">
-    </wifi-connect-form>
-    } }
   </div>
 
   <qr-settings class="config"></qr-settings>

@@ -82,3 +82,15 @@ input[type="file"] {
 .settings-container {
   height: 100%;
 }
+
+.qr-type-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+
+  .mat-mdc-unelevated-button > .mat-icon {
+    margin: 0;
+  }
+}

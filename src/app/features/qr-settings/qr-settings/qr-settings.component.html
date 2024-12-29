@@ -324,5 +324,40 @@
         }
       </div>
     </mat-tab>
+    <mat-tab label="Type">
+      <div class="qr-type-select">
+        <button
+          mat-flat-button
+          matTooltip="Default"
+          (click)="qrConfigStore.update({ type: 'default' })"
+        >
+          <mat-icon>qr_code</mat-icon>
+        </button>
+        <button
+          mat-flat-button
+          matTooltip="phone-contact"
+          (click)="qrConfigStore.update({ type: 'phone-contact' })"
+        >
+          <mat-icon>contact_phone</mat-icon>
+        </button>
+        <button
+          mat-flat-button
+          matTooltip="wifi"
+          (click)="qrConfigStore.update({ type: 'wifi' })"
+        >
+          <mat-icon>wifi</mat-icon>
+        </button>
+      </div>
+      @switch(qrConfigStore.type()) { @case('phone-contact') {
+      <phone-contact-form
+        (valueChanged)="qrConfigStore.update({ value: $event })"
+      ></phone-contact-form>
+      } @case ('wifi') {
+      <wifi-connect-form
+        (valueChanged)="qrConfigStore.update({ value: $event })"
+      >
+      </wifi-connect-form>
+      } }
+    </mat-tab>
   </mat-tab-group>
 </div>

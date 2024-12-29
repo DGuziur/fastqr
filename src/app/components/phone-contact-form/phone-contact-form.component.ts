@@ -38,7 +38,7 @@ export class PhoneContactFormComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.contactForm.valueChanges
-      .pipe(debounceTime(1000), takeUntilDestroyed(this.destroyRef))
+      .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => {
         const stringValue = Object.entries(value)
           .map(([key, value]) => `${key}:${value}`)
