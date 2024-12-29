@@ -16,6 +16,7 @@ import {
   qrIconStore,
   qrStyleStore,
 } from '../../../store/qr-data.store';
+import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FilesService } from '../../../services/files.service';
 import { PhoneContactFormComponent } from '../../../components/phone-contact-form/phone-contact-form.component';
@@ -26,6 +27,7 @@ import { WifiConnectFormComponent } from '../../../components/wifi-connect-form/
   imports: [
     ColorInputComponent,
     MatDividerModule,
+    MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatListModule,

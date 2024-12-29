@@ -184,71 +184,64 @@
         </mat-slider>
       </div>
       <mat-divider></mat-divider>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> Dot type </mat-panel-title>
-          <mat-panel-description>
-            Currently selected: {{ qrStyleStore.dots.type() }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-button-toggle-group
-          class="multiple-choice"
-          name="dotType"
-          [value]="qrStyleStore.dots.type()"
-          aria-label="Dot type"
-          (valueChange)="qrStyleStore.update('dots', { type: $event })"
-        >
-          <mat-button-toggle value="square">Square</mat-button-toggle>
-          <mat-button-toggle value="dots">Dots</mat-button-toggle>
-          <mat-button-toggle value="classy">Classy</mat-button-toggle>
-          <mat-button-toggle value="rounded">Rounded</mat-button-toggle>
-          <mat-button-toggle value="classy-rounded"
-            >Classy rounded</mat-button-toggle
+      <mat-card class="options-card">
+        <mat-card-title>Dot type</mat-card-title>
+        <mat-card-content>
+          <mat-button-toggle-group
+            class="multiple-choice"
+            name="dotType"
+            [value]="qrStyleStore.dots.type()"
+            aria-label="Dot type"
+            (valueChange)="qrStyleStore.update('dots', { type: $event })"
           >
-          <mat-button-toggle value="extra-rounded"
-            >Extra rounded</mat-button-toggle
-          >
-        </mat-button-toggle-group>
-      </mat-expansion-panel>
+            <mat-button-toggle value="square">Square</mat-button-toggle>
+            <mat-button-toggle value="dots">Dots</mat-button-toggle>
+            <mat-button-toggle value="classy">Classy</mat-button-toggle>
+            <mat-button-toggle value="rounded">Rounded</mat-button-toggle>
+            <mat-button-toggle value="classy-rounded"
+              >Classy rounded</mat-button-toggle
+            >
+            <mat-button-toggle value="extra-rounded"
+              >Extra rounded</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </mat-card-content>
+      </mat-card>
       <mat-divider></mat-divider>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> Corner square type </mat-panel-title>
-          <mat-panel-description>
-            Currently selected: {{ qrStyleStore.square.type() }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-button-toggle-group
-          name="dotType"
-          [value]="qrStyleStore.square.type()"
-          aria-label="Dot type"
-          (valueChange)="qrStyleStore.update('square', { type: $event })"
-        >
-          <mat-button-toggle value="dot">Dot</mat-button-toggle>
-          <mat-button-toggle value="square">Square</mat-button-toggle>
-          <mat-button-toggle value="extra-rounded"
-            >Extra rounded</mat-button-toggle
+      <mat-card class="options-card">
+        <mat-card-title>Corner square type</mat-card-title>
+        <mat-card-content>
+          <mat-button-toggle-group
+            name="dotType"
+            [value]="qrStyleStore.square.type()"
+            aria-label="Dot type"
+            (valueChange)="qrStyleStore.update('square', { type: $event })"
           >
-        </mat-button-toggle-group>
-      </mat-expansion-panel>
+            <mat-button-toggle value="dot">Dot</mat-button-toggle>
+            <mat-button-toggle value="square">Square</mat-button-toggle>
+            <mat-button-toggle value="extra-rounded"
+              >Extra rounded</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </mat-card-content>
+      </mat-card>
+
       <mat-divider></mat-divider>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Corner dot type</mat-panel-title>
-          <mat-panel-description>
-            Currently selected: {{ qrStyleStore.cornerDot.type() }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-button-toggle-group
-          name="dotType"
-          [value]="qrStyleStore.cornerDot.type()"
-          aria-label="Dot type"
-          (valueChange)="qrStyleStore.update('cornerDot', { type: $event })"
-        >
-          <mat-button-toggle value="dot">Dot</mat-button-toggle>
-          <mat-button-toggle value="square">Square</mat-button-toggle>
-        </mat-button-toggle-group>
-      </mat-expansion-panel>
+
+      <mat-card class="options-card">
+        <mat-card-title>Corner dot type</mat-card-title>
+        <mat-card-content>
+          <mat-button-toggle-group
+            name="dotType"
+            [value]="qrStyleStore.cornerDot.type()"
+            aria-label="Dot type"
+            (valueChange)="qrStyleStore.update('cornerDot', { type: $event })"
+          >
+            <mat-button-toggle value="dot">Dot</mat-button-toggle>
+            <mat-button-toggle value="square">Square</mat-button-toggle>
+          </mat-button-toggle-group>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
     <mat-tab label="Logo">
       <div class="flex-aroud">
