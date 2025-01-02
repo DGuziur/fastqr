@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { QrDataService } from './services/qr-data.service';
 import { SupportPageComponent } from './features/support-page/support-page.component';
 import { MatButtonModule } from '@angular/material/button';
+import { SettingsComponent } from './features/settings/settings.component';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatTabsModule,
     QrGeneratorComponent,
     SupportPageComponent,
+    SettingsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

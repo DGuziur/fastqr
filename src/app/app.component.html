@@ -32,7 +32,7 @@
       class="tab-button support-btn"
       [class.selected]="tabIndex() === 2"
       mat-fab
-      (click)="tabIndex.set(2)"
+      (click)="tabIndex.set(3)"
     >
       <mat-icon>coffee</mat-icon>
       <span>Support</span>
@@ -54,6 +54,12 @@
         <mat-icon>history</mat-icon>
       </ng-template>
       <history (editElement)="handleEditFromHistory($event)"></history>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>settings</mat-icon>
+      </ng-template>
+      <settings></settings>
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
