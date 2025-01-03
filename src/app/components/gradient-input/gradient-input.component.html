@@ -1,64 +1,77 @@
-<div class="gradient-input-container">
-  <div class="actions">
-    <button mat-raised-button (click)="addGradientStop()">Add</button>
-    <button mat-raised-button [matMenuTriggerFor]="gradientTypeMenu">
-      Type
-    </button>
-    @if (selectedGradientType() === 'linear') {
-    <mat-form-field>
-      <mat-label>Rotation</mat-label>
-      <input
-        matInput
-        min="-360"
-        max="360"
-        type="number"
-        (input)="handleRotation($event)"
-      />
-    </mat-form-field>
-    }
-  </div>
-  <mat-table [dataSource]="gradientStopsForm.value">
-    <ng-container matColumnDef="color">
-      <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <input type="color" [value]="element.color" />
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="offset">
-      <mat-header-cell *matHeaderCellDef>Offset</mat-header-cell>
-      <mat-cell *matCellDef="let element">
+<mat-card class="gradient-input-container">
+  <mat-card-header>
+    <mat-card-title>{{ title() }} gradient table</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="actions">
+      <button mat-raised-button (click)="addGradientStop()">Add</button>
+      <button mat-raised-button [matMenuTriggerFor]="gradientTypeMenu">
+        Type
+      </button>
+      @if (selectedGradientType() === 'linear') {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Rotation</mat-label>
         <input
+          matInput
+          min="-360"
+          max="360"
           type="number"
-          min="0"
-          max="1"
-          step="0.01"
-          [value]="element.offset"
+          (input)="handleRotation($event)"
         />
-      </mat-cell>
-    </ng-container>
+      </mat-form-field>
+      }
+    </div>
+    <mat-table [dataSource]="gradientStopsForm.value">
+      <ng-container matColumnDef="color">
+        <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index">
+          <input type="color" [value]="element.color" />
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="remove">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button
-          matSuffix
-          mat-icon-button
-          (click)="removeGradientStop(element.$index)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="offset">
+        <mat-header-cell *matHeaderCellDef>Stop</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <mat-form-field
+            class="offset-field"
+            subscriptSizing="dynamic"
+            appearance="outline"
+          >
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="1"
+              step="0.01"
+              [value]="element.offset"
+            />
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row
-      *matHeaderRowDef="['color', 'offset', 'remove']"
-    ></mat-header-row>
-    <mat-row
-      *matRowDef="let row; columns: ['color', 'offset', 'remove']"
-    ></mat-row>
-  </mat-table>
-</div>
+      <ng-container matColumnDef="remove">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index">
+          <button
+            matSuffix
+            mat-icon-button
+            [disabled]="gradientStopsForm.value.length < 3"
+            (click)="removeGradientStop(i)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row
+        *matHeaderRowDef="['color', 'offset', 'remove']"
+      ></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: ['color', 'offset', 'remove']"
+      ></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>
 
 <mat-menu #gradientTypeMenu="matMenu">
   @for (option of gradientTypes; track option) {

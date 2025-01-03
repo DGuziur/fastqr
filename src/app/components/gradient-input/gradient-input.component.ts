@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ColorStops } from '../../types/store.types';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 
 const DEFAULT_COLOR_STOPS: ColorStops = [
   { offset: 0, color: '#ffffff' },
@@ -34,6 +35,7 @@ type GradientTypeOption = { value: GradientType; icon: string };
     MatIconModule,
     MatMenuModule,
     MatTableModule,
+    MatCardModule,
   ],
   templateUrl: './gradient-input.component.html',
   styleUrl: './gradient-input.component.scss',
