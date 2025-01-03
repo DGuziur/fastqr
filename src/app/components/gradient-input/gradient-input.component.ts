@@ -4,10 +4,7 @@ import {
   Component,
   inject,
   input,
-  model,
   output,
-  Signal,
-  signal,
 } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { GradientType } from 'qr-code-styling';
@@ -17,6 +14,8 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ColorStops } from '../../types/store.types';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 const DEFAULT_COLOR_STOPS: ColorStops = [
   { offset: 0, color: '#ffffff' },
@@ -28,11 +27,13 @@ type GradientTypeOption = { value: GradientType; icon: string };
 @Component({
   selector: 'gradient-input',
   imports: [
+    MatListModule,
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    MatTableModule,
   ],
   templateUrl: './gradient-input.component.html',
   styleUrl: './gradient-input.component.scss',

@@ -1,5 +1,4 @@
 <div class="gradient-input-container">
-  <p class="title">{{ title() }}: {{ selectedGradientType() }} gradient</p>
   <div class="actions">
     <button mat-raised-button (click)="addGradientStop()">Add</button>
     <button mat-raised-button [matMenuTriggerFor]="gradientTypeMenu">
@@ -18,36 +17,54 @@
     </mat-form-field>
     }
   </div>
-  <mat-menu #gradientTypeMenu="matMenu">
-    @for (option of gradientTypes; track option) {
-    <button mat-menu-item (click)="gradientTypeChanged.emit(option.value)">
-      <span>{{ option.value }}</span>
-      <mat-icon>{{ option.icon }}</mat-icon>
-    </button>
-    }
-  </mat-menu>
-  <div class="gradient-form-list">
-    @for (form of gradientStopsForm.controls; track form) {
-    <form class="gradient-form-item" [formGroup]="form">
-      <input type="color" formControlName="color" />
-      <mat-form-field class="form-field">
-        <mat-label>Offset</mat-label>
+  <mat-table [dataSource]="gradientStopsForm.value">
+    <ng-container matColumnDef="color">
+      <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <input type="color" [value]="element.color" />
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="offset">
+      <mat-header-cell *matHeaderCellDef>Offset</mat-header-cell>
+      <mat-cell *matCellDef="let element">
         <input
-          matInput
           type="number"
           min="0"
           max="1"
           step="0.01"
-          formControlName="offset"
+          [value]="element.offset"
         />
-        @if ($index >= 2) {
-        <button matSuffix mat-icon-button (click)="removeGradientStop($index)">
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="remove">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button
+          matSuffix
+          mat-icon-button
+          (click)="removeGradientStop(element.$index)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
-        }
-        <mat-error>Between 0 and 1</mat-error>
-      </mat-form-field>
-    </form>
-    }
-  </div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row
+      *matHeaderRowDef="['color', 'offset', 'remove']"
+    ></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: ['color', 'offset', 'remove']"
+    ></mat-row>
+  </mat-table>
 </div>
+
+<mat-menu #gradientTypeMenu="matMenu">
+  @for (option of gradientTypes; track option) {
+  <button mat-menu-item (click)="gradientTypeChanged.emit(option.value)">
+    <span>{{ option.value }}</span>
+    <mat-icon>{{ option.icon }}</mat-icon>
+  </button>
+  }
+</mat-menu>
