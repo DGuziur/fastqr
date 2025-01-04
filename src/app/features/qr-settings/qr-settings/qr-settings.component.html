@@ -65,6 +65,7 @@
         @if (qrStyleStore.dots.gradient.enabled()) {
         <gradient-input
           title="Dots"
+          [value]="qrStyleStore.dots.gradient.colorStops()"
           (valueChanged)="
             qrStyleStore.updateGradient('dots', { colorStops: $event })
           "
@@ -89,6 +90,7 @@
         @if (qrStyleStore.background.gradient.enabled()) {
         <gradient-input
           title="Dots"
+          [value]="qrStyleStore.background.gradient.colorStops()"
           (valueChanged)="
             qrStyleStore.updateGradient('background', { colorStops: $event })
           "
@@ -127,6 +129,7 @@
         @if (qrStyleStore.square.gradient.enabled()) {
         <gradient-input
           title="Squares"
+          [value]="qrStyleStore.square.gradient.colorStops()"
           (valueChanged)="
             qrStyleStore.updateGradient('square', { colorStops: $event })
           "
@@ -150,6 +153,7 @@
         @if (qrStyleStore.cornerDot.gradient.enabled()) {
         <gradient-input
           title="Corner dots"
+          [value]="qrStyleStore.cornerDot.gradient.colorStops()"
           (valueChanged)="
             qrStyleStore.updateGradient('cornerDot', { colorStops: $event })
           "

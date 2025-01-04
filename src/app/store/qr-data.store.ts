@@ -68,7 +68,7 @@ export const qrStyleStore = signalStore(
           ...state,
           [param]: {
             ...state[param],
-            gradient: { ...state.dots.gradient, ...value },
+            gradient: { ...state[param].gradient, ...value },
           },
         }));
       },
