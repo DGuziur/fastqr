@@ -17,6 +17,7 @@
           min="-360"
           max="360"
           type="number"
+          [value]="toDegrees(rotation())"
           (input)="handleRotation($event)"
         />
       </mat-form-field>

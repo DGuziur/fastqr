@@ -57,6 +57,10 @@ export class GradientInputComponent implements AfterViewInit {
 
   gradientStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
 
+  protected toDegrees(rad: number): number {
+    return (rad * 180) / Math.PI;
+  }
+
   protected readonly gradientTypes: GradientTypeOption[] = [
     { value: 'linear', icon: 'arrow_right_alt' },
     { value: 'radial', icon: 'all_out' },
@@ -97,7 +101,8 @@ export class GradientInputComponent implements AfterViewInit {
 
   handleRotation(event: Event) {
     const target = event.target as HTMLInputElement;
-    this.rotationChanged.emit(target.valueAsNumber);
+    const rotationInRadians = (target.valueAsNumber * Math.PI) / 180;
+    this.rotationChanged.emit(rotationInRadians);
   }
 
   removeGradientStop(index: number) {
