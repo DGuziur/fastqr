@@ -10,6 +10,7 @@
       </button>
       @if (selectedGradientType() === 'linear') {
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <span matSuffix>deg&nbsp;</span>
         <mat-label>Rotation</mat-label>
         <input
           matInput
@@ -21,29 +22,40 @@
       </mat-form-field>
       }
     </div>
-    <mat-table [dataSource]="gradientStopsForm.value">
+    <mat-table [dataSource]="gradientStops()">
       <ng-container matColumnDef="color">
         <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
         <mat-cell *matCellDef="let element; let i = index">
-          <input type="color" [value]="element.color" />
+          <input
+            type="color"
+            [value]="element.color"
+            (input)="handleColor($event, i)"
+          />
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="offset">
         <mat-header-cell *matHeaderCellDef>Stop</mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <mat-cell *matCellDef="let element; let i = index">
           <mat-form-field
+            (click)="offsetInput.select()"
             class="offset-field"
             subscriptSizing="dynamic"
             appearance="outline"
           >
+            <span matSuffix>%&nbsp;</span>
             <input
+              #offsetInput
               matInput
               type="number"
               min="0"
-              max="1"
-              step="0.01"
-              [value]="element.offset"
+              max="100"
+              step="1"
+              [value]="toValidNumber(element.offset * 100)"
+              (change)="
+                offsetInput.valueAsNumber = toValidNumber(element.offset * 100)
+              "
+              (input)="handleOffset($event, i)"
             />
           </mat-form-field>
         </mat-cell>
@@ -55,7 +67,7 @@
           <button
             matSuffix
             mat-icon-button
-            [disabled]="gradientStopsForm.value.length < 3"
+            [disabled]="gradientStops().length < 3"
             (click)="removeGradientStop(i)"
           >
             <mat-icon>delete</mat-icon>

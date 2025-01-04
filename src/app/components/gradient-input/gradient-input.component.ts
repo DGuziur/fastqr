@@ -1,10 +1,13 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { GradientType } from 'qr-code-styling';
@@ -39,6 +42,7 @@ type GradientTypeOption = { value: GradientType; icon: string };
   ],
   templateUrl: './gradient-input.component.html',
   styleUrl: './gradient-input.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GradientInputComponent implements AfterViewInit {
   title = input<string>('Gradient');
@@ -51,7 +55,7 @@ export class GradientInputComponent implements AfterViewInit {
 
   ref = inject(ChangeDetectorRef);
 
-  gradientStopsForm = new FormArray<FormGroup>([]);
+  gradientStops = signal<ColorStops>(DEFAULT_COLOR_STOPS);
 
   protected readonly gradientTypes: GradientTypeOption[] = [
     { value: 'linear', icon: 'arrow_right_alt' },
@@ -59,21 +63,36 @@ export class GradientInputComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit(): void {
-    this.value().forEach((stop) => {
-      this.addGradientStop(stop.offset, stop.color);
+    this.gradientStops.set(this.value());
+  }
+
+  handleColor(event: Event, index: number) {
+    const target = event.target as HTMLInputElement;
+    this.gradientStops.update((stops) => {
+      const newStops = [...stops];
+      newStops[index].color = target.value;
+      return newStops;
     });
-    this.gradientStopsForm.valueChanges.subscribe((value: ColorStops) => {
-      this.valueChanged.emit(value);
-    });
-    this.ref.detectChanges();
+    this.valueChanged.emit(this.gradientStops());
   }
 
   addGradientStop(offset: number = 0, color: string = '#000000') {
-    const grad = new FormGroup({
-      offset: new FormControl<number>(offset),
-      color: new FormControl<string>(color),
+    const grad = {
+      offset: offset,
+      color: color,
+    };
+    this.gradientStops.update((stops) => [...stops, grad]);
+  }
+
+  handleOffset(event: Event, index: number) {
+    const target = event.target as HTMLInputElement;
+    const newValue = this.toValidNumber(target.valueAsNumber);
+    this.gradientStops.update((stops) => {
+      const newStops = [...stops];
+      newStops[index].offset = newValue / 100;
+      return newStops;
     });
-    this.gradientStopsForm.push(grad);
+    this.valueChanged.emit(this.gradientStops());
   }
 
   handleRotation(event: Event) {
@@ -82,6 +101,15 @@ export class GradientInputComponent implements AfterViewInit {
   }
 
   removeGradientStop(index: number) {
-    this.gradientStopsForm.removeAt(index);
+    this.gradientStops.update((stops) => stops.filter((_, i) => i !== index));
+  }
+
+  toValidNumber(num: number): number {
+    if (num > 100) {
+      num = 100;
+    } else if (num < 0 || isNaN(num)) {
+      num = 0;
+    }
+    return Number(num.toFixed(2));
   }
 }
