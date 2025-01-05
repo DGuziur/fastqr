@@ -1,7 +1,12 @@
 <div class="create-qr">
   <div class="flex-container">
     <div #canvas></div>
-    <button mat-mini-fab class="reset-qr" (click)="resetQr()">
+    <button
+      mat-mini-fab
+      matTooltip="Reset all"
+      class="reset-qr"
+      (click)="resetQr()"
+    >
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
@@ -13,37 +18,69 @@
       (optionChanged)="qrConfigStore.update({ level: $event })"
     ></segmented>
 
-    <div class="button-container">
-      <button class="download-btn" mat-mini-fab extended (click)="downloadQR()">
-        Download
-        <mat-icon>download</mat-icon>
-      </button>
-      <button
-        mat-mini-fab
-        matTooltip="Copy to clipboard"
-        (click)="copyToClipboard()"
-      >
-        <mat-icon>content_copy</mat-icon>
-      </button>
-      <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
-        <mat-icon>save</mat-icon>
-      </button>
-    </div>
+    <mat-card>
+      <mat-card-content>
+        <div class="button-container">
+          <button
+            class="download-btn"
+            mat-mini-fab
+            extended
+            (click)="downloadQR()"
+          >
+            Download
+            <mat-icon>download</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            matTooltip="Change download type"
+            [matMenuTriggerFor]="downloadTypeMenu"
+          >
+            <strong>{{ qrConfigStore.downloadType() }}</strong>
+          </button>
+          <button
+            mat-mini-fab
+            matTooltip="Copy to clipboard"
+            (click)="copyToClipboard()"
+          >
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
 
-    <textarea
-      #qrTextarea
-      [disabled]="qrConfigStore.type() !== 'default'"
-      class="qr-textarea"
-      placeholder="Enter URL"
-      [value]="
-        qrConfigStore.type() === 'default'
-          ? qrConfigStore.value()
-          : qrConfigStore.type()
-      "
-      (click)="qrTextarea.select()"
-      (input)="qrConfigStore.update({ value: qrTextarea.value })"
-    ></textarea>
+        <textarea
+          #qrTextarea
+          [disabled]="qrConfigStore.type() !== 'default'"
+          class="qr-textarea"
+          placeholder="Enter URL"
+          [value]="
+            qrConfigStore.type() === 'default'
+              ? qrConfigStore.value()
+              : qrConfigStore.type()
+          "
+          (click)="qrTextarea.select()"
+          (input)="qrConfigStore.update({ value: qrTextarea.value })"
+        ></textarea>
+      </mat-card-content>
+    </mat-card>
   </div>
 
   <qr-settings class="config"></qr-settings>
 </div>
+
+<mat-menu #downloadTypeMenu="matMenu">
+  @for (option of downloadTypeOptions; track option) {
+  <button
+    mat-menu-item
+    (click)="qrConfigStore.update({ downloadType: option })"
+  >
+    <span>{{ option }}</span>
+    <mat-icon>{{
+      option === qrConfigStore.downloadType()
+        ? "check_box"
+        : "check_box_outline_blank"
+    }}</mat-icon>
+  </button>
+  }</mat-menu
+>

@@ -17,12 +17,13 @@ import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
+import { MatMenuModule } from '@angular/material/menu';
 import {
   qrConfigStore,
   qrIconStore,
   qrStyleStore,
 } from '../../store/qr-data.store';
-import QRCodeStyling from 'qr-code-styling';
+import QRCodeStyling, { FileExtension } from 'qr-code-styling';
 import { getState } from '@ngrx/signals';
 
 export type QrType = 'default' | 'phone-contact' | 'wifi';
@@ -51,6 +52,7 @@ export type VCARD = {
     MatIconModule,
     MatTooltipModule,
     SegmentedComponent,
+    MatMenuModule,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',
@@ -64,6 +66,8 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrConfigStore = inject(qrConfigStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrStyleStore = inject(qrStyleStore);
+
+  downloadTypeOptions: FileExtension[] = ['png', 'svg', 'jpeg', 'webp'];
 
   qr: QRCodeStyling | undefined;
 
