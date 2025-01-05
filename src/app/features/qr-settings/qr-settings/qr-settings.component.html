@@ -89,7 +89,7 @@
         <mat-divider></mat-divider>
         @if (qrStyleStore.background.gradient.enabled()) {
         <gradient-input
-          title="Dots"
+          title="Background"
           [value]="qrStyleStore.background.gradient.colorStops()"
           (valueChanged)="
             qrStyleStore.updateGradient('background', { colorStops: $event })
