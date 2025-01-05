@@ -18,11 +18,21 @@
             <span class="created-at">{{ item.createdAt }}</span>
             <div class="qr-value">
               <img [height]="70" [width]="70" [src]="item.canvas" />
+              @if (item.config.name) {
+              <span class="qr-link">{{ item.config.name }}</span>
+              } @else {
               <a class="qr-link" href="{{ item.config.value }}" target="_blank">
                 {{ item.config.value }}
               </a>
+              } @switch(item.config.type) { @case('phone-contact') {
+              <mat-icon>contact_phone</mat-icon>
+              } @case('wifi') {
+              <mat-icon>wifi</mat-icon>
+              } @default {
+              <mat-icon>qr_code</mat-icon>
+              } }
             </div>
-            <div class="actions">
+            <mat-card class="actions">
               <button
                 mat-icon-button
                 matTooltip="Edit"
@@ -44,6 +54,7 @@
               >
                 <mat-icon>content_copy</mat-icon>
               </button>
+              @if (item.config.type === 'default') {
               <button
                 mat-icon-button
                 matTooltip="Go to link"
@@ -51,6 +62,7 @@
               >
                 <mat-icon>link</mat-icon>
               </button>
+              }
               <button
                 mat-icon-button
                 matTooltip="Delete"
@@ -58,7 +70,7 @@
               >
                 <mat-icon>delete</mat-icon>
               </button>
-            </div>
+            </mat-card>
           </div>
         </td>
       </ng-container>

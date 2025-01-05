@@ -19,12 +19,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { QrDataService } from '../../services/qr-data.service';
 import { UserSettingsService } from '../../services/userSettings.service';
 import { HistoryItem } from '../../types/history-item.type';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'history',
   imports: [
     CdkDropList,
     CdkDrag,
+    MatCardModule,
     MatButtonModule,
     MatIconModule,
     MatTableModule,

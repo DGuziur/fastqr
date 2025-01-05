@@ -5,6 +5,7 @@ import {
   effect,
   ElementRef,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { QrSettingsComponent } from '../qr-settings/qr-settings/qr-settings.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from '../../services/snackbar.service';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import {
   qrConfigStore,
@@ -51,6 +53,7 @@ export type VCARD = {
     QrSettingsComponent,
     MatIconModule,
     MatTooltipModule,
+    MatInputModule,
     SegmentedComponent,
     MatMenuModule,
   ],
@@ -66,6 +69,8 @@ export class QrGeneratorComponent implements AfterViewInit {
   protected readonly qrConfigStore = inject(qrConfigStore);
   protected readonly qrIconStore = inject(qrIconStore);
   protected readonly qrStyleStore = inject(qrStyleStore);
+
+  protected nameInputVisible = signal<boolean>(false);
 
   downloadTypeOptions: FileExtension[] = ['png', 'svg', 'jpeg', 'webp'];
 

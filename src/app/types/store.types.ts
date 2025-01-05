@@ -7,6 +7,7 @@ import {
 import { ErrorCodeLevel } from '../features/qr-generator/qr-generator.component';
 
 export type ConfigStore = {
+  name: string;
   value: string;
   level: ErrorCodeLevel;
   margin: number;

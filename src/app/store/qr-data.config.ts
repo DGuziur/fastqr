@@ -56,6 +56,7 @@ export const DEFAULT_QR_STYLE: StyleStore = {
 };
 
 export const DEFAULT_QR_CONFIG: ConfigStore = {
+  name: '',
   value: '',
   level: 'L',
   margin: 4,
