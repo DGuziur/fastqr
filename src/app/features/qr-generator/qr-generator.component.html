@@ -27,7 +27,7 @@
             extended
             (click)="downloadQR()"
           >
-            Download
+            <b>Download</b>
             <mat-icon>download</mat-icon>
           </button>
           <button
@@ -35,7 +35,7 @@
             matTooltip="Change download type"
             [matMenuTriggerFor]="downloadTypeMenu"
           >
-            <strong>{{ qrConfigStore.downloadType() }}</strong>
+            <b>{{ qrConfigStore.downloadType() }}</b>
           </button>
           <button
             mat-mini-fab
