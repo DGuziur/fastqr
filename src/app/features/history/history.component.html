@@ -4,81 +4,83 @@
     <mat-label>Search in history</mat-label>
     <input matInput (input)="search($event)" />
   </mat-form-field>
-  <table
-    #table
-    class="history-table"
-    mat-table
-    [dataSource]="dataSource"
-    cdkDropList
-    (cdkDropListDropped)="drop($event)"
-  >
-    <ng-container matColumnDef="item">
-      <td mat-cell *matCellDef="let item">
-        <div class="history-item">
-          <span class="created-at">{{ item.createdAt }}</span>
-          <div class="qr-value">
-            <img [height]="70" [width]="70" [src]="item.canvas" />
-            <a class="qr-link" href="{{ item.config.value }}" target="_blank">
-              {{ item.config.value }}
-            </a>
+  <div class="history-table-container">
+    <table
+      #table
+      mat-table
+      [dataSource]="dataSource"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+    >
+      <ng-container matColumnDef="item">
+        <td mat-cell *matCellDef="let item">
+          <div class="history-item">
+            <span class="created-at">{{ item.createdAt }}</span>
+            <div class="qr-value">
+              <img [height]="70" [width]="70" [src]="item.canvas" />
+              <a class="qr-link" href="{{ item.config.value }}" target="_blank">
+                {{ item.config.value }}
+              </a>
+            </div>
+            <div class="actions">
+              <button
+                mat-icon-button
+                matTooltip="Edit"
+                (click)="editItemFromHistory(item.createdAt)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Download"
+                (click)="qrService.downloadQr(item)"
+              >
+                <mat-icon>download</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Copy"
+                (click)="qrService.copyQrToClipboard(item)"
+              >
+                <mat-icon>content_copy</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Go to link"
+                (click)="qrService.goToLink(item)"
+              >
+                <mat-icon>link</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matTooltip="Delete"
+                (click)="removeByDate(item.createdAt)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
-          <div class="actions">
-            <button
-              mat-icon-button
-              matTooltip="Edit"
-              (click)="editItemFromHistory(item.createdAt)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              matTooltip="Download"
-              (click)="qrService.downloadQr(item)"
-            >
-              <mat-icon>download</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              matTooltip="Copy"
-              (click)="qrService.copyQrToClipboard(item)"
-            >
-              <mat-icon>content_copy</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              matTooltip="Go to link"
-              (click)="qrService.goToLink(item)"
-            >
-              <mat-icon>link</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              matTooltip="Delete"
-              (click)="removeByDate(item.createdAt)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-      </td>
-    </ng-container>
+        </td>
+      </ng-container>
 
-    <tr
-      mat-row
-      cdkDrag
-      [cdkDragData]="row"
-      *matRowDef="let row; columns: ['item']"
-    ></tr>
-  </table>
+      <tr
+        mat-row
+        cdkDrag
+        [cdkDragData]="row"
+        *matRowDef="let row; columns: ['item']"
+      ></tr>
+    </table>
+  </div>
+
   <mat-paginator
     #paginator
     (page)="handlePageEvent($event)"
     [pageSize]="userSettings.userSettings().itemsPerPage"
-    [pageSizeOptions]="[5, 10, 20]"
+    [hidePageSize]="true"
     aria-label="Select page of periodic elements"
   >
   </mat-paginator>
-  <button
+  <!-- <button
     class="clear-history-btn"
     mat-mini-fab
     extended
@@ -86,7 +88,7 @@
   >
     Clear all
     <mat-icon>delete</mat-icon>
-  </button>
+  </button> -->
 </div>
 }@else {
 <empty-list-info></empty-list-info>
