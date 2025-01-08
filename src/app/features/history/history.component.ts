@@ -79,12 +79,30 @@ export class HistoryComponent {
     this.userSettings.updateSettings();
   }
 
-  search(event: Event) {
+  search(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.dataSource.filter = value;
   }
 
-  async editItemFromHistory(createdAt: string) {
+  extractWifiName(wifiString: string): string {
+    const match = wifiString.match(/S:([^;]+);/);
+    if (match) {
+      return match[1];
+    }
+    return '';
+  }
+
+  extractContactName(vCardString: string): string {
+    const nameMatch = vCardString.match(/FN:([^\s]+)/);
+    const phoneMatch = vCardString.match(/TEL:(\d+)/);
+
+    const name = nameMatch ? nameMatch[1] : 'Unknown';
+    const phone = phoneMatch ? phoneMatch[1] : 'No number';
+
+    return `Phone: ${name} (${phone})`;
+  }
+
+  async editItemFromHistory(createdAt: string): Promise<void> {
     const item = await this.storageService.getQrByDate(createdAt);
     if (item) {
       this.editElement.emit(item);

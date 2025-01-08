@@ -21,6 +21,14 @@
             <mat-card-content>
               <div class="qr-value">
                 <img [height]="70" [width]="70" [src]="item.canvas" />
+
+                @switch(item.config.type) { @case('phone-contact') {
+                <span>{{ extractContactName(item.config.value) }}</span>
+                <mat-icon>contact_phone</mat-icon>
+                } @case('wifi') {
+                <span>Wi-Fi: {{ extractWifiName(item.config.value) }}</span>
+                <mat-icon>wifi</mat-icon>
+                } @default {
                 <a
                   class="qr-link"
                   href="{{ item.config.value }}"
@@ -28,11 +36,6 @@
                 >
                   {{ item.config.value }}
                 </a>
-                @switch(item.config.type) { @case('phone-contact') {
-                <mat-icon>contact_phone</mat-icon>
-                } @case('wifi') {
-                <mat-icon>wifi</mat-icon>
-                } @default {
                 <mat-icon>qr_code</mat-icon>
                 } }
               </div>
