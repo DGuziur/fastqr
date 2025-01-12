@@ -27,6 +27,7 @@ import {
 } from '../../store/qr-data.store';
 import QRCodeStyling, { FileExtension } from 'qr-code-styling';
 import { getState } from '@ngrx/signals';
+import { ResizableGridComponent } from '../../components/resizable-grid/resizable-grid.component';
 
 export type QrType = 'default' | 'phone-contact' | 'wifi';
 
@@ -56,6 +57,7 @@ export type VCARD = {
     MatInputModule,
     SegmentedComponent,
     MatMenuModule,
+    ResizableGridComponent,
   ],
   templateUrl: './qr-generator.component.html',
   styleUrl: './qr-generator.component.scss',

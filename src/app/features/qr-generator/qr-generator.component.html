@@ -1,4 +1,4 @@
-<div class="create-qr">
+<!-- <div class="create-qr">
   <div class="flex-container">
     @if (nameInputVisible()) {
     <mat-card class="input-qr-name">
@@ -110,4 +110,122 @@
     }}</mat-icon>
   </button>
   }</mat-menu
+> -->
+
+<mat-menu #downloadTypeMenu="matMenu">
+  @for (option of downloadTypeOptions; track option) {
+  <button
+    mat-menu-item
+    (click)="qrConfigStore.update({ downloadType: option })"
+  >
+    <span>{{ option }}</span>
+    <mat-icon>{{
+      option === qrConfigStore.downloadType()
+        ? "check_box"
+        : "check_box_outline_blank"
+    }}</mat-icon>
+  </button>
+  }</mat-menu
 >
+
+<app-resizable-grid [columnTemplates]="[first, second]"></app-resizable-grid>
+
+<ng-template #first>
+  <div class="flex-container">
+    @if (nameInputVisible()) {
+    <mat-card class="input-qr-name">
+      <mat-card-content>
+        <mat-form-field subscriptSizing="dynamic" appearance="outline">
+          <mat-label>Name this QR</mat-label>
+          <input
+            #qrNameInput
+            [value]="qrConfigStore.name()"
+            (change)="qrConfigStore.update({ name: qrNameInput.value })"
+            size="small"
+            matInput
+            type="text"
+          />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions class="name-action">
+        <button (click)="nameInputVisible.set(false)" mat-button>Hide</button>
+      </mat-card-actions>
+    </mat-card>
+    } @else {
+    <mat-card class="name-hidden-card">
+      <mat-card-actions class="name-action">
+        <button (click)="nameInputVisible.set(true)" mat-button>Name</button>
+      </mat-card-actions>
+    </mat-card>
+    }
+
+    <div id="canvas" #canvas></div>
+    <button
+      mat-mini-fab
+      matTooltip="Reset all"
+      class="reset-qr"
+      (click)="resetQr()"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+  <div class="actions-container">
+    <segmented
+      class="segmented"
+      [value]="qrConfigStore.level()"
+      [options]="errorCodeLevels"
+      (optionChanged)="qrConfigStore.update({ level: $event })"
+    ></segmented>
+
+    <mat-card>
+      <mat-card-content class="button-container">
+        <button
+          class="download-btn"
+          mat-mini-fab
+          extended
+          (click)="downloadQR()"
+        >
+          <b>Download</b>
+          <mat-icon>download</mat-icon>
+        </button>
+        <div class="button-action-container">
+          <button
+            mat-mini-fab
+            matTooltip="Change download type"
+            [matMenuTriggerFor]="downloadTypeMenu"
+          >
+            <b>{{ qrConfigStore.downloadType() }}</b>
+          </button>
+          <button
+            mat-mini-fab
+            matTooltip="Copy to clipboard"
+            (click)="copyToClipboard()"
+          >
+            <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-mini-fab matTooltip="Save to history" (click)="saveQR()">
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
+
+        <textarea
+          #qrTextarea
+          [disabled]="qrConfigStore.type() !== 'default'"
+          class="qr-textarea"
+          placeholder="Enter URL"
+          [value]="
+            qrConfigStore.type() === 'default'
+              ? qrConfigStore.value()
+              : qrConfigStore.type()
+          "
+          (click)="qrTextarea.select()"
+          (input)="qrConfigStore.update({ value: qrTextarea.value })"
+        ></textarea>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-template>
+
+<ng-template #second>
+  <qr-settings class="config"></qr-settings>
+</ng-template>

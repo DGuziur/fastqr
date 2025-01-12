@@ -1,0 +1,8 @@
+<div class="resizable-grid">
+  @for (template of columnTemplates(); track template) {
+  <ng-template #template></ng-template>
+  <div #resizeHandle class="resize-handle">
+    <div class="handle-line"></div>
+  </div>
+  }
+</div>
