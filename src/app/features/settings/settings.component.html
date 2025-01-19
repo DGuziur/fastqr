@@ -1,11 +1,24 @@
 <div class="settings-container">
   <mat-card class="settings-card">
+    <mat-card-title>General</mat-card-title>
+    <mat-card-content class="settings-card-content">
+      <mat-slide-toggle> Auto save session </mat-slide-toggle>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="settings-card">
     <mat-card-title>History</mat-card-title>
     <mat-card-content class="settings-card-content">
-      <mat-slide-toggle> Enable history </mat-slide-toggle>
-      <mat-slide-toggle> Enable history </mat-slide-toggle>
-      <mat-slide-toggle> Enable history </mat-slide-toggle>
-      <mat-slide-toggle> Enable history </mat-slide-toggle>
+      <mat-form-field>
+        <label>Items per page</label>
+        <mat-select>
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="10">10</mat-option>
+          <mat-option [value]="20">20</mat-option>
+          <mat-option [value]="50">50</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <button mat-flat-button>Clear History</button>
     </mat-card-content>
   </mat-card>
 </div>
