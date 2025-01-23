@@ -1,12 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 
+export const SETTINGS_KEY = 'fastqr-settings';
 export const DEFAULT_SETTINGS = {
   qrLocked: false,
   itemsPerPage: 5,
   autoSaveSession: false,
 };
-
-export const SETTINGS_KEY = 'fastqr-settings';
 
 export type UserSettings = typeof DEFAULT_SETTINGS;
 
