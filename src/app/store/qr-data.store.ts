@@ -100,3 +100,8 @@ export const qrStyleStore = signalStore(
     };
   })
 );
+
+export const userSettingsStore = signalStore(
+  { providedIn: 'root' },
+  withState({})
+);
