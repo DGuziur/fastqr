@@ -36,14 +36,27 @@ export class PhoneContactFormComponent implements AfterViewInit {
     END: new FormControl('VCARD'),
   });
 
+  addressForm: FormGroup = new FormGroup({
+    street: new FormControl<string>(''),
+    city: new FormControl<string>(''),
+    region: new FormControl<string>(''),
+    postalCode: new FormControl<string>(''),
+    country: new FormControl<string>(''),
+  });
+
   ngAfterViewInit(): void {
     this.contactForm.valueChanges
       .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => {
         const stringValue = Object.entries(value)
-          .map(([key, value]) => `${key}:${value}`)
+          .map(([key, value]) => {
+            if (key === 'ADR') {
+              const address = this.addressForm.value;
+              return `${key}:;;${address.street};${address.city};${address.region};${address.postalCode};${address.country}`;
+            }
+            return `${key}:${value}`;
+          })
           .join('\n');
-        console.log(stringValue);
         this.valueChanged.emit(stringValue);
       });
   }
