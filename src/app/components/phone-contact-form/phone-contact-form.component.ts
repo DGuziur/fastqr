@@ -29,19 +29,17 @@ export class PhoneContactFormComponent implements AfterViewInit {
     FN: new FormControl(null),
     TEL: new FormControl(null),
     EMAIL: new FormControl(null),
-    ADR: new FormControl(null),
+    ADR: new FormGroup({
+      street: new FormControl<string>(''),
+      city: new FormControl<string>(''),
+      region: new FormControl<string>(''),
+      postalCode: new FormControl<string>(''),
+      country: new FormControl<string>(''),
+    }),
     ORG: new FormControl(null),
     TITLE: new FormControl(null),
     URL: new FormControl(null),
     END: new FormControl('VCARD'),
-  });
-
-  addressForm: FormGroup = new FormGroup({
-    street: new FormControl<string>(''),
-    city: new FormControl<string>(''),
-    region: new FormControl<string>(''),
-    postalCode: new FormControl<string>(''),
-    country: new FormControl<string>(''),
   });
 
   ngAfterViewInit(): void {
@@ -51,7 +49,7 @@ export class PhoneContactFormComponent implements AfterViewInit {
         const stringValue = Object.entries(value)
           .map(([key, value]) => {
             if (key === 'ADR') {
-              const address = this.addressForm.value;
+              const address = this.contactForm.value.ADR;
               return `${key}:;;${address.street};${address.city};${address.region};${address.postalCode};${address.country}`;
             }
             return `${key}:${value}`;

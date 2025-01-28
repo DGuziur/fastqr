@@ -28,11 +28,6 @@
       <input matInput placeholder="Title" formControlName="TITLE" />
       <mat-icon matSuffix>title</mat-icon>
     </mat-form-field>
-    <mat-form-field class="address-field" appearance="outline">
-      <mat-label>Address</mat-label>
-      <input matInput placeholder="Address" formControlName="ADR" />
-      <mat-icon matSuffix>location_on</mat-icon>
-    </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Organization</mat-label>
       <input matInput placeholder="Organization" formControlName="ORG" />
@@ -43,5 +38,52 @@
       <input matInput placeholder="Website" formControlName="URL" type="url" />
       <mat-icon matSuffix>link</mat-icon>
     </mat-form-field>
+    <ng-container formGroupName="ADR">
+      <mat-form-field appearance="outline">
+        <mat-label>Street</mat-label>
+        <input
+          matInput
+          placeholder="Street"
+          formControlName="street"
+          type="url"
+        />
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="City" formControlName="city" type="url" />
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Region</mat-label>
+        <input
+          matInput
+          placeholder="Region"
+          formControlName="region"
+          type="url"
+        />
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Postal code</mat-label>
+        <input
+          matInput
+          placeholder="Postal code"
+          formControlName="postalCode"
+          type="url"
+        />
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <input
+          matInput
+          placeholder="Country"
+          formControlName="country"
+          type="url"
+        />
+        <mat-icon matSuffix>link</mat-icon>
+      </mat-form-field>
+    </ng-container>
   </form>
 </mat-card>
